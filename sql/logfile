@@ -1,0 +1,104 @@
+LOG:  database system was shut down at 2017-01-25 17:26:13 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  syntax error at or near "asset_tag" at character 107
+STATEMENT:  CREATE TABLE assets (
+		asset_pk	serial primary key,
+		product_fk	integer REFERENCES products (product_pk)
+		asset_tag 	varchar(128),
+		description 	varchar(128),
+		alt_description varchar(128)
+	);
+ERROR:  relation "assets" does not exist
+STATEMENT:  CREATE TABLE vehicles (
+		vehicle_pk 	serial primary key,
+		asset_fk 	integer REFERENCES assets (asset_pk) not null
+	);
+ERROR:  relation "assets" does not exist
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk	integer REFERENCES assets (asset_pk) not null,
+		facility_fk 	integer REFERENCES facilities (facility_pk) not null,
+		arrive_dt	timestamp, 
+		depart_dt	timestamp 
+	);
+ERROR:  relation "vehicles" does not exist
+STATEMENT:  CREATE TABLE used_by (
+		vehicle_fk	integer REFERENCES vehicles (vehicle_pk) not null,
+		convoy_fk 	integer REFERENCES convoys (convoy_pk) not null
+	);
+ERROR:  relation "assets" does not exist
+STATEMENT:  CREATE TABLE asset_on (
+		asset_fk 	integer REFERENCES assets (asset_pk) not null,
+		convoy_fk	integer REFERENCES convoys (convoy_pk) not null,
+		load_dt		timestamp,
+		unload_dt	timestamp
+	);
+ERROR:  relation "assets" does not exist
+STATEMENT:  CREATE TABLE security_tags (
+		tag_pk		serial primary key,
+		level_fk	integer REFERENCES levels (level_pk) not null,
+		compartment_fk	integer REFERENCES compartments (compartment_pk) not null,
+		user_fk		integer REFERENCES users (user_pk) not null,
+		product_fk	integer REFERENCES products (product_pk) not null,
+		asset_fk 	integer REFERENCES assets (asset_pk) not null
+	);
+ERROR:  invalid input syntax for integer: "Red Lion" at character 41
+STATEMENT:  INSERT INTO assets (product_fk) VALUES ('Red Lion')
+ERROR:  invalid input syntax for integer: "Red Lion" at character 41
+STATEMENT:  INSERT INTO assets (product_fk) VALUES ('Red Lion')
+ERROR:  database "mydb" is being accessed by other users
+DETAIL:  There are 4 other sessions using the database.
+STATEMENT:  DROP DATABASE mydb;
+ERROR:  database "mydb" is being accessed by other users
+DETAIL:  There are 4 other sessions using the database.
+STATEMENT:  DROP DATABASE mydb;
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was interrupted; last known up at 2017-01-26 22:56:13 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/227CF68
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  syntax error at or near "select" at character 24
+STATEMENT:  select * from products
+	select * from products;
+ERROR:  syntax error at or near "users" at character 22
+STATEMENT:  INSERT INTO products users (vendor,username) VALUES ('Buy n Large','Derrial Book')
+ERROR:  column "username" of relation "products" does not exist at character 30
+STATEMENT:  INSERT INTO products (vendor,username) VALUES ('Buy n Large','Derrial Book')
+ERROR:  invalid input syntax for integer: "Derrial Book" at character 64
+STATEMENT:  INSERT INTO products (vendor,product_pk) VALUES ('Buy n Large','Derrial Book')
+LOG:  database system was interrupted; last known up at 2017-01-27 12:03:42 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/2311138
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  syntax error at or near "select" at character 22
+STATEMENT:  select * from assets
+	select * from assets;
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was interrupted; last known up at 2017-01-27 23:36:53 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/2420E90
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started

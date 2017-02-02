@@ -1,0 +1,9 @@
+Name: libecpg_compat
+Description: PostgreSQL libecpg_compat library
+Url: http://www.postgresql.org/
+Version: 10devel
+Requires: 
+Requires.private: libecpg libpgtypes
+Cflags: -I/home/osnapdev/test/include
+Libs: -L/home/osnapdev/test/lib -lecpg_compat
+Libs.private:  -lpq -lm

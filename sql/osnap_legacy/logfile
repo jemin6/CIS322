@@ -1,0 +1,269 @@
+LOG:  database system was shut down at 2017-01-25 18:06:19 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  relation "assets" does not exist at character 13
+STATEMENT:  INSERT INTO assets (asset_tag) VALUES ('DC15467299')
+ERROR:  relation "description" does not exist at character 13
+STATEMENT:  INSERT INTO description (compartments) VALUES ('moon:u')
+ERROR:  relation "description" does not exist at character 13
+STATEMENT:  INSERT INTO description (product) VALUES ('Olivine basalt ')
+ERROR:  relation "alt_description" does not exist at character 13
+STATEMENT:  INSERT INTO alt_description (product) VALUES ('Olivine basalt ')
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+FATAL:  terminating connection due to administrator command
+LOG:  autovacuum launcher shutting down
+FATAL:  terminating connection due to administrator command
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2017-01-25 18:18:28 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  relation "products" already exists
+STATEMENT:  CREATE TABLE products (
+		product_pk 	serial primary key,
+		vendor		varchar(128),
+		description 	varchar(128),
+		alt_description	varchar(128)
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (
+		asset_pk	serial primary key,
+		product_fk	integer REFERENCES products (product_pk),
+		asset_tag 	varchar(128),
+		description 	varchar(128),
+		alt_description varchar(128)
+	);
+ERROR:  relation "vehicles" already exists
+STATEMENT:  CREATE TABLE vehicles (
+		vehicle_pk 	serial primary key,
+		asset_fk 	integer REFERENCES assets (asset_pk) not null
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(128),
+		common_name	varchar(128) not null, 
+		location 	varchar(128)
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk	integer REFERENCES assets (asset_pk) not null,
+		facility_fk 	integer REFERENCES facilities (facility_pk) not null,
+		arrive_dt	timestamp, 
+		depart_dt	timestamp 
+	);
+ERROR:  relation "convoys" already exists
+STATEMENT:  CREATE TABLE convoys (
+		convoy_pk 	serial primary key,
+		request		varchar(128),
+		source_fk	integer REFERENCES facilities (facility_pk) not null,
+		dest_fk		integer REFERENCES facilities (facility_pk) not null,
+		depart_dt 	timestamp, 
+		arrive_dt 	timestamp
+	);
+ERROR:  relation "used_by" already exists
+STATEMENT:  CREATE TABLE used_by (
+		vehicle_fk	integer REFERENCES vehicles (vehicle_pk) not null,
+		convoy_fk 	integer REFERENCES convoys (convoy_pk) not null
+	);
+ERROR:  relation "asset_on" already exists
+STATEMENT:  CREATE TABLE asset_on (
+		asset_fk 	integer REFERENCES assets (asset_pk) not null,
+		convoy_fk	integer REFERENCES convoys (convoy_pk) not null,
+		load_dt		timestamp,
+		unload_dt	timestamp
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (
+		user_pk 	serial primary key,
+		username	varchar(128),
+		active 		boolean DEFAULT false
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk 	serial primary key,
+		title 		varchar(128)
+	);
+ERROR:  relation "user_is" already exists
+STATEMENT:  CREATE TABLE user_is (
+		user_fk 	integer REFERENCES users (user_pk) not null,
+		role_fk		integer REFERENCES roles (role_pk) not null
+	);
+ERROR:  relation "user_supports" already exists
+STATEMENT:  CREATE TABLE user_supports (
+		user_fk		integer REFERENCES users (user_pk) not null,
+		facility_fk	integer REFERENCES facilities (facility_pk) not null
+	);
+ERROR:  relation "levels" already exists
+STATEMENT:  CREATE TABLE levels (
+		level_pk	serial primary key,
+		abbrv		varchar(128),
+		comment 	text
+	);
+ERROR:  relation "compartments" already exists
+STATEMENT:  CREATE TABLE compartments (
+		compartment_pk	serial primary key,
+		abbrv		varchar(128),
+		comment 	text
+	);
+ERROR:  relation "security_tags" already exists
+STATEMENT:  CREATE TABLE security_tags (
+		tag_pk		serial primary key,
+		level_fk	integer REFERENCES levels (level_pk) not null,
+		compartment_fk	integer REFERENCES compartments (compartment_pk) not null,
+		user_fk		integer REFERENCES users (user_pk) not null,
+		product_fk	integer REFERENCES products (product_pk) not null,
+		asset_fk 	integer REFERENCES assets (asset_pk) not null
+	);
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+LOG:  autovacuum launcher shutting down
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2017-01-25 18:34:01 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+LOG:  autovacuum launcher shutting down
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2017-01-25 18:46:58 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  database system was interrupted; last known up at 2017-01-25 18:52:22 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/2140EA0
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  database "mydb" is being accessed by other users
+DETAIL:  There are 3 other sessions using the database.
+STATEMENT:  DROP DATABASE mydb;
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+LOG:  autovacuum launcher shutting down
+FATAL:  terminating connection due to administrator command
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2017-01-26 22:35:49 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  relation "products" already exists
+STATEMENT:  CREATE TABLE products (
+		product_pk 	serial primary key,
+		vendor		varchar(128),
+		description 	varchar(128),
+		alt_description	varchar(128)
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (
+		asset_pk	serial primary key,
+		product_fk	integer REFERENCES products (product_pk),
+		asset_tag 	varchar(128),
+		description 	varchar(128),
+		alt_description varchar(128)
+	);
+ERROR:  relation "vehicles" already exists
+STATEMENT:  CREATE TABLE vehicles (
+		vehicle_pk 	serial primary key,
+		asset_fk 	integer REFERENCES assets (asset_pk) not null
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(128),
+		common_name	varchar(128) not null, 
+		location 	varchar(128)
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk	integer REFERENCES assets (asset_pk) not null,
+		facility_fk 	integer REFERENCES facilities (facility_pk) not null,
+		arrive_dt	timestamp, 
+		depart_dt	timestamp 
+	);
+ERROR:  relation "convoys" already exists
+STATEMENT:  CREATE TABLE convoys (
+		convoy_pk 	serial primary key,
+		request		varchar(128),
+		source_fk	integer REFERENCES facilities (facility_pk) not null,
+		dest_fk		integer REFERENCES facilities (facility_pk) not null,
+		depart_dt 	timestamp, 
+		arrive_dt 	timestamp
+	);
+ERROR:  relation "used_by" already exists
+STATEMENT:  CREATE TABLE used_by (
+		vehicle_fk	integer REFERENCES vehicles (vehicle_pk) not null,
+		convoy_fk 	integer REFERENCES convoys (convoy_pk) not null
+	);
+ERROR:  relation "asset_on" already exists
+STATEMENT:  CREATE TABLE asset_on (
+		asset_fk 	integer REFERENCES assets (asset_pk) not null,
+		convoy_fk	integer REFERENCES convoys (convoy_pk) not null,
+		load_dt		timestamp,
+		unload_dt	timestamp
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (
+		user_pk 	serial primary key,
+		username	varchar(128),
+		active 		boolean DEFAULT false
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk 	serial primary key,
+		title 		varchar(128)
+	);
+ERROR:  relation "user_is" already exists
+STATEMENT:  CREATE TABLE user_is (
+		user_fk 	integer REFERENCES users (user_pk) not null,
+		role_fk		integer REFERENCES roles (role_pk) not null
+	);
+ERROR:  relation "user_supports" already exists
+STATEMENT:  CREATE TABLE user_supports (
+		user_fk		integer REFERENCES users (user_pk) not null,
+		facility_fk	integer REFERENCES facilities (facility_pk) not null
+	);
+ERROR:  relation "levels" already exists
+STATEMENT:  CREATE TABLE levels (
+		level_pk	serial primary key,
+		abbrv		varchar(128),
+		comment 	text
+	);
+ERROR:  relation "compartments" already exists
+STATEMENT:  CREATE TABLE compartments (
+		compartment_pk	serial primary key,
+		abbrv		varchar(128),
+		comment 	text
+	);
+ERROR:  relation "security_tags" already exists
+STATEMENT:  CREATE TABLE security_tags (
+		tag_pk		serial primary key,
+		level_fk	integer REFERENCES levels (level_pk) not null,
+		compartment_fk	integer REFERENCES compartments (compartment_pk) not null,
+		user_fk		integer REFERENCES users (user_pk) not null,
+		product_fk	integer REFERENCES products (product_pk) not null,
+		asset_fk 	integer REFERENCES assets (asset_pk) not null
+	);
+ERROR:  invalid input syntax for integer: "notepad" at character 63
+STATEMENT:  INSERT INTO assets (asset_tag,product_fk) VALUES('CA15467291','notepad')
+LOG:  database system was shut down at 2017-01-27 23:31:29 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started

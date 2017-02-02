@@ -1,0 +1,1 @@
+/home/osnapdev/test/bin/postgres "-D" "../data"
