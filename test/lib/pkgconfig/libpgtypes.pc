@@ -1,9 +1,0 @@
-Name: libpgtypes
-Description: PostgreSQL libpgtypes library
-Url: http://www.postgresql.org/
-Version: 10devel
-Requires: 
-Requires.private: 
-Cflags: -I/home/osnapdev/test/include
-Libs: -L/home/osnapdev/test/lib -lpgtypes
-Libs.private:  -lm

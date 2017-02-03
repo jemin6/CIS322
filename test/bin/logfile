@@ -1,4 +1,0 @@
-2017-01-20 23:39:51.059 UTC [8845] LOG:  database system was shut down at 2017-01-20 23:39:14 UTC
-2017-01-20 23:39:51.060 UTC [8845] LOG:  MultiXact member wraparound protections are now enabled
-2017-01-20 23:39:51.069 UTC [8844] LOG:  database system is ready to accept connections
-2017-01-20 23:39:51.070 UTC [8849] LOG:  autovacuum launcher started
