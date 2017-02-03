@@ -4,8 +4,8 @@ cd postgres
 make 
 make install
 
-git clone https://github.com/jemin6/CIS322.git
-tar -xvzf httpd-2.4.25.tar.gz
+curl -o http-2.4.25 https://archive.apache.org/dist/httpd/httpd-2.4.25.tar.gz
+tar -xjf httpd-2.4.25.tar.bz2
 cd httpd-2.4.25
 ./configure --prefix=$1
 make
