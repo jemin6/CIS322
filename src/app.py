@@ -24,6 +24,14 @@ def login():
 
 app.secret_key = 'sample_secret_key'
 
+@app.route('/report_filter_screen')
+def report_filter_screen():
+    return render_template('report_filter_screen.html')
+
+
+
+
+
 #@app.route('/logout')
 #def logout():
 #    session['logged_in'] = False
