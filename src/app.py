@@ -28,6 +28,17 @@ app.secret_key = 'sample_secret_key'
 def report_filter_screen():
     return render_template('report_filter_screen.html')
 
+@app.route('/facility_inventory_report')
+def facility_inventory_report():
+    return render_template('facility_inventory_report.html')
+
+@app.route('/in_transit_report')
+def in_transit_report():
+    return render_template('in_transit_report.html') 
+
+@app.route('/logout')
+def logout():
+    return render_template('logout.html')
 
 
 
