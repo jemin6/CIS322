@@ -1,12 +1,22 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-#from config import dbname,dbhost,dbport
+from config import dbname,dbhost,dbport
+import psycopg2
 
 app = Flask(__name__)
+app.secret_key ="sample_secret_key"
+
+# Connect to an existing database
+conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+
+# Open a cursor to perform database operations
+cursor = conn.cursor()
+
+
 
 #login screen
 @app.route('/')
 def login_form():
-    return render_template('login_form.html')
+    return render_template('login_form.html',dbname=dbname,dbhost=dbhost,dbport=dbport)
 
 #login
 @app.route('/login', methods=['POST','GET'])
@@ -22,12 +32,15 @@ def login():
     else:
         return 'Wrong access'
 
-app.secret_key = 'sample_secret_key'
 
+#report filter screen 
 @app.route('/report_filter_screen')
 def report_filter_screen():
-    return render_template('report_filter_screen.html')
+    if request.method=='GT' and 'mytext' in request.args:
+        return render_template('report_filter_screen.html',data=request.args.get('mytext'))
 
+
+#facility inventory report
 @app.route('/facility_inventory_report')
 def facility_inventory_report():
     return render_template('facility_inventory_report.html')
@@ -40,20 +53,6 @@ def in_transit_report():
 def logout():
     return render_template('logout.html')
 
-
-
-
-#@app.route('/logout')
-#def logout():
-#    session['logged_in'] = False
-#    session.clear()
-#    return redirect(url_for('index'))
-
-
-
-#@app.route('welcome')
-#def welcome():
-#    return render_template('welcome.html',dbname=dbname,dbhost=dbhost,dbport=dbport)
 
 
 if __name__ == '__main__':
