@@ -11,12 +11,11 @@ conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
 # Open a cursor to perform database operations
 cursor = conn.cursor()
 
-
-
 #login screen
 @app.route('/')
 def login_form():
     return render_template('login_form.html',dbname=dbname,dbhost=dbhost,dbport=dbport)
+
 
 #login
 @app.route('/login', methods=['POST','GET'])
@@ -30,20 +29,39 @@ def login():
         else:
             return 'Invaild username/password.'
     else:
-        return 'Wrong access'
+         return 'Wrong access'
 
 
 #report filter screen 
-@app.route('/report_filter_screen')
-def report_filter_screen():
-    if request.method=='GT' and 'mytext' in request.args:
-        return render_template('report_filter_screen.html',data=request.args.get('mytext'))
+@app.route('/report_filter_screen/')
+def report_filter_screen():     
+        return render_template('report_filter_screen.html')
 
 
 #facility inventory report
-@app.route('/facility_inventory_report')
+@app.route('/facility_inventory_report', methods =['POST','GET'])
 def facility_inventory_report():
-    return render_template('facility_inventory_report.html')
+#    if request.method == 'POST':
+#        if 'facility_inventory_report' in request.form:
+#            message = request.form['facility_inventory_report']
+      SQL ="select * from assets"
+      cursor.execute(SQL)
+      result = cursor.fetchall()
+      conn.commit()
+
+
+#    con = sql.connect("database.db")
+#    con.row_factory = sql.Row
+
+#    cursor.con.cursor()
+#    cursor.execute("select * from assets")
+    
+#    rows = cursor.fetchall();
+
+
+#    if request.method == 'POST':
+        #facility_inventory_report = request.form
+      return render_template('facility_inventory_report.html')
 
 @app.route('/in_transit_report')
 def in_transit_report():
