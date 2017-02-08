@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from config import dbname,dbhost,dbport
 import psycopg2
 
+
 app = Flask(__name__)
 app.secret_key ="sample_secret_key"
 
@@ -41,27 +42,16 @@ def report_filter_screen():
 #facility inventory report
 @app.route('/facility_inventory_report', methods =['POST','GET'])
 def facility_inventory_report():
-#    if request.method == 'POST':
-#        if 'facility_inventory_report' in request.form:
-#            message = request.form['facility_inventory_report']
-      SQL ="select * from assets"
-      cursor.execute(SQL)
-      result = cursor.fetchall()
-      conn.commit()
-
-
-#    con = sql.connect("database.db")
-#    con.row_factory = sql.Row
-
-#    cursor.con.cursor()
-#    cursor.execute("select * from assets")
-    
-#    rows = cursor.fetchall();
-
-
-#    if request.method == 'POST':
-        #facility_inventory_report = request.form
-      return render_template('facility_inventory_report.html')
+    SQL ="select * from assets"
+    cursor.execute(SQL)
+    result = cursor.fetchall()
+    processed_data = []
+    for r in result:
+        processed_data.append(dict(zip(('column_name1', 'column_name2','column_name3','column_name4','column_name5'), r)) )
+    session['result'] = processed_data
+    #session['result'] = result
+    conn.commit()
+    return render_template('facility_inventory_report.html')
 
 @app.route('/in_transit_report')
 def in_transit_report():
