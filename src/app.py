@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from config import dbname,dbhost,dbport
+import json
 import psycopg2
+
 
 
 app = Flask(__name__)
@@ -33,6 +35,36 @@ def login():
          return 'Wrong access'
 
 
+@app.route('/rest/suspend_user',methods=('POST',))
+def suspend_user():
+    if request.method =='POST' and 'arguments' in request.form:
+        req = json.loads(request.form['arguments'])
+
+    dat = dict()
+    dat['timestamp'] = req['timestamp']
+    dat['result'] = 'OK'
+    data = json.dumps(dat)
+    return data
+
+
+@app.route('/rest/activate_user',methods=('POST',))
+def activate_user():
+    if request.method =='POST' and 'arguments' in request.form:
+        req = json.loads(request.form['arguments'])
+
+    dat = dict()
+    dat['timestamp'] = req['timestamp']
+#   dat['username'] = req['username']
+    dat['result'] = 'OK'
+    data = json.dumps(dat)
+
+    SQL = "INSERT INTO users (username) VALUES (%s)"
+    data1 = (req['username'],)
+    cursor.execute(SQL,data1)
+    conn.commit()
+    return data
+
+
 #report filter screen 
 @app.route('/report_filter_screen/')
 def report_filter_screen():     
@@ -53,9 +85,14 @@ def facility_inventory_report():
     conn.commit()
     return render_template('facility_inventory_report.html')
 
+
+
+
+
 @app.route('/in_transit_report')
 def in_transit_report():
-    return render_template('in_transit_report.html') 
+    return render_template('in_transit_report.html')
+
 
 @app.route('/logout')
 def logout():
