@@ -19,3 +19,6 @@ tar -xzf osnap_legacy.tar.gz
 bash ./import_data.sh $1 5432
 rm -rf osnap_legacy osnap_legacy.tar.gz
 cd ..
+
+
+cp -R src/* $HOME/wsgi
