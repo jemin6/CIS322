@@ -1,0 +1,11 @@
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 255) running in data directory "/home/osnapdev/data"?
+LOG:  database system was interrupted; last known up at 2017-02-20 03:25:27 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/17CC0F0
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  database "lost" already exists
+STATEMENT:  CREATE DATABASE lost;

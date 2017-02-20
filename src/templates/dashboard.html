@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dashboard</title>
+		<style>
+		p{
+			text-align:left;
+			color: gray;
+			font-size: 30px;
+		}
+		</style>
+	</head>
+	<body>
+	    <div class="container-full-left">
+		<div class="row">
+			<div class="col-lg-12">
+			<h1> Hello, {{username}}!</h1>
+			</div>
+		</div>
+		<p id = "username"> ID </p>
+		<form action="http://127.0.0.1:8080/logout">
+			<input type="submit" value = "logout": />
+		</form>
+	</body>
+</html>
