@@ -51,14 +51,16 @@ def create_user():
         if 'username' in request.form and 'password' in request.form:
             user_name = request.form['username']
             user_password = request.form['password']
-            SQL = "SELECT count(*) FROM users WHERE username=%s"
+            SQL = "SELECT * FROM users WHERE username=%s"
             cursor.execute(SQL,(user_name,))
-            result = cursor.fetchone()[0]
-            if result != 0:                     #if user name exist 
+            result = cursor.fetchone()
+            print(result)
+            if result:                     #if user name exist 
                 session['error'] = 'Username <%s> is already taken.'%user_name
                 return redirect('error')
             SQL= "INSERT INTO users (username,password) VALUES (%s,%s)"
             cursor.execute(SQL,(user_name,user_password))
+            conn.commit()
             session['error'] = 'Username <%s> is successfully added.'%user_name
             return redirect('error')
         session['error'] = 'INVALID FORM FIELDS'

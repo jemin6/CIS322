@@ -1,0 +1,105 @@
+LOG:  database system was shut down at 2017-02-24 06:16:33 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		username        varchar(16),
+		password        varchar(16)  /* Plaintext password  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (
+		asset_tag	varchar(16),
+		description	text
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		fcode 		varchar(6),
+		common_name	varchar(32)
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16)  /* Plaintext password  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (
+		asset_tag	varchar(16),
+		description	text
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		fcode 		varchar(6),
+		common_name	varchar(32)
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16)  /* Plaintext password  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (
+		asset_tag	varchar(16),
+		description	text
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		fcode 		varchar(6),
+		common_name	varchar(32)
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16)  /* Plaintext password  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (
+		asset_tag	varchar(16),
+		description	text
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		fcode 		varchar(6),
+		common_name	varchar(32)
+	);
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There are 6 other sessions using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There are 5 other sessions using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16)  /* Plaintext password  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (
+		asset_tag	varchar(16),
+		description	text
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		fcode 		varchar(6),
+		common_name	varchar(32)
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16)  /* Plaintext password  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (
+		asset_tag	varchar(16),
+		description	text
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		fcode 		varchar(6),
+		common_name	varchar(32)
+	);
