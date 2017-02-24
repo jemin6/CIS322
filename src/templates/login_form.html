@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang ="en">
-	<head>
-		<title>Login test</title>
-	</head>
-	<body>
-		<form action ="http://127.0.0.1:8080/dashboard">
-			<h2>Enter login information</h2>
-			<input type="text" name="username" placeholder="Username">
-			<input type="password" name="password" placeholder="Password">
-			<button type="submit">Login</button>
-		</form>
-		<form action ="/create_user">
-			<button type="submit">Create ID</button>
-		</form>
-	</body>
+   <head><title>Welcome</title></head>
+   	<body><body style="background:#DDCECE">
+      		<h1>Enter login information</h1>
+      		<form action="{{url_for('login_form')}}" method="POST">
+	 	   <table>
+	    		<tr><td>Username:</td><td><input type="text" name ="username"/></td></tr>
+	    		<tr><td>Password:</td><td><input type="password" name="password"/></td></tr>
+	 	   </table>
+		   <button type ="submit">Login</button>
+      		</form>
+      		<form action ="/create_user">
+	 	   <p> If you don't have user ID, create one! </p>
+	    	   <button type="submit">Create ID</button>
+      		</form>
+   	</body>
 </html>
 

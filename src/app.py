@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, session, redirect, url_for
-from config import dbname, dbhost, dbport, lost_priv, lost_pub, user_pub, prod_pub
+from flask import Flask, render_template, request, session, redirect
+from config import dbname, dbhost, dbport
 import json
 import psycopg2
 
@@ -12,66 +12,74 @@ conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
 # Open a cursor to perform database operations
 cursor = conn.cursor()
 
+
 #login screen
 @app.route('/')
+@app.route('/login_form',methods=['POST','GET'])
 def login_form():
-    return render_template('login_form.html',dbname=dbname,dbhost=dbhost,dbport=dbport)
-
-#login
-@app.route('/login', methods=['POST','GET'])
-def login():
-    if request.method == 'POST':
-        if(request.form['username'] and request.form['password']):
-            session['logged_in'] = True
+    if request.method=='GET':
+        return render_template('login_form.html')
+    if request.method=='POST':
+        if 'username' in request.form and 'password' in request.form:
+            user_name = request.form['username']
+            user_password = request.form['password']
+            SQL = "SELECT count(*) FROM users WHERE username=%s and password=%s"  #check login
+            cursor.execute(SQL,(user_name,user_password))
+            result = cursor.fetchone()[0]
+            if result != 1:         #check if ID exist
+                session['error'] = "ERROR: FAILED for %s."%user_name
+                return redirect('error')
             session['username'] = request.form['username']
-            return request.form['username'] + " Welcome."
-        else:
-            return 'Invaild username/password.'
-    else:
-        return 'Wrong access'
+            return render_template('dashboard.html',username=session['username'])
+        session['error'] = 'INVALID FORM FIELDS'
+        return redirect('error')
+    session['error'] = 'INVALID HTTP %s'%request.method
+    return redirect('error')
 
-@app.route('/dashboard', methods=['GET'])
+#dashboard
+@app.route('/dashboard',methods=('GET',))
 def dashboard():
-    return render_template('dashboard.html')
+    return render_template('dashboard.html',username=session['username'])
 
 
-
-@app.route('/create_user', methods=['POST','GET'])
+#create user
+@app.route('/create_user',methods=['POST','GET'])
 def create_user():
-    if request.method =='POST' and 'arguments' in request.form:
-        req = json.loads(request.form['arguments'])
+    if request.method=='GET':
+        return render_template('create_user.html')
+    if request.method=='POST':
+        if 'username' in request.form and 'password' in request.form:
+            user_name = request.form['username']
+            user_password = request.form['password']
+            SQL = "SELECT count(*) FROM users WHERE username=%s"
+            cursor.execute(SQL,(user_name,))
+            result = cursor.fetchone()[0]
+            if result != 0:                     #if user name exist 
+                session['error'] = 'Username <%s> is already taken.'%user_name
+                return redirect('error')
+            SQL= "INSERT INTO users (username,password) VALUES (%s,%s)"
+            cursor.execute(SQL,(user_name,user_password))
+            session['error'] = 'Username <%s> is successfully added.'%user_name
+            return redirect('error')
+        session['error'] = 'INVALID FORM FIELDS'
+        return redirect('error')
+    session['error'] = 'INVALID HTTP %s'%request.method
+    return redirect('error')
 
-#    dat = dict()
-#    dat['username'] = req['username']
-#    dat['password'] = req['password']
-#    data = json.dumps(dat)
+@app.route('/error',methods=('GET',))
+def error():
+    if 'error' in session.keys():
+        msg = session['error']
+        del session['error']
+        return render_template('check_id.html',msg=msg)
+    return render_template('check_id.html',msg='Unknown error')
 
-#    SQL = "INSERT INTO users (username, password) VALUES (%s, %s)"
-#    data1 = (req['username'],req['password'],)
-#    cursor.execute(SQL,data1)
-#    conn.commit()
-#
-#        if(request.form['username'] and request.form['password']):
-#            session['logged_in'] = True
-#            session['username'] = request.form['username']
-#            return request.form['username'] + " is created"
-#        else:
-#            return 'Invaild username/password'
-#    else:
-#        return 'Wrong access'
-#
-    return render_template('create_user.html')
-
-@app.route('/create_user_id',methods=['POST','GET'])
-def create_user_id():
-    return render_template('create_user_id.html')
 
 #logout
 @app.route('/logout')
 def logout():
     return render_template('logout.html')
 
-
-
 if __name__ == '__main__':
+    app.debug = True
     app.run(host='0.0.0.0', port=8080)
