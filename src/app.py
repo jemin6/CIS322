@@ -51,6 +51,7 @@ def create_user():
         if 'username' in request.form and 'password' in request.form:
             user_name = request.form['username']
             user_password = request.form['password']
+            role = request.form['role']
             SQL = "SELECT * FROM users WHERE username=%s"
             cursor.execute(SQL,(user_name,))
             result = cursor.fetchone()
@@ -58,8 +59,11 @@ def create_user():
             if result:                     #if user name exist 
                 session['error'] = 'Username <%s> is already taken.'%user_name
                 return redirect('error')
-            SQL= "INSERT INTO users (username,password) VALUES (%s,%s)"
-            cursor.execute(SQL,(user_name,user_password))
+            ADD = "SELECT role_pk FROM roles WHERE rolename=%s"
+            cursor.execute(ADD,(role,))
+            role_pk = cursor.fetchall()
+            SQL= "INSERT INTO users (username,password,role_fk) VALUES (%s,%s,%s)"
+            cursor.execute(SQL,(user_name,user_password,role_pk))
             conn.commit()
             session['error'] = 'Username <%s> is successfully added.'%user_name
             return redirect('error')
@@ -76,11 +80,72 @@ def error():
         return render_template('check_id.html',msg=msg)
     return render_template('check_id.html',msg='Unknown error')
 
+@app.route('/add_facility',methods=['POST','GET'])
+def add_facility():
+    if request.method=='GET':
+        return render_template('add_facility.html')
+    if request.method=='POST':
+        fcode = request.form['fcode']
+        common_name = request.form['common_name']
+        SQL = "SELECT common_name FROM facilities WHERE common_name=%s"
+        cursor.execute(SQL,(common_name,))
+        result = cursor.fetchall()
+        print(result)
+        if result:
+            session['error'] = 'Already in database'
+            return redirect('error')
+        SQL = "INSERT INTO facilities (common_name,fcode) VALUES (%s,%s)"
+        cursor.execute(SQL,(common_name,fcode))
+        conn.commit()
+        session['error'] = "Datebase successfully inserted into Facility"
+    return render_template("add_facility.html",facilities=facilities) 
+
+#add_asset
+#@app.route('/add_asset',methods=['POST','GET'])
+#def add_asset():
+#    if request.method == 'GET':
+#        return render_template('add_asset.html')
+#    if request.method == 'POST':
+#        asset_tag = request.form['asset_tag']
+#        description = request.form['description']
+#        facility = request.form['facility']
+#        arrival_date = request.form['arrival_dt']
+#        SQL ="SELECT asset_tag FROM assets WHERE asset_tag=%s"
+#        cursor.execute(SQL,(asset_tag,))
+#        result = cursor.fetchall()
+#        if result:
+#            session['error'] = 'Asset is already in database'
+#            return redirect['error']
+#        SQL = "INSERT INTO assets (asset_tag, description) VALUES (%s,%s)"
+#        cursor.execute(SQL,(asset_tag,description))
+#        SQL = "SELECT asset_pk FROM assets WHERE asset_tag=%s"
+#        cursor.execute(SQL,(asset_tag,))
+#        asset_pk = cursor.fetchall()
+#        SQL = "SELECT facility_pk FROM facilities WHERE common_name=%s"
+#        cursor.execute(SQL,(facility,))
+#        facility_pk = cursor.fetchall()
+#        SQL = "INSERT INTO asset_at (asset_fk, facility_fk, arrive_dt) VALUE (%s,%s,%s)"
+#        cursor.execute(SQL,(asset_pk,facility_pk,arrival_dt))
+#        conn.commit()
+#        session['error'] = "Asset successfully inserted into database")
+#        return redirect['error']
+
+
+
+
 
 #logout
 @app.route('/logout')
 def logout():
     return render_template('logout.html')
+    
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.debug = True

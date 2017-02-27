@@ -9,6 +9,11 @@
 			<TABLE>
 				<TR><TD>Username:</TD><TD><INPUT TYPE="TEXT" NAME="username"/></TD></TR>
 				<TR><TD>Password:</TD><TD><INPUT TYPE="PASSWORD" NAME="password"/></TD></TR>
+				<TR><TD>Role:</TD><TD>
+				<select name="role" value="{{request.form.role}}">
+					<option value="logistics_officer" name="logistics_officer">Logistics Officer</option>
+					<option value="facilities_officer" name="facilities_officer">Facilities Officer</option>
+				</select></TD></TR>
 			</TABLE>
 			<INPUT TYPE="SUBMIT" value="create" />
 		</FORM>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head><title>Facility</title></head>
+	<body><h1>Facility</h1>
+		<body style = "background:#46F472">
+		<p> Add facility info </p>
+		<form action="{{url_for('add_facility')}}" method="POST">
+			<input type="text" placeholder="name" name="common_name" value="{{request.form.common_name}}">
+			<input type="text" placeholder="code" name="fcode" value="{{request.form.fcode}}">
+			<input type="submit" value="Login">
+		</form>
+		<form action="http://127.0.0.1:8080/">
+			<p> back to login screen </p>
+			<input type="submit" value="login screen"/>
+		</form>
+	</body>
+
+</html>
