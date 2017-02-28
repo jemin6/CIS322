@@ -1,13 +1,13 @@
+CREATE TABLE roles (
+	role_pk		serial primary key, 	/* primary key for a role instance*/
+	rolename	varchar(32)		/* short textual name for the role*/
+);
+
 CREATE TABLE users (      /* table with username and password */
 	user_pk		serial primary key,
 	username        varchar(16),
 	password        varchar(16),  /* Plaintext password  */
 	role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
-);
-
-CREATE TABLE roles (
-	role_pk		serial primary key, 	/* primary key for a role instance*/
-	rolename	varchar(16)		/* short textual name for the role*/
 );
 
 CREATE TABLE assets (				/*table with assets */
@@ -28,3 +28,6 @@ CREATE TABLE asset_at (
 	arrive_dt       timestamp, -- when the asset arrived
 	depart_dt       timestamp -- when the asset left
 );
+
+INSERT INTO roles (rolename) VALUES ('Logistics Officer');
+INSERT INTO roles (rolename) VALUES ('Facilities Officer');

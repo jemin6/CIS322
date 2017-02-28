@@ -1875,3 +1875,26 @@ STATEMENT:  CREATE TABLE asset_at (
 	);
 ERROR:  invalid input syntax for integer: "{}" at character 63
 STATEMENT:  INSERT INTO users (username,password,role_fk) VALUES ('1','1','{}')
+LOG:  database system was shut down at 2017-02-27 11:59:17 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  invalid input syntax for integer: "{}" at character 64
+STATEMENT:  INSERT INTO users (username,password,role_fk) VALUES ('12','1','{}')
+ERROR:  invalid input syntax for integer: "{}" at character 64
+STATEMENT:  INSERT INTO users (username,password,role_fk) VALUES ('12','1','{}')
+ERROR:  invalid input syntax for integer: "{}" at character 63
+STATEMENT:  INSERT INTO users (username,password,role_fk) VALUES ('12','','{}')
+ERROR:  invalid input syntax for integer: "{}" at character 65
+STATEMENT:  INSERT INTO users (username,password,role_fk) VALUES ('12','11','{}')
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There are 4 other sessions using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There are 4 other sessions using the database.
+STATEMENT:  DROP DATABASE lost;
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+LOG:  received SIGHUP, reloading configuration files
+LOG:  shutting down
+LOG:  database system is shut down
