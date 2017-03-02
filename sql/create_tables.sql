@@ -28,3 +28,6 @@ CREATE TABLE asset_at (
 	arrive_dt       timestamp, -- when the asset arrived
 	depart_dt       timestamp -- when the asset left
 );
+
+INSERT INTO roles (rolename) VALUES ('Logistics Officer');
+INSERT INTO roles (rolename) VALUES ('Facilities Officer');

@@ -50,8 +50,11 @@ def create_user():
     if request.method=='POST':
         if 'username' in request.form and 'password' in request.form:
             user_name = request.form['username']
+            print("username from the form: {}".format(user_name))
             user_password = request.form['password']
+            print("password from the form: {}".format(user_password))
             role = request.form['role']
+            print("role from the form: {}".format(role))
             SQL = "SELECT * FROM users WHERE username=%s"
             cursor.execute(SQL,(user_name,))
             result = cursor.fetchone()
@@ -62,6 +65,10 @@ def create_user():
             ADD = "SELECT role_pk FROM roles WHERE rolename=%s"
             cursor.execute(ADD,(role,))
             role_pk = cursor.fetchall()
+            role_pk = role_pk[0][0]
+            print()
+            print("role pk: {}".format(role_pk))
+            print()
             SQL= "INSERT INTO users (username,password,role_fk) VALUES (%s,%s,%s)"
             cursor.execute(SQL,(user_name,user_password,role_pk))
             conn.commit()
