@@ -1,2 +1,4 @@
 FATAL:  lock file "postmaster.pid" already exists
 HINT:  Is another postmaster (PID 1074) running in data directory "/home/osnapdev/data/lost"?
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 10446) running in data directory "/home/osnapdev/data/lost"?

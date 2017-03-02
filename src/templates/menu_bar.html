@@ -20,7 +20,11 @@
 			</ul>
 
 			{% if session.logged_in %}
-			<h2>WELCOME:  {{session.username}}!</h2>
+			<div class="jumbotron">
+				<h2>LOGGED IN AS</h2>
+				<p>{{username}}</p>
+				<p><a class="btn btn-primary btn-lg">More Information</a></p>
+			</div>
 			{% endif %}
 
 			{% with messages = get_flashed_messages() %}

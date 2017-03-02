@@ -14,7 +14,8 @@ conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
 # Open a cursor to perform database operations
 cursor = conn.cursor()
 
-#def login_required(f):
+
+#def login_required(f):                 #access allowed when logged in. If not then not able to access. 
 #    @wraps(f)
 #    def wrap(*args, **kwargs):
 #        if 'logged_in' in session:
@@ -224,6 +225,7 @@ def logout():
     return redirect(url_for('main'))
 
 if __name__ == '__main__':
-	app.run(host="0.0.0.0", port=8080, debug=True)
+    app.debug = True
+    app.run(host="0.0.0.0", port=8080, debug=True)
         
 
