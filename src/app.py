@@ -83,22 +83,34 @@ def error():
 @app.route('/add_facility',methods=['POST','GET'])
 def add_facility():
     if request.method=='GET':
-        return render_template('add_facility.html')
+        facility_list = fetch_facilities()
+        return render_template('add_facility.html', facility_list=facility_list)
     if request.method=='POST':
+        if not 'username' in session:
+            user_name = 'system'
+        else:
+            user_name = session['username']
         fcode = request.form['fcode']
         common_name = request.form['common_name']
-        SQL = "SELECT common_name FROM facilities WHERE common_name=%s"
-        cursor.execute(SQL,(common_name,))
-        result = cursor.fetchall()
-        print(result)
-        if result:
-            session['error'] = 'Already in database'
+        result = put_facility(fcode,common_name,user_name)
+        if result is not None:
+            if result == 'Illegal user adding facility':
+                del session['username']
+            session['error']
             return redirect('error')
-        SQL = "INSERT INTO facilities (common_name,fcode) VALUES (%s,%s)"
-        cursor.execute(SQL,(common_name,fcode))
-        conn.commit()
-        session['error'] = "Datebase successfully inserted into Facility"
-    return render_template("add_facility.html",facilities=facilities) 
+        return redirect('add_facility')
+#        SQL = "SELECT common_name FROM facilities WHERE common_name=%s"
+#        cursor.execute(SQL,(common_name,))
+#        result = cursor.fetchall()
+#        print(result)
+#        if result:
+#            session['error'] = 'Already in database'
+#            return redirect('error')
+#        SQL = "INSERT INTO facilities (common_name,fcode) VALUES (%s,%s)"
+#        cursor.execute(SQL,(common_name,fcode))
+#        conn.commit()
+#        session['error'] = "Datebase successfully inserted into Facility"
+#    return render_template("add_facility.html",facilities=facilities) 
 
 #add_asset
 #@app.route('/add_asset',methods=['POST','GET'])
