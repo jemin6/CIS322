@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-<HTML>
-	<HEAD><TITLE>DASHBOARD</TITLE></HEAD>
-	<BODY>
-		<body style="background:#D510CB">
-		<span style="color:#FFFFFF">
-		<H1>Hello, {{username}}</H1>
-		<p>if you want to logout</p>
-		<FORM action = "http://127.0.0.1:8080/logout">
-			<INPUT type ="submit" value ="logout":/>
-		</FORM>
-	</BODY>
-</HTML>
+{% extends "menu_bar.html" %}
+
+{% block body %}
+
+
+<br>
+<h1>DASHBOARD</h1>
+
+<div class="alert alert-dismissible alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<strong>Welcome!</strong> You successfully logged in <a href="#" class="alert-link">{{username}}</a>.
+</div>
+
+{% endblock %}

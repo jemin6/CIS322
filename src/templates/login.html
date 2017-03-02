@@ -1,0 +1,16 @@
+{% extends "menu_bar.html" %}
+
+{% block body %}
+
+
+<br>
+<h2>Login Here</h2>
+<form action="" class="form-inline" method="POST">
+	<input type="text" class="form-control" placeholder="USERNAME" name="username" value="{{request.form.username}}">
+	<input type="password" class="form-control" placeholder="PASSWORD" name="password" value="{{request.form.password}}">
+	<input class="btn btn-default" type="submit" value="Login">
+
+</form>
+
+{{error}}
+{% endblock %}

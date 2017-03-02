@@ -1,18 +1,22 @@
-<!DOCTYPE html>
-<html>
-	<head><title>Facility</title></head>
-	<body><h1>Facility</h1>
-		<body style = "background:#46F472">
-		<p> Add facility info </p>
-		<form action="{{url_for('add_facility')}}" method="POST">
-			<input type="text" placeholder="name" name="common_name" value="{{request.form.common_name}}">
-			<input type="text" placeholder="code" name="fcode" value="{{request.form.fcode}}">
-			<input type="submit" value="Login">
-		</form>
-		<form action="http://127.0.0.1:8080/">
-			<p> back to login screen </p>
-			<input type="submit" value="login screen"/>
-		</form>
-	</body>
+{% extends "menu_bar.html" %}
 
-</html>
+{% block body %}
+
+<br>
+<h2>Facilities</h2>
+{% for facility in facilities %}
+	<h3>{{facility[0]}}</h3>
+{% endfor %}
+
+
+<br>
+<h2>ADD Facility</h2>
+<form action="" class="form-inline" method="POST">
+	<input type="text" class="form-control" placeholder="NAME" name="name" value="{{request.form.name}}">
+	<input type="text" class="form-control" placeholder="CODE" name="code" value="{{request.form.code}}">
+	<input class="btn btn-default" type="submit" value="ADD">
+
+</form>
+
+{{error}}
+{% endblock %}

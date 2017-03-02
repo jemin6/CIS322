@@ -1,0 +1,33 @@
+{% extends "menu_bar.html" %}
+{% block body %}
+	<h1>Welcome</h1>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">Dataebase Name</h3>
+	</div>
+	<div class="panel-body">
+		{{dbname}}
+	</div>
+</div>
+
+<div class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">Database Host</h3>
+	</div>
+	<div class="panel-body">
+		{{dbhost}}
+	</div>
+</div>
+
+
+<div class="panel panel-warning">
+	<div class="panel-heading">
+		<h3 class="panel-title">Database Port</h3>
+	</div>
+	<div class="panel-body">
+		{{dbport}}
+	</div>
+</div>
+
+{% endblock %}

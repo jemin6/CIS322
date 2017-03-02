@@ -1,25 +1,46 @@
-<!DOCTYPE html>
-<html lang = "en">
-   <head><title>Create user</title></head>
-	<body>
-	<body style="background:#F17B7B">
-		<h1>Create account</h1>
-		<p class="lead"> Enter the username and the password! </p>
-		<FORM action="{{url_for('create_user')}}" method="POST">
-			<TABLE>
-				<TR><TD>Username:</TD><TD><INPUT TYPE="TEXT" NAME="username"/></TD></TR>
-				<TR><TD>Password:</TD><TD><INPUT TYPE="PASSWORD" NAME="password"/></TD></TR>
-				<TR><TD>Role:</TD><TD>
-				<select name="role">
-					<option value="Logistics Officer"> Logistics Officer</option>
-					<option value="Facilities Officer"> Facilities Officer</option>
-				</select></TD></TR>
-			</TABLE>
-			<INPUT TYPE="SUBMIT" value="create" />
-		</FORM>
-		<FORM action ="http://127.0.0.1:8080/">
-			<p> If you already have account or don't want to create one</p>
-			<input type="submit" value="back to login screen"/>
-		</FORM>
-	</body>
-</html>
+{% extends "menu_bar.html" %}
+
+{% block body %}
+
+<br>
+<h2>If you don't have username, create one here!</h2>
+
+<form action="" class="form-horizontal" method="POST">
+	<fieldset>
+		<legend>CREATE USER</legend>
+		<div class="form-group">
+			<label for="username" class="col-lg-2 control-label">Username</label>
+			<div class="col-lg-2">
+				<input type="text" class="form-control" placeholder="USERNAME" name="name" value="{{request.form.name}}">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="username" class="col-lg-2 control-label">Password</label>
+			<div class="col-lg-2">
+				<input type="password" class="form-control" placeholder="PASSWORD" name="password" value="{{request.form.password}}">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Role</label>
+			<div class="col-lg-2">
+				<select name="role" value="{{request.form.role}}">
+					<option value="logistics_officer" name="logistics_officer">Logistics Officer</option>
+					<option value="facilities_officer" name="facilities_officer">Facilities Officer</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-lg-10 col-lg-offset-2">
+				<input class="btn btn-default" type="submit" value="Create User">
+			</div>
+		</div>
+	</fieldset>
+</form>
+
+
+
+{{error}}
+{% endblock %}
