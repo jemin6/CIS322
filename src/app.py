@@ -116,7 +116,7 @@ def add_facility():
             flash("Facility successfully inserted into database")
         else:
             flash("Facility already in database")
-    return render_template("add_facility.html", facilities=facilities)
+    return render_template("add_facility.html",username=session['username'], facilities=facilities)
 
 @app.route("/add_asset", methods=['GET', 'POST'])
 def add_asset():
@@ -182,7 +182,7 @@ def disposeAsset():
 
 
 @app.route("/asset_report", methods=['GET', 'POST'])
-#@login_required
+@login_required
 def assetReport():
     cursor.execute("SELECT common_name FROM facilities")
     facilities = cursor.fetchall()
@@ -190,7 +190,13 @@ def assetReport():
         facility = request.form['facility']
         date=request.form['data']
         try:
-            cursor.execute("SELECT asset_tag, common_name, arrive_dt FROM assets a JOIN asset_at aa ON asset_pk=asset_fk INNER JOIN facilities ON facility_fk=facility_pk WHERE facilities.common_name LIKE '%"+facility+"%' AND '"+date+"' >= aa.arrive_dt AND '"+date+"' <= aa.depart_dt;")
+            cursor.execute("SELECT asset_tag, common_name, arrive_dt
+            FROM assets a 
+            JOIN asset_at aa ON asset_pk=asset_fk 
+            INNER JOIN facilities ON facility_fk=facility_pk 
+            WHERE facilities.common_name LIKE '%"+facility+"%' 
+                AND '"+date+"' >= aa.arrive_dt 
+                AND '"+date+"' <= aa.depart_dt;")
             data=cursor.fetchall()
         except Exception as e:
             flash('Please enter a Date')
@@ -200,7 +206,7 @@ def assetReport():
 
 
 @app.route("/logout")
-#@login_required
+@login_required
 def logout():
     session.clear()
     return redirect(url_for('main'))
