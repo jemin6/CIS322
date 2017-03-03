@@ -21,8 +21,8 @@
 
 			{% if session.logged_in %}
 			<div class="jumbotron">
-				<h2>LOGGED IN</h2>
-				<p>{{username}}</p>
+				<h2>LOGGED IN AS</h2>
+				<p>{{session.username}}</p>
 				<p><a class="btn btn-primary btn-lg">More Information</a></p>
 			</div>
 			{% endif %}
@@ -30,7 +30,13 @@
 			{% with messages = get_flashed_messages() %}
 				{% if messages %}
 					{% for message in messages %}
-						<h3>{{message}}</h3>
+
+						<script>
+							var message={{messages| safe}};
+							for(var i = 0; i<message.length;i++){
+								alert(message[i]);
+							}
+						</script>
 					{% endfor %}
 				{% endif %}
 			{% endwith %}

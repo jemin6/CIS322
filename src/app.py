@@ -15,15 +15,15 @@ conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
 cursor = conn.cursor()
 
 
-def login_required(f):                 #access allowed when logged in. If not then not able to access. 
-    @wraps(f)
-    def wrap(*args, **kwargs):
+def logged_user(func):                 #access allowed when logged in. 
+    @wraps(func)
+    def with_logging(*args, **kwargs):
         if 'logged_in' in session:
-            return f(*args, **kwargs)
+            return func(*args, **kwargs)
         else:
             flash("login required")
             return redirect(url_for('login_page'))
-    return wrap
+    return with_logging
 
 
 @app.route("/")
@@ -54,12 +54,12 @@ def login():
                 else:
                     session['username'] = request.form['username']
                     session['logged_in'] =True
-                    session['role'] = 'test'
+                    session['role'] = 'role'
                     return render_template('dashboard.html',username=session['username'])
     return render_template('login.html', error=error)
 
 @app.route("/dashboard",methods=('GET',))
-@login_required
+@logged_user
 def dashboard():
     return render_template("dashboard.html",username=session['username'])
 
@@ -74,7 +74,7 @@ def create_user():
             user_name = request.form['username']
             user_password = request.form['password']
             role = request.form['role']
-            SQL = "SELECT * FROM users WHERE username=%s"
+            SQL = "SELECT username FROM users WHERE username=%s"
             cursor.execute(SQL,(user_name,))
             result = cursor.fetchall()
             if len(result) == 0:
@@ -91,13 +91,13 @@ def create_user():
                 SQL= "INSERT INTO users (username,password,role_fk) VALUES (%s,%s,%s)"
                 cursor.execute(SQL,(user_name,user_password,role_pk))
                 conn.commit()
-                flash("Successfully created username")
+                flash("**Congrat!** Successfully created username!")
             else:
-                flash("Already taken username")
+                flash("@@@ Already taken username @@@")
     return render_template("create_user.html")
 
 @app.route("/add_facility", methods=['GET', 'POST'])
-@login_required
+@logged_user
 def add_facility():
     if request.method=='GET':
         return render_template('add_facility.html')
@@ -156,7 +156,7 @@ def add_asset():
 
 
 @app.route("/dispose_asset", methods=['GET', 'POST'])
-@login_required
+@logged_user
 def disposeAsset():
     if request.method=='GET':
         return render_template('dispose_asset.html')
@@ -182,31 +182,31 @@ def disposeAsset():
 
 
 @app.route("/asset_report", methods=['GET', 'POST'])
-@login_required
+@logged_user
 def assetReport():
-    cursor.execute("SELECT common_name FROM facilities")
-    facilities = cursor.fetchall()
-    if request.method=='POST':
-        facility = request.form['facility']
-        date=request.form['data']
-        try:
-            cursor.execute("SELECT asset_tag, common_name, arrive_dt
-            FROM assets a 
-            JOIN asset_at aa ON asset_pk=asset_fk 
-            INNER JOIN facilities ON facility_fk=facility_pk 
-            WHERE facilities.common_name LIKE '%"+facility+"%' 
-                AND '"+date+"' >= aa.arrive_dt 
-                AND '"+date+"' <= aa.depart_dt;")
-            data=cursor.fetchall()
-        except Exception as e:
-            flash('Please enter a Date')
+#    cursor.execute("SELECT common_name FROM facilities")
+#    facilities = cursor.fetchall()
+#    if request.method=='POST':
+#        facility = request.form['facility']
+#        date=request.form['data']
+#        try:
+#            cursor.execute("SELECT asset_tag, common_name, arrive_dt
+#            FROM assets a 
+#            JOIN asset_at aa ON asset_pk=asset_fk 
+#            INNER JOIN facilities ON facility_fk=facility_pk 
+#            WHERE facilities.common_name LIKE '%"+facility+"%' 
+#                AND '"+date+"' >= aa.arrive_dt 
+#                AND '"+date+"' <= aa.depart_dt;")
+#            data=cursor.fetchall()
+#        except Exception as e:
+#            flash('Please enter a Date')
     return render_template("asset_report.html", facilities=facilities, data=data)
 
 
 
 
 @app.route("/logout")
-@login_required
+@logged_user
 def logout():
     session.clear()
     return redirect(url_for('main'))
