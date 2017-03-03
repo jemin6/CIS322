@@ -6,17 +6,17 @@
 <h2>Facilities</h2>
 {% for facility in facilities %}
 	<h3>{{facility[0]}}</h3>
-{% endfor %}
-
+	{% endfor %}
 
 <br>
-<h2>ADD Facility</h2>
+<h2>Add Facility</h2>
 <form action="" class="form-inline" method="POST">
-	<input type="text" class="form-control" placeholder="NAME" name="name" value="{{request.form.name}}">
-	<input type="text" class="form-control" placeholder="CODE" name="code" value="{{request.form.code}}">
-	<input class="btn btn-default" type="submit" value="ADD">
+	<input type="text" class="form-control" placeholder="name" name="common_name" value="{{request.form.common_name}}">
+	<input type="text" class="form-control" placeholder="code" name="fcode" value="{{request.form.fcode}}">
+	<input class="btn btn-default" type="submit" value="add">
 
 </form>
+
 
 {{error}}
 {% endblock %}

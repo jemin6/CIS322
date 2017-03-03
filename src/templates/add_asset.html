@@ -8,12 +8,14 @@
 	<h3>{{facility[0]}}</h3>
 {% endfor %}
 
-
 <br>
 <h2>Assets:</h2>
 {% for asset in assets %}
 	<h3>{{asset[0]}}</h3>
 {% endfor %}
+
+
+
 <br>
 <h2>Add Asset</h2>
 <form action="" class="form-inline" method="POST">
@@ -25,12 +27,15 @@
 		{% endfor %}
 	</select>
 	<input type="date" class="form-control" placeholder="date" name="date" value="{{request.form.date}}">
-
-
-
 	<input class="btn btn-default" type="submit" value="add">
 
 </form>
+
+
+
+
+
+
 
 {{error}}
 {% endblock %}

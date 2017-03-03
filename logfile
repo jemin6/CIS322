@@ -2,3 +2,2145 @@ FATAL:  lock file "postmaster.pid" already exists
 HINT:  Is another postmaster (PID 1074) running in data directory "/home/osnapdev/data/lost"?
 FATAL:  lock file "postmaster.pid" already exists
 HINT:  Is another postmaster (PID 10446) running in data directory "/home/osnapdev/data/lost"?
+LOG:  database system was shut down at 2017-03-02 14:09:39 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+FATAL:  database "lst" does not exist
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+LOG:  server process (PID 2591) was terminated by signal 9: Killed
+LOG:  terminating any other active server processes
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+LOG:  all server processes terminated; reinitializing
+LOG:  database system was interrupted; last known up at 2017-03-03 01:42:44 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  redo starts at 0/1F29F40
+LOG:  invalid record length at 0/1F517F0
+LOG:  redo done at 0/1F517C8
+LOG:  last completed transaction was at log time 2017-03-03 01:56:55.664106+00
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+LOG:  received SIGHUP, reloading configuration files
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2017-03-03 01:58:54 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+FATAL:  database "osnapdev" does not exist
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  server process (PID 2274) was terminated by signal 9: Killed
+LOG:  terminating any other active server processes
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+LOG:  all server processes terminated; reinitializing
+LOG:  database system was interrupted; last known up at 2017-03-03 09:30:13 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/20D7770
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  checkpointer process (PID 2285) was terminated by signal 9: Killed
+LOG:  terminating any other active server processes
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+LOG:  all server processes terminated; reinitializing
+LOG:  database system was interrupted; last known up at 2017-03-03 10:27:30 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/20D77E0
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There are 3 other sessions using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp 
+	);
