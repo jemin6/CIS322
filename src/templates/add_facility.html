@@ -1,19 +1,24 @@
 {% extends "menu_bar.html" %}
 
 {% block body %}
-
 <br>
-<h2>Facilities</h2>
+<h2>Existing Facilities</h2>
 {% for facility in facilities %}
-	<h3>{{facility[0]}}</h3>
-	{% endfor %}
+	<td><p>{{facility[0]}}</p></td>
+{% endfor %}
 
 <br>
-<h2>Add Facility</h2>
+<h2>Create Facility</h2>
 <form action="" class="form-inline" method="POST">
-	<input type="text" class="form-control" placeholder="name" name="common_name" value="{{request.form.common_name}}">
-	<input type="text" class="form-control" placeholder="code" name="fcode" value="{{request.form.fcode}}">
-	<input class="btn btn-default" type="submit" value="add">
+	<div class="form-group">
+		<label for="common_name">NAME</label>
+		<input type="text" class="form-control" name="common_name" value="{{request.form.common_name}}">
+	</div>
+	<div class="form-group">
+		<label for="fcode">CODE</label>
+		<input type="text" class="form-control" name="fcode" value="{{request.form.fcode}}">
+	</div>
+	<input class="btn btn-default" type="submit" value="ADD">
 
 </form>
 

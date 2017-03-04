@@ -5,6 +5,7 @@ import psycopg2
 from functools import wraps
 import sys
 
+
 app = Flask(__name__)
 app.secret_key ="sample_secret_key"
 
@@ -94,6 +95,7 @@ def create_user():
                 flash("**Congrat!** Successfully created username!")
             else:
                 flash("@@@ Already taken username @@@")
+    conn.close()
     return render_template("create_user.html")
 
 @app.route("/add_facility", methods=['GET', 'POST'])
@@ -113,9 +115,10 @@ def add_facility():
             SQL="INSERT INTO facilities (common_name, fcode) VALUES (%s,%s)"
             cursor.execute(SQL,(common_name,fcode))
             conn.commit()
-            flash("Facility successfully inserted into database")
+            flash("@@@Congrat! Facility successfully inserted into database@@@")
         else:
-            flash("Facility already in database")
+            flash("@@@@ ERROR: Facility already in database @@@@")
+    conn.close()
     return render_template("add_facility.html",username=session['username'], facilities=facilities)
 
 @app.route("/add_asset", methods=['GET', 'POST'])
@@ -210,6 +213,13 @@ def assetReport():
 def logout():
     session.clear()
     return redirect(url_for('main'))
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.debug = True
