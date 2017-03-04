@@ -3,24 +3,24 @@
 {% block body %}
 
 <br>
-<h2>Facilities:</h2>
-{% for facility in facilities %}
-	<h3>{{facility[0]}}</h3>
-{% endfor %}
-
-<br>
-<h2>Assets:</h2>
+<h2>Existing Assets</h2>
 {% for asset in assets %}
-	<h3>{{asset[0]}}</h3>
+	<td><h3>{{asset[0]}}</h3></td>
 {% endfor %}
 
 
 
 <br>
-<h2>Add Asset</h2>
+<h2>Create Asset</h2>
 <form action="" class="form-inline" method="POST">
-	<input type="text" class="form-control" placeholder="asset tag" name="asset_tag" value="{{request.form.asset_tag}}">
-	<input type="text" class="form-control" placeholder="description" name="description" value="{{request.form.description}}">
+	<div class="form-group">
+		<label for="asset_tag">ASSET_TAG</label>
+		<input type="text" class="form-control" name="asset_tag" value="{{request.form.asset_tag}}">
+	</div>
+	<div class="form-group">
+		<label fro="description">DESCRIPTION</label>
+		<input type="text" class="form-control" name="description" value="{{request.form.description}}">
+	</div>
 	<select name="facility" value="{{request.form.facility}}">
 		{% for facility in facilities %}
 			<option value={{facility[0]}} name={{facility[0]}}>{{facility[0]}}</option>
