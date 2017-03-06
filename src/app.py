@@ -231,11 +231,11 @@ def asset_report():
 def transfer_req():
     if request.method=='GET':
         return render_template('transfer_req.html')
-    SQL="SELECT common_name FROM facilities"
-    cursor.execute(SQL)
+    cursor.execute("SELECT common_name FROM facilities;")
+#    cursor.execute(SQL)
     facilities = cursor.fetchall()
-    SQL="SELECT asset_tag FROM assets"
-    cursor.execute(SQL)
+    cursor.execute("SELECT asset_tag FROM assets;")
+#    cursor.execute(SQL)
     assets = cursor.fetchall()
     
     if session['role'] == 'Logistics Officer':
@@ -267,7 +267,7 @@ def transfer_req():
         return render_template("transfer_req.html",facilities=facilities, assets=assets)
     flash(" ** WARNING ** Only Logistics officers can request transfers")
     conn.close()
-    return redirect(url_for('dashboard'))
+    return redirect(url_for('login'))
 
 
 @app.route("/approve_req", methods=['GET', 'POST'])
@@ -299,8 +299,9 @@ def approve_req():
 
 @app.route("/update_transit", methods=['GET', 'POST'])
 def update_transit():
-    SQL="SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null"
-    cursor.execute(SQL)
+    if request.method=='GET':
+        return render_template("update_transit.html")
+    cursor.execute("SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null")
     transit = cursor.fetchall()
     if session['role'] == 'Logistics Officer':
         if request.method == 'POST':
@@ -311,13 +312,13 @@ def update_transit():
             cursor.execute(SQL,(load_time,unload_time,transit_pk))
             conn.commit()
             flash("Updated load/unload times")
-            conn.close()
+#            conn.close()
             return redirect(url_for('dashboard'))
-        conn.close()
+#        conn.close()
         return render_template("update_transit.html", transit=transit)
     flash(" ** WARNING ** Only Logistics Officer can update tracking information.")
-    conn.close()
-    return redirect(url_for("dashboard"))
+#    conn.close()
+    return redirect(url_for("login"))
 
 
 @app.route("/logout")
