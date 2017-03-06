@@ -1,26 +1,36 @@
 {% extends "menu_bar.html" %}
 
 {% block body %}
-<br>
-<h2>Existing Facilities</h2>
-{% for facility in facilities %}
-	<td><p>{{facility[0]}}</p></td>
-{% endfor %}
 
-<br>
-<h2>Create Facility</h2>
-<form action="" class="form-inline" method="POST">
-	<div class="form-group">
-		<label for="common_name">NAME</label>
-		<input type="text" class="form-control" name="common_name" value="{{request.form.common_name}}">
-	</div>
-	<div class="form-group">
-		<label for="fcode">CODE</label>
-		<input type="text" class="form-control" name="fcode" value="{{request.form.fcode}}">
-	</div>
-	<input class="btn btn-default" type="submit" value="ADD">
-
+<form class="form-horizontal">
+	<fieldset>
+		<legend>EXISTING FACILITY</legend>
+		{% for facility in facilities %}
+		<td><p>{{facility[0]}}</p></td>
+		{% endfor %}
+	</fieldset>
 </form>
+
+
+<form action="" class="form-horizontal" method="POST">
+	<fieldset>
+		<legend>CREATE FACILITY</legend>
+		<div class="form-group">
+			<label for="common_name" class="col-lg-2 control-label">ASSET TAG</label>
+			<div class="col-lg-2">
+				<input type="text" class="form-control" placeholder="NAME" name="common_name" value="{{request.form.common_name}}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="fcode" class="col-lg-2 control-label">FACILITY CODE</label>
+			<div class="col-lg-2">
+				<input type="text" class="form-control" placeholder="CODE" name="fcode" value="{{request.form.fcode}}">
+			</div>
+		</div>
+		<input class="btn btn-default" type="submit" value="ADD">
+	</fieldset>
+</form>
+
 
 
 {{error}}

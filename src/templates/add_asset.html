@@ -10,32 +10,47 @@
 
 
 
-<br>
-<h2>Create Asset</h2>
-<form action="" class="form-inline" method="POST">
-	<div class="form-group">
-		<label for="asset_tag">ASSET_TAG</label>
-		<input type="text" class="form-control" name="asset_tag" value="{{request.form.asset_tag}}">
-	</div>
-	<div class="form-group">
-		<label fro="description">DESCRIPTION</label>
-		<input type="text" class="form-control" name="description" value="{{request.form.description}}">
-	</div>
-	<select name="facility" value="{{request.form.facility}}">
-		{% for facility in facilities %}
-			<option value={{facility[0]}} name={{facility[0]}}>{{facility[0]}}</option>
-		{% endfor %}
-	</select>
-	<input type="date" class="form-control" placeholder="date" name="date" value="{{request.form.date}}">
-	<input class="btn btn-default" type="submit" value="add">
 
+<form action="" class="form-horizontal" method="POST">
+	<fieldset>
+		<legend>CREATE ASSET</legend>
+		<div class="form-group">
+			<label for="asset_tag" class="col-lg-2 control-label">ASSET TAG</label>
+			<div class="col-lg-2">
+				<input type="text" class="form-control"  placeholder="TAG"  name="asset_tag" value="{{request.form.asset_tag}}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="description" class="col-lg-2 control-label">DESCRIPTION</label>
+			<div class="col-lg-2">
+				<input type="text" class="form-control"  placeholder="DESCRIPTION"  name="description" value="{{request.form.description}}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="facility" class="col-lg-2 control-label">FACILITY</label>
+			<div class="col-lg-2">
+				<select class="form-control" name="facility" value="{{request.form.facility}}">
+					{% for facility in facilities %}
+						<option value={{facility[0]}} name={{facility[0]}}>{{facility[0]}}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="date" class="col-lg-2 control-label">DATE</label>
+			<div class="col-lg-2">
+				<input type="date" class="form-control" placeholder="date" name="date" value="{{request.form.date}}">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-lg-10 col-lg-offset-2">
+				<input class="btn btn-default" type="submit" value="add">
+			</div>
+		</div>
+
+
+	</fieldset>
 </form>
-
-
-
-
-
-
 
 {{error}}
 {% endblock %}

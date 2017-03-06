@@ -29,5 +29,24 @@ CREATE TABLE asset_at (
 	depart_dt       timestamp -- when the asset left
 );
 
+CREATE TABLE requests (
+	request_pk 	serial primary key, 
+	requester_fk 	integer REFERENCES roles(role_pk) not null, 
+	request_data 	timestamp,
+	approval_data 	timestamp, 
+	source_fk 	integer REFERENCES facilities(facility_pk) not null, 
+	destination_fk	integer REFERENCES facilities(facility_pk) not null, 
+	asset_fk 	integer REFERENCES assets(asset_pk) not null
+);
+
+CREATE TABLE transit(
+	transit_pk 	serial primary key,
+	request_fk	integer REFERENCES requests(request_pk) not null,
+	load_time	timestamp,
+	unload_time	timestamp
+);
+
+
+
 INSERT INTO roles (rolename) VALUES ('Logistics Officer');
 INSERT INTO roles (rolename) VALUES ('Facilities Officer');
