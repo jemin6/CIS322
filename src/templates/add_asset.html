@@ -2,11 +2,14 @@
 
 {% block body %}
 
-<br>
-<h2>Existing Assets</h2>
-{% for asset in assets %}
-	<td><h3>{{asset[0]}}</h3></td>
-{% endfor %}
+<form class="form-horizontal">
+	<fieldset>
+		<legend>EXISTING ASSETS</legend>
+		{% for asset in assets %}
+		<td><h3>{{asset[0]}}</h3></td>
+		{% endfor %}
+	</fieldset>
+</form>
 
 
 

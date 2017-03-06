@@ -149,12 +149,13 @@ def add_asset():
         return render_template("add_asset.html")
    
     cursor.execute("SELECT common_name FROM facilities")
-    facilities = cur.fetchall()
+    facilities = cursor.fetchall()
     cursor.execute("SELECT asset_tag FROM assets")
     assets = cursor.fetchall()
     if request.method == 'POST':
         asset_tag = request.form['asset_tag']
         description = request.form['description']
+        fcode = request.form['fcode']
         facility = request.form['facility']
         date = request.form['date']
         SQL="SELECT asset_tag FROM assets WHERE asset_tag=%s"
@@ -169,14 +170,14 @@ def add_asset():
             SQL="SELECT facility_pk FROM facilities WHERE common_name=%s"
             cursor.execute(SQL,(facility,))
             facility_pk = cursor.fetchall()
-            facility_pk = facility_pk[0]
-            asset_pk = asset_pk[0]
+            facility_pk = facility_pk[0][0]
+            asset_pk = asset_pk[0][0]
             SQL="INSERT INTO asset_at (asset_fk, facility_fk, arrive_dt) VALUES (%s,%s,%s)"
-            cursor.execute(SQL,(str(asset_pk[0]),str(facility_pk[0]),date))
+            cursor.execute(SQL,(asset_pk,facility_pk,date))
             conn.commit()
-            flash("Asset successfully inserted into database")
+            flash("@@@ ASSET @@@ Successfully inserted")
         else:
-            flash("Asset already in database")
+            flash(" ** WARNING ** Already existing data")
     return render_template("add_asset.html", facilities=facilities, assets=assets)
 
 
@@ -185,41 +186,44 @@ def add_asset():
 def dispose_asset():
     if request.method=='GET':
         return render_template('dispose_asset.html')
-    if session['role'] != 'officer':
+    if session['role'] != 'Logistic Officer':
         if request.method == 'POST':
             asset_tag = request.form['asset_tag']
             date = request.form['date']
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
-            cursor.execte(SQL,(asset_tag,))
-            result = cur.fetchall()
+            cursor.execute(SQL,(asset_tag,))
+            result = cursor.fetchall()
             if len(result) == 0:
-                flash("asset does not exist")
+                flash(" ** WARNING ** Asset does not exist")
             else:
-                asset_pk = result[0]
+                asset_pk = result[0][0]
                 SQL="UPDATE asset_at SET depart_dt=%s WHERE asset_fk=%s"
-                cursor.execute(SQL,(data,str(asset_pk[0])))
+                cursor.execute(SQL,(data,asset_pk))
                 conn.commit()
-                flash("asset_tag disposed")
+                flash("** WARNING ** There is a matching asset tag but it was disposed")
                 return redirect(url_for("dashboard"))
         return render_template("dispose_asset.html")
-    flash("Only logistics officers can dispose of assets")
-    return render_template("main.html")
+    flash(" ** WARNING ** Only logistics officers can dispose of assets!")
+    return render_template("login.html")
 
 
 @app.route("/asset_report", methods=['GET', 'POST'])
 @logged_user
 def asset_report():
+    if request.method=='GET':
+        return render_template("asset_report.html")
     cursor.execute("SELECT common_name FROM facilities")
     facilities = cursor.fetchall()
     if request.method=='POST':
         facility = request.form['facility']
         date=request.form['data']
         try:
-            cursor.execute("SELECT asset_tag, common_name, arrive_dt FROM assets a JOIN asset_at aa ON asset_pk=asset_fk INNER JOIN facilities ON facility_fk=facility_pk WHERE facilities.common_name LIKE '%"+facility+"%' AND '"+date+"' >= aa.arrive_dt AND '"+date+"' <= aa.depart_dt;")
+            SQL="SELECT asset_tag, common_name, arrive_dt FROM assets a JOIN asset_at aa ON asset_pk=asset_fk INNER JOIN facilities ON facility_fk=facility_pk WHERE facilities.common_name LIKE '%"+facility+"%' AND '"+date+"' >= aa.arrive_dt AND '"+date+"' <= aa.depart_dt;"
+            cursor.execut(SQL)
             data=cursor.fetchall()
         except Exception as e:
-            flash('Please enter a Date')
-    return render_template("asset_report.html")
+            flash('ENTER the date')
+    return render_template("asset_report.html", facilities=facilities, data=data)
 
 
 @app.route("/transfer_req", methods=['GET', 'POST'])
@@ -242,29 +246,28 @@ def transfer_req():
             date = request.form['date'] 
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
             cursor.execute(SQL,(asset_tag,))
-            asset_fk = cur.fetchone()
+            asset_fk = cursor.fetchone()
             if asset_fk != None:
                 SQL="SELECT user_pk from users WHERE username=%s"
                 cursor.execute(SQL,(session,))
-                user_pk = cur.fetchone()
+                user_pk = cursor.fetchone()
                 SQL="SELECT facility_pk from facilities WHERE common_name=%s"
                 cursor.execute(SQL,(source,))
-                source_fk = cur.fetchone()
+                source_fk = cursor.fetchone()
                 SQL="SELECT facility_pk from facilities WHERE common_name=%s"
                 cursor.execute(SQL,(destination,))
-                destination_fk = cur.fetchone()
+                destination_fk = cursor.fetchone()
                 SQL="INSERT INTO requests (requester_fk, request_data, source_fk, destination_fk, assset_fk) VALUES (%s,%s,%s,%s,%s)"
                 cursor.execute(SQL,(str(user_pk[0]),date,str(source_fk[0]),str(destination_fk[0]),str(asset_fk[0])))
                 conn.commit()
                 conn.close()
-                flash("Asset Transfer Request is Successful!")
+                flash("@@@ REQUEST @@@ Asset transfer success!")
                 return redirect(url_for("dashboard"))
-            error = "Asset Tag does not exist"
-        return render_template("transfer_req.html", error=error, facilities=facilities, assets=assets)
-    flash("Only Logistics officers can request transfers")
+            flash( " ** WARNING ** Asset Tag does not exist")
+        return render_template("transfer_req.html",facilities=facilities, assets=assets)
+    flash(" ** WARNING ** Only Logistics officers can request transfers")
     conn.close()
     return redirect(url_for('dashboard'))
-
 
 
 @app.route("/approve_req", methods=['GET', 'POST'])
@@ -279,7 +282,7 @@ def approve_req():
             request_pk = request.form["request_pk"]
 
             if len(approval) != 0:
-                flash("APPROVED") 
+                flash("@@@ APPROVED @@@") 
                 SQL="INSERT INTO transit (request_fk) VALUES (%s)"
                 cursor.execute(SQL,(request_pk,))
             else:
@@ -291,7 +294,7 @@ def approve_req():
 
             return redirect(url_for("dashboard"))
         return render_template("approve_req.html", requests=requests)
-    flash("Only Facilities Officers can approve request")
+    flash(" ** WARNING ** Only Facilities Officers can approve request")
     return redirect(url_for("dashboard"))
 
 @app.route("/update_transit", methods=['GET', 'POST'])
@@ -312,14 +315,9 @@ def update_transit():
             return redirect(url_for('dashboard'))
         conn.close()
         return render_template("update_transit.html", transit=transit)
-    flash("Only Logistics Officer can update tracking information.")
+    flash(" ** WARNING ** Only Logistics Officer can update tracking information.")
     conn.close()
     return redirect(url_for("dashboard"))
-
-
-
-
-
 
 
 @app.route("/logout")

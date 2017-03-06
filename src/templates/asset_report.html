@@ -2,45 +2,39 @@
 
 {% block body %}
 
-<br>
-<h2>Asset Report:</h2>
-
-
-<form action="" class="form-inline" method="POST">
-	<select name="facility" value="{{request.form.facility}}">
-		<option value="" name=""></option>
-		{% for facility in facilities %}
-		<option value={{facility[0]}} name={{facility[0]}}>{{facility[0]}}</option>
+<ul class="nav nav-tabs">
+	<li class=""><a href="#home" data-toggle="tab" aria-expanded="false">Home</a></li>
+	<li class="active"><a href="asset_report" data-toggle="tab" aria-expanded="true">ASSET REPORT</a></li>
+	</li>
+</ul>
+<div id="myTabContent" class="tab-content">
+	<div class="tab-pane fade active in" id="home">
+		<form action="" class="form-inline" method="POST">
+			<select name="facility" value="{{request.form.facility}}">
+				<option value="" name=""></option>
+				{% for facility in facilities %}
+				<option value={{facility[0]}} name={{facility[0]}}>{{facility[0]}}</option>
+				{% endfor %}
+			</select>
+			<input type="date" class="form-control" placeholder="date" name="date" value="{{request.form.date}}">
+			<input class="btn btn-default" type="submit" value="display">
+		</form>
+		<table class="table table-condenesed">
+			<tr>
+				<th>Asset Tag</th>
+				<th>Facility</th>
+				<th>Arrival Date</th>
+			<tr>
+		{% for data in data %}
+			<tr>
+				<td>{{data[0]}}</td>
+				<td>{{data[1]}}</td>
+				<td>{{data[2]}}</td>
+			<tr>
 		{% endfor %}
-	</select>
-	<input type="date" class="form-control" placeholder="date" name="date" value="{{request.form.date}}">
-	<input class="btn btn-default" type="submit" value="display">
-</form>
-
-<table class="table table-condenesed">
-	<tr>
-		<th>Asset Tag</th>
-		<th>Facility</th>
-		<th>Arrival Date</th>
-	<tr>
-{% for data in data %}
-	<tr>
-	<td>{{data[0]}}</td>
-	<td>{{data[1]}}</td>
-	<td>{{data[2]}}</td>
-	<tr>
-{% endfor %}
-<table>
-
-
-
-
-
-
-
-
-
-
+		</table>
+	</div>
+</div>
 
 {{error}}
 {% endblock %}
