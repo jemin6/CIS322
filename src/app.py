@@ -101,12 +101,12 @@ def create_user():
                 SQL="SELECT role_pk FROM roles WHERE rolename=%s"
                 cursor.execute(SQL,(role,))
                 role_pk = cursor.fetchall()
-                if len(role_pk) == 0:
-                    SQL="INSERT INTO roles (rolename) VALUES (%s)"
-                    cursor.execute(SQL,(role,))
-                    SQL="SELECT role_pk FROM roles WHERE rolename=%s"
-                    cursor.execute(SQL,(role,))
-                    role_pk = cursor.fetchall()
+#                if len(role_pk) == 0:
+#                    SQL="INSERT INTO roles (rolename) VALUES (%s)"
+#                    cursor.execute(SQL,(role,))
+#                    SQL="SELECT role_pk FROM roles WHERE rolename=%s"
+#                    cursor.execute(SQL,(role,))
+#                    role_pk = cursor.fetchall()
                 role_pk = role_pk[0][0]
                 SQL= "INSERT INTO users (username,password,role_fk) VALUES (%s,%s,%s)"
                 cursor.execute(SQL,(user_name,user_password,role_pk))
@@ -116,15 +116,15 @@ def create_user():
             else:
                 # else, falses then pops up warning message
                 flash(" ** WARNING  **  Already taken username ")
-    conn.close()
+                #conn.close()
     return render_template("create_user.html")
 
 #Login required. Users adds facilities into the database
 @app.route("/add_facility", methods=['GET', 'POST'])
 @logged_user
 def add_facility():
-    if request.method=='GET':           # Load the facilities page
-        return render_template('add_facility.html')
+#    if request.method=='GET':           # Load the facilities page
+#        return render_template('add_facility.html')
     cursor.execute("SELECT common_name FROM facilities")
     facilities=cursor.fetchall()
     if request.method=='POST':          # Insert new facility into the database
@@ -140,14 +140,13 @@ def add_facility():
             flash(" @@@Congrat! Facility successfully inserted into database@@@")
         else:
             flash("@@@@ ERROR: Facility already in database @@@@")
-    conn.close()
-    return render_template("add_facility.html",username=session['username'], facilities=facilities)
+#    conn.close()
+    return render_template("add_facility.html", facilities=facilities)
 
 @app.route("/add_asset", methods=['GET', 'POST'])
 def add_asset():
-    if request.method=='GET':
-        return render_template("add_asset.html")
-   
+#    if request.method=='GET':
+#        return render_template("add_asset.html")   
     cursor.execute("SELECT common_name FROM facilities")
     facilities = cursor.fetchall()
     cursor.execute("SELECT asset_tag FROM assets")
@@ -155,17 +154,17 @@ def add_asset():
     if request.method == 'POST':
         asset_tag = request.form['asset_tag']
         description = request.form['description']
-        fcode = request.form['fcode']
+#        fcode = request.form['fcode']
         facility = request.form['facility']
         date = request.form['date']
         SQL="SELECT asset_tag FROM assets WHERE asset_tag=%s"
-        cursor.exectue(SQL,(asset_tag,))
+        cursor.execute(SQL,(asset_tag,))
         result = cursor.fetchall()
-        if len(results) == 0:
+        if len(result) == 0:
             SQL="INSERT INTO assets (asset_tag, description) VALUES (%s,%s)"
             cursor.execute(SQL,(asset_tag,description))
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
-            cursor.exectue(SQL,(asset_tag,))
+            cursor.execute(SQL,(asset_tag,))
             asset_pk = cursor.fetchall()
             SQL="SELECT facility_pk FROM facilities WHERE common_name=%s"
             cursor.execute(SQL,(facility,))
@@ -230,7 +229,7 @@ def asset_report():
 @logged_user
 def transfer_req():
     if request.method=='GET':
-        return render_template('transfer_req.html')
+        return render_template('transfer_req.html', requests=[])
     cursor.execute("SELECT common_name FROM facilities;")
 #    cursor.execute(SQL)
     facilities = cursor.fetchall()
@@ -260,13 +259,13 @@ def transfer_req():
                 SQL="INSERT INTO requests (requester_fk, request_data, source_fk, destination_fk, assset_fk) VALUES (%s,%s,%s,%s,%s)"
                 cursor.execute(SQL,(str(user_pk[0]),date,str(source_fk[0]),str(destination_fk[0]),str(asset_fk[0])))
                 conn.commit()
-                conn.close()
+ #               conn.close()
                 flash("@@@ REQUEST @@@ Asset transfer success!")
                 return redirect(url_for("dashboard"))
             flash( " ** WARNING ** Asset Tag does not exist")
         return render_template("transfer_req.html",facilities=facilities, assets=assets)
     flash(" ** WARNING ** Only Logistics officers can request transfers")
-    conn.close()
+#   conn.close()
     return redirect(url_for('login'))
 
 
@@ -274,7 +273,7 @@ def transfer_req():
 @logged_user
 def approve_req():
     if request.method=='GET':
-        return render_template('approve_req.html')
+        return render_template('approve_req.html' )
     if session['role'] == 'Facilities Officer':
         if request.method == 'POST':
             approval = request.form.getlist("approval")
@@ -290,7 +289,7 @@ def approve_req():
                 SQL="DELETE FROM requests WHERE request_pk=%s"
                 cursor.execute(SQL,(request_pk,))
             conn.commit()
-            conn.close()
+#            conn.close()
 
             return redirect(url_for("dashboard"))
         return render_template("approve_req.html", requests=requests)

@@ -30,22 +30,21 @@ CREATE TABLE asset_at (
 );
 
 CREATE TABLE requests (
-	request_pk 	serial primary key, 
-	requester_fk 	integer REFERENCES roles(role_pk) not null, 
-	request_data 	timestamp,
-	approval_data 	timestamp, 
-	source_fk 	integer REFERENCES facilities(facility_pk) not null, 
-	destination_fk	integer REFERENCES facilities(facility_pk) not null, 
+	request_pk 	serial primary key,     
+	requester_fk 	integer REFERENCES roles(role_pk) not null, /* logistics officer submitting the request  */
+	request_data 	timestamp,	/* request time */
+	approval_data 	timestamp, 	/* approval time */
+	source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+	destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
 	asset_fk 	integer REFERENCES assets(asset_pk) not null
 );
 
-CREATE TABLE transit(
+CREATE TABLE transit(	/* table track assets in transit */
 	transit_pk 	serial primary key,
-	request_fk	integer REFERENCES requests(request_pk) not null,
-	load_time	timestamp,
-	unload_time	timestamp
+	request_fk	integer REFERENCES requests(request_pk) not null, 
+	load_time	timestamp,	/* time takse for load */
+	unload_time	timestamp	/* time takes for unload */
 );
-
 
 
 INSERT INTO roles (rolename) VALUES ('Logistics Officer');

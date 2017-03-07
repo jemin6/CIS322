@@ -1,14 +1,12 @@
 {% extends "menu_bar.html" %}
 
-{% endfor %}
-
 <form action="" class="form-horizontal" method="POST">
 	<fieldset>
 		<legend>TRANSFER ASSET</legend>
 		<div class="form-group">
 			<label for="asset_tag" class="col-lg-2 control-label">ASSET TAG</label>
 			<div class="col-lg-2">	
-				<input type="text" class="form-control" placeholder="ASSET TAG" name="asset_tag" value="{{request.form.asset_tag}}">
+				<input type="text" class="form-control" placeholder="ASSET TAG" name="asset_tag">
 			</div>
 		</div>
 		<div class="form-group">
@@ -41,4 +39,3 @@
 </form>
 
 {{error}}
-{% endblock %}
