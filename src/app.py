@@ -130,34 +130,12 @@ def create_user():
 def add_facility():
     cursor.execute("SELECT * FROM facilities ORDER BY common_name")
     session['facilities']=cursor.fetchall()
-    #print(facilities)
-#    if request.method=='GET':
-#        error=""
-#        return render_template('add_facility.html',error=error,facilities=facilities)
     if request.method=='POST':          # Insert new facility into the database
         if 'common_name' in request.form and 'fcode' in request.form:
             fcode = request.form['fcode']
             common_name = request.form['common_name']
-
-#            inputs = (common_name, fcode)
-#            if(inputs[0].isspace()):
-#                flash("##### INVALID NAME #####\nName cannot be only whitespace!")
-#                return redirect(url_for('add_facility'))
-#            if(' ' in inputs[1]):
-#                flash("##### INVALID CODE #####\nCode cannot contain whitespace!")
-#                return redirect(url_for('add_facility'))
-#            if(check_facility(inputs[0],inputs[1])):
-#                flash("##### DUPLICATE #####\nNAME/CODE already exist!")
-#                return redirect(url_for('add_facility'))
-#            else:
-#                create_facility(inputs[1],inputs[0])
-#                return redirect(url_for('add_facility'))
-#        else:
-#            flash("##### ERROR #####\nSomething went wrong!")
-#            return redirect(url_for('add_facility'))
-                        
-            SQL="SELECT common_name FROM facilities WHERE common_name=%s"
-            cursor.execute(SQL,(common_name,))
+            SQL="SELECT common_name FROM facilities WHERE common_name=%s OR fcode=%s"
+            cursor.execute(SQL,(common_name,fcode))
             result = cursor.fetchall()
             if len(result) == 0:
                 SQL="INSERT INTO facilities (common_name, fcode) VALUES (%s,%s)"
