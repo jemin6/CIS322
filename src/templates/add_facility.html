@@ -37,7 +37,7 @@
 				<tr><th><b>FACILITY NAME</b></th><th><b>FACILITY CODE</b></th></tr>
 			   </thead>
 		   	   <tbody>	   
-				{% for facility in facilities %}
+				{% for facility in session.facilities %}
 					<tr>
 						<th> {{ facility[2] }} </th>
 						<th> {{ facility[1] }} </th>

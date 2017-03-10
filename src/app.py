@@ -53,8 +53,11 @@ def login():
                 else:
                     session['username'] = request.form['username']
                     session['logged_in'] =True
-                    session['role'] = 'role'
-                    return render_template('dashboard.html',username=session['username'])
+                    SQL="SELECT rolename FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE users.username=%s"
+                    cursor.execute(SQL,(session['username'],))
+                    role=cursor.fetchone()
+                    session['role'] = role[0]
+                    return render_template('dashboard.html')
     return render_template('login.html', error=error)
 
 # Dashboad page, which shows when login is successfully done
@@ -126,8 +129,8 @@ def create_user():
 @logged_user
 def add_facility():
     cursor.execute("SELECT * FROM facilities ORDER BY common_name")
-    conn.commit()
-    facilities=cursor.fetchall()
+    session['facilities']=cursor.fetchall()
+    #print(facilities)
 #    if request.method=='GET':
 #        error=""
 #        return render_template('add_facility.html',error=error,facilities=facilities)
@@ -163,7 +166,8 @@ def add_facility():
                 flash("##### REQUEST SUCCEED ###### \nFacility successfully inserted into database!")
             else:
                 flash("##### ERROR ###### \nFacility already in database!")
-    return render_template("add_facility.html",facilities = facilities)
+        return redirect(url_for('add_facility'))
+    return render_template("add_facility.html")
 
 #Add asset in to the datebase 
 @app.route("/add_asset", methods=['GET', 'POST'])
