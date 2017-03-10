@@ -2,31 +2,25 @@
 
 {% block body %}
 
-<form class="form-horizontal">
+
+<form class="form-horizontal" method="POST">
 	<fieldset>
-		<legend>EXISTING ASSETS</legend>
-		{% for asset in assets %}
-		<td><p>{{asset[0]}}</p></td>
-		{% endfor %}
-	</fieldset>
-</form>
-
-
-
-
-<form action="" class="form-horizontal" method="POST">
-	<fieldset>
-		<legend>CREATE ASSET</legend>
+		<legend>ADD ASSET</legend>
+		<p>- New asset record should be inserted into the database with the information from the form</p>
+		<p>- Asset tags connot contain whitespace </p>
+		<p>- User should select the facility the asset is located at from a drop down (HTML select)</p>
+		<p>- User should enter a date for when the asset arrived at the facility</p>
+		<p>- Asset tags up to 16 characters in length </p>
 		<div class="form-group">
 			<label for="asset_tag" class="col-lg-2 control-label">ASSET TAG</label>
 			<div class="col-lg-2">
-				<input type="text" class="form-control"  placeholder="TAG"  name="asset_tag">
+				<input type="text" class="form-control"  placeholder="REQUIRED"  name="asset_tag">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="description" class="col-lg-2 control-label">DESCRIPTION</label>
+			<label for="description" class="col-lg-2 control-label">ASSET DESCRIPTION</label>
 			<div class="col-lg-2">
-				<input type="text" class="form-control"  placeholder="DESCRIPTION"  name="description">
+				<input type="text" class="form-control"  placeholder="OPTIONAL"  name="description">
 			</div>
 		</div>
 		<div class="form-group">
@@ -40,18 +34,36 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="date" class="col-lg-2 control-label">DATE</label>
+			<label for="date" class="col-lg-2 control-label">ARRIVAL DATE</label>
 			<div class="col-lg-2">
 				<input type="date" class="form-control" placeholder="date" name="date">
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-lg-10 col-lg-offset-2">
-				<input class="btn btn-default" type="submit" value="add">
+				<input class="btn btn-primary" type="submit" value="ADD">
 			</div>
 		</div>
+	</fieldset>
+</form>
 
-
+<form class="form-horizontal">
+	<fieldset>
+		<legend>EXISTING ASSETS</legend>
+			<p>List all of the assets currently in the database</p>
+			<table class="table table-striped table-hover ">
+				<thead>
+					<tr><th><b>ASSET TAG</b></th><th><b>ASSET DESCRIPTION</b></th></tr>
+				</thead>
+				<tbody>
+					{% for asset in assets %}
+						<tr>
+							<th> {{asset[0]}} </th>
+							<th> {{asset[1]}} </th>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 	</fieldset>
 </form>
 

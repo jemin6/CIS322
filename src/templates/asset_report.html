@@ -2,22 +2,17 @@
 
 {% block body %}
 
-<ul class="nav nav-tabs">
-	<li class=""><a href="update_transit" data-toggle="tab" aria-expanded="false">TRANSFER REPORT</a></li>
-	<li class="active"><a href="asset_report" data-toggle="tab" aria-expanded="true">ASSET REPORT</a></li>
-	</li>
-</ul>
 <div id="myTabContent" class="tab-content">
 	<div class="tab-pane fade active in" id="asset_report">
-		<form action="" class="form-inline" method="POST">
-			<select name="facility" value="{{request.form.facility}}">
+		<form class="form-inline" method="POST">
+			<select name="facility">
 				<option value="" name=""></option>
 				{% for facility in facilities %}
 				<option value={{facility[0]}} name={{facility[0]}}>{{facility[0]}}</option>
 				{% endfor %}
 			</select>
 			<input type="date" class="form-control" placeholder="date" name="date" value="{{request.form.date}}">
-			<input class="btn btn-default" type="submit" value="display">
+			<input class="btn btn-primary" type="submit" value="display">
 		</form>
 		<table class="table table-condenesed">
 			<tr>
@@ -33,20 +28,6 @@
 			<tr>
 		{% endfor %}
 		</table>
-	</div>
-</div>
-
-<div id="myTabContent" class="tab-content">
-	<div class="tab-pane fade active in" id="update_transit">
-		<form action="" class="form-inline" method="POST">
-			<select name="transit_pk" value="{{request.form.transit_pk}}">
-				{% for item in transit %}
-				<option value={{item[0]}} name={{item[0]}}>{{item[0]}}</option>
-				{% endfor %}
-			</select>
-			<input type="date" class="form-control" placeholder="load" name="load" value="{{request.form.load}}">
-			<input type="date" class="form-control" placeholder="unload" name="unload" value="{{request.form.unload}}">
-		</form>
 	</div>
 </div>
 

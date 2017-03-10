@@ -88,7 +88,7 @@ def create_user():
         if 'username' in request.form and 'password' in request.form:
             user_name = request.form['username']
             user_password = request.form['password']
-            role = request.form['role']
+            role = request.form['rolename']
             SQL = "SELECT username FROM users WHERE username=%s"
             cursor.execute(SQL,(user_name,))
             result = cursor.fetchall()
@@ -173,6 +173,7 @@ def add_asset():
     cursor.execute("SELECT asset_tag FROM assets")
     assets = cursor.fetchall()
     if request.method == 'POST':
+      if 'asset_tag' in request.form and 'description' in request.form and 'facility' in request.form and 'date' in request.form:
         asset_tag = request.form['asset_tag']
         description = request.form['description']
         facility = request.form['facility']
@@ -194,35 +195,36 @@ def add_asset():
             SQL="INSERT INTO asset_at (asset_fk, facility_fk, arrive_dt) VALUES (%s,%s,%s)"
             cursor.execute(SQL,(asset_pk,facility_pk,date))
             conn.commit()
-            flash("@@@ ASSET @@@ Successfully inserted")
+            flash("##### SUCCEED #####\n Asset successfully inserted")
         else:
-            flash(" ** WARNING ** Already existing data")
+            flash("##### WARNING #####\n Already existing data")
     return render_template("add_asset.html", facilities=facilities, assets=assets)
 
 
 @app.route("/dispose_asset", methods=['GET', 'POST'])
 @logged_user
 def dispose_asset():
-    if request.method=='GET':
-        return render_template('dispose_asset.html')
+#    if request.method=='GET':
+#        return render_template('dispose_asset.html')
     if session['role'] != 'Logistic Officer':
         if request.method == 'POST':
+#          if 'asset_tag' in request.form and 'data' in request.form:
             asset_tag = request.form['asset_tag']
             date = request.form['date']
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
             cursor.execute(SQL,(asset_tag,))
             result = cursor.fetchall()
             if len(result) == 0:
-                flash(" ** WARNING ** Asset does not exist")
+                flash("##### WARNING #####\n Asset does not exist")
             else:
                 asset_pk = result[0][0]
                 SQL="UPDATE asset_at SET depart_dt=%s WHERE asset_fk=%s"
                 cursor.execute(SQL,(date,asset_pk))
                 conn.commit()
-                flash("** WARNING ** There is a matching asset tag but it was disposed")
+                flash("##### SUCCEED ##### Asset tag disposed")
                 return redirect(url_for("dashboard"))
         return render_template("dispose_asset.html")
-    flash(" ** WARNING ** Only Logistics Officers can dispose of assets!")
+    flash("##### WARNING ##### Only Logistics Officers can access dispose of  assets!")
     return render_template("login.html")
 
 

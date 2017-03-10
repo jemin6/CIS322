@@ -2,7 +2,7 @@
 
 {% block body %}
 
-
+{#
 <form class="form-horizontal">
 	<fieldset>
 		<legend>EXISTING DISPOSE ASSET</legend>
@@ -11,7 +11,7 @@
 		{% endfor %}
 	</fieldset>
 </form>
-
+#}
 
 <form action="" class="form-horizontal" method="POST">
 	<fieldset>
@@ -19,18 +19,18 @@
 		<div class="form-group">
 			<label for="asset_tag" class="col-lg-2 control-label">ASSET TAG</label>
 			<div class="col-lg-2">
-				<input type="text" class="form-control"  placeholder="TAG"  name="asset_tag" value="{{request.form.asset_tag}}">
+				<input type="text" class="form-control"  placeholder="REQUIRED"  name="asset_tag">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="date" class="col-lg-2 control-label">DATE</label>
+			<label for="date" class="col-lg-2 control-label">DISPOSE DATE</label>
 			<div class="col-lg-2">
-				<input type="date" class="form-control" placeholder="DATE" name="date" value="{{request.form.date}}">
+				<input type="date" class="form-control" placeholder="DATE" name="date">
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-lg-10 col-lg-offset-2">
-				<input class="btn btn-default" type="submit" value="add">
+				<input class="btn btn-primary" type="submit" value="add">
 			</div>
 		</div>
 	</fieldset>

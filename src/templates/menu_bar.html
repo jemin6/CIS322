@@ -8,11 +8,10 @@
 			{% if session.logged_in %}
 			<li><a href="{{ url_for('add_facility') }}">FACILITY add</a></li>
 			<li><a href="{{ url_for('add_asset') }}">ASSET add</a></li>
-			<li><a href="{{ url_for('dispose_asset') }}">ASSET dispost</a></li>
+			<li><a href="{{ url_for('dispose_asset') }}">ASSET dispose</a></li>
 			<li><a href="{{ url_for('transfer_req') }}">Transfer REQUEST</a></li>
 			<li><a href="{{ url_for('approve_req') }}">Approve REQUEST</a></li>
 			<li><a href="{{ url_for('update_transit') }}">Transfer UPDATE</a></li>
-			<li><a href="{{ url_for('main') }}">BACK to main </a></li>
 			<li><a href="{{ url_for('asset_report') }}">REPORT screen</a></li>
 				<ul class="nav navbar-nav navbar-right">
 					<form action="{{url_for('logout')}}" method="GET"><button class="btn btn-danger navbar-btn" href="{{url_for('logout')}}">LOG OUT</button></form>
@@ -33,6 +32,8 @@
 				<div class="panel-body">
 					<p>ID: {{session.username}}</p>
 					<p>ROLE: {{session.role}}</p>
+					<p>{{rolename}}</p>
+
 				</div>
 			</div>
 			
