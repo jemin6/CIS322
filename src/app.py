@@ -5,7 +5,6 @@ import psycopg2
 from functools import wraps
 import sys
 
-
 app = Flask(__name__)
 app.secret_key ="sample_secret_key"
 
@@ -14,7 +13,6 @@ conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
 
 # Open a cursor to perform database operations
 cursor = conn.cursor()
-
 
 def logged_user(func):                 #access allowed when logged in. 
     @wraps(func)
@@ -25,8 +23,6 @@ def logged_user(func):                 #access allowed when logged in.
             flash("login required")
             return redirect(url_for('login_page'))
     return with_logging
-
-
 
 # main page which is the beginning page
 @app.route("/")
@@ -80,8 +76,7 @@ def dashboard():
         rows = ["Request ID", "Load Time", "Unload Time"]
         url = "/update_transit"
         conn.commit()
-    conn.close()
-    return render_template("dashboard.html",username=session['username'],data=data, header=header, rows=rows, url=url)
+    return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
 
 
 # Create user screen where users can create username, password and the role. 
@@ -101,52 +96,78 @@ def create_user():
                 SQL="SELECT role_pk FROM roles WHERE rolename=%s"
                 cursor.execute(SQL,(role,))
                 role_pk = cursor.fetchall()
-#                if len(role_pk) == 0:
-#                    SQL="INSERT INTO roles (rolename) VALUES (%s)"
-#                    cursor.execute(SQL,(role,))
-#                    SQL="SELECT role_pk FROM roles WHERE rolename=%s"
-#                    cursor.execute(SQL,(role,))
-#                    role_pk = cursor.fetchall()
                 role_pk = role_pk[0][0]
                 SQL= "INSERT INTO users (username,password,role_fk) VALUES (%s,%s,%s)"
                 cursor.execute(SQL,(user_name,user_password,role_pk))
                 conn.commit()
                 # If username is created sucessfully, it pops up this message
-                flash("**Congrat!** Successfully created username!")
+                flash("##### REQUEST SUCCEED ######\n Username created!")
             else:
                 # else, falses then pops up warning message
-                flash(" ** WARNING  **  Already taken username ")
-                #conn.close()
+                flash("##### WARNING #####\n  Already taken username ")
     return render_template("create_user.html")
+
+
+#def check_facility(common_name,fcode):
+#    SQL="SELECT * FROM facilities WHERE common_name=%s Or fcode=%s"
+#    cursor.execute(SQL,(common_name,fcode))
+#    conn.commit()
+#    return(cursor.fetchone() != None)
+
+#def create_facility(fcode,common_name):
+#    SQL="INSERT INTO facilities (fcode,common_name) VALUES (%s,%s)"
+#    cursor.execute(SQL,(fcode,common_name))
+#    conn.commit()
+#    return None
+    
 
 #Login required. Users adds facilities into the database
 @app.route("/add_facility", methods=['GET', 'POST'])
 @logged_user
 def add_facility():
-#    if request.method=='GET':           # Load the facilities page
-#        return render_template('add_facility.html')
-    cursor.execute("SELECT common_name FROM facilities")
+    cursor.execute("SELECT * FROM facilities ORDER BY common_name")
+    conn.commit()
     facilities=cursor.fetchall()
+#    if request.method=='GET':
+#        error=""
+#        return render_template('add_facility.html',error=error,facilities=facilities)
     if request.method=='POST':          # Insert new facility into the database
-        fcode = request.form['fcode']
-        common_name = request.form['common_name']
-        SQL="SELECT common_name FROM facilities WHERE common_name=%s"
-        cursor.execute(SQL,(common_name,))
-        result = cursor.fetchall()
-        if len(result) == 0:
-            SQL="INSERT INTO facilities (common_name, fcode) VALUES (%s,%s)"
-            cursor.execute(SQL,(common_name,fcode))
-            conn.commit()
-            flash(" @@@Congrat! Facility successfully inserted into database@@@")
-        else:
-            flash("@@@@ ERROR: Facility already in database @@@@")
-#    conn.close()
-    return render_template("add_facility.html", facilities=facilities)
+        if 'common_name' in request.form and 'fcode' in request.form:
+            fcode = request.form['fcode']
+            common_name = request.form['common_name']
 
+#            inputs = (common_name, fcode)
+#            if(inputs[0].isspace()):
+#                flash("##### INVALID NAME #####\nName cannot be only whitespace!")
+#                return redirect(url_for('add_facility'))
+#            if(' ' in inputs[1]):
+#                flash("##### INVALID CODE #####\nCode cannot contain whitespace!")
+#                return redirect(url_for('add_facility'))
+#            if(check_facility(inputs[0],inputs[1])):
+#                flash("##### DUPLICATE #####\nNAME/CODE already exist!")
+#                return redirect(url_for('add_facility'))
+#            else:
+#                create_facility(inputs[1],inputs[0])
+#                return redirect(url_for('add_facility'))
+#        else:
+#            flash("##### ERROR #####\nSomething went wrong!")
+#            return redirect(url_for('add_facility'))
+                        
+            SQL="SELECT common_name FROM facilities WHERE common_name=%s"
+            cursor.execute(SQL,(common_name,))
+            result = cursor.fetchall()
+            if len(result) == 0:
+                SQL="INSERT INTO facilities (common_name, fcode) VALUES (%s,%s)"
+                cursor.execute(SQL,(common_name,fcode))
+                conn.commit()
+                flash("##### REQUEST SUCCEED ###### \nFacility successfully inserted into database!")
+            else:
+                flash("##### ERROR ###### \nFacility already in database!")
+    return render_template("add_facility.html",facilities = facilities)
+
+#Add asset in to the datebase 
 @app.route("/add_asset", methods=['GET', 'POST'])
 def add_asset():
-#    if request.method=='GET':
-#        return render_template("add_asset.html")   
     cursor.execute("SELECT common_name FROM facilities")
     facilities = cursor.fetchall()
     cursor.execute("SELECT asset_tag FROM assets")
@@ -154,7 +175,6 @@ def add_asset():
     if request.method == 'POST':
         asset_tag = request.form['asset_tag']
         description = request.form['description']
-#        fcode = request.form['fcode']
         facility = request.form['facility']
         date = request.form['date']
         SQL="SELECT asset_tag FROM assets WHERE asset_tag=%s"
@@ -197,12 +217,12 @@ def dispose_asset():
             else:
                 asset_pk = result[0][0]
                 SQL="UPDATE asset_at SET depart_dt=%s WHERE asset_fk=%s"
-                cursor.execute(SQL,(data,asset_pk))
+                cursor.execute(SQL,(date,asset_pk))
                 conn.commit()
                 flash("** WARNING ** There is a matching asset tag but it was disposed")
                 return redirect(url_for("dashboard"))
         return render_template("dispose_asset.html")
-    flash(" ** WARNING ** Only logistics officers can dispose of assets!")
+    flash(" ** WARNING ** Only Logistics Officers can dispose of assets!")
     return render_template("login.html")
 
 
@@ -224,19 +244,16 @@ def asset_report():
             flash('ENTER the date')
     return render_template("asset_report.html", facilities=facilities, data=data)
 
-
+#Access controlled, only Logistics Officers should be able to initiate transfers
 @app.route("/transfer_req", methods=['GET', 'POST'])
 @logged_user
 def transfer_req():
     if request.method=='GET':
-        return render_template('transfer_req.html', requests=[])
+        return render_template('transfer_req.html')
     cursor.execute("SELECT common_name FROM facilities;")
-#    cursor.execute(SQL)
     facilities = cursor.fetchall()
     cursor.execute("SELECT asset_tag FROM assets;")
-#    cursor.execute(SQL)
     assets = cursor.fetchall()
-    
     if session['role'] == 'Logistics Officer':
         if request.method=='POST':
             asset_tag = request.form['asset_tag']
@@ -256,19 +273,18 @@ def transfer_req():
                 SQL="SELECT facility_pk from facilities WHERE common_name=%s"
                 cursor.execute(SQL,(destination,))
                 destination_fk = cursor.fetchone()
-                SQL="INSERT INTO requests (requester_fk, request_data, source_fk, destination_fk, assset_fk) VALUES (%s,%s,%s,%s,%s)"
+                SQL="INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, assset_fk) VALUES (%s,%s,%s,%s,%s)"
                 cursor.execute(SQL,(str(user_pk[0]),date,str(source_fk[0]),str(destination_fk[0]),str(asset_fk[0])))
                 conn.commit()
- #               conn.close()
                 flash("@@@ REQUEST @@@ Asset transfer success!")
                 return redirect(url_for("dashboard"))
             flash( " ** WARNING ** Asset Tag does not exist")
         return render_template("transfer_req.html",facilities=facilities, assets=assets)
     flash(" ** WARNING ** Only Logistics officers can request transfers")
-#   conn.close()
+    #If the user is not a Logistics Officer
     return redirect(url_for('login'))
 
-
+#Add transit requests, an interface is needed to approve/complete them
 @app.route("/approve_req", methods=['GET', 'POST'])
 @logged_user
 def approve_req():
@@ -279,7 +295,6 @@ def approve_req():
             approval = request.form.getlist("approval")
             deny = request.form.getlist("deny")
             request_pk = request.form["request_pk"]
-
             if len(approval) != 0:
                 flash("@@@ APPROVED @@@") 
                 SQL="INSERT INTO transit (request_fk) VALUES (%s)"
@@ -289,8 +304,6 @@ def approve_req():
                 SQL="DELETE FROM requests WHERE request_pk=%s"
                 cursor.execute(SQL,(request_pk,))
             conn.commit()
-#            conn.close()
-
             return redirect(url_for("dashboard"))
         return render_template("approve_req.html", requests=requests)
     flash(" ** WARNING ** Only Facilities Officers can approve request")
@@ -311,12 +324,9 @@ def update_transit():
             cursor.execute(SQL,(load_time,unload_time,transit_pk))
             conn.commit()
             flash("Updated load/unload times")
-#            conn.close()
             return redirect(url_for('dashboard'))
-#        conn.close()
         return render_template("update_transit.html", transit=transit)
     flash(" ** WARNING ** Only Logistics Officer can update tracking information.")
-#    conn.close()
     return redirect(url_for("login"))
 
 
@@ -325,13 +335,6 @@ def update_transit():
 def logout():
     session.clear()
     return redirect(url_for('main'))
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     app.debug = True

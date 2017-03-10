@@ -2,35 +2,51 @@
 
 {% block body %}
 
-<form class="form-horizontal">
-	<fieldset>
-		<legend>EXISTING FACILITY</legend>
-		{% for facility in facilities %}
-		<td><p>{{facility[0]}}</p></td>
-		{% endfor %}
-	</fieldset>
-</form>
 
-
-<form action="" class="form-horizontal" method="POST">
+<form class="form-horizontal" method="POST">
 	<fieldset>
-		<legend>CREATE FACILITY</legend>
+		<legend>ADD FACILITY</legend>
+		<p>- Facility names up to 32 characters in length (e.g. Headquarters)</p>
+		<p>- Facility code up to 6 characters in length (e.g. HQ) </p>
+		<p>- Facility codes cannot contain white space </p>
+		<p>- Facility name or code should not match from record </p>
+		<p>- New facility record should be inserted into the database with the information from the form</p>
 		<div class="form-group">
-			<label for="common_name" class="col-lg-2 control-label">ASSET TAG</label>
+			<label for="common_name" class="col-lg-2 control-label">FACILITY NAME</label>
 			<div class="col-lg-2">
-				<input type="text" class="form-control" placeholder="NAME" name="common_name" value="{{request.form.common_name}}">
+				<input type="text" class="form-control" placeholder="REQUIRED" name="common_name">
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="fcode" class="col-lg-2 control-label">FACILITY CODE</label>
 			<div class="col-lg-2">
-				<input type="text" class="form-control" placeholder="CODE" name="fcode" value="{{request.form.fcode}}">
+				<input type="text" class="form-control" placeholder="REQUIRED" name="fcode">
 			</div>
 		</div>
-		<input class="btn btn-default" type="submit" value="ADD">
+		<input class="btn btn-primary" type="submit" value="ADD">
 	</fieldset>
 </form>
 
+
+<form class="form-horizontal">
+	<fieldset>
+		<legend>EXISTING FACILITY</legend>
+			<p>List all of the facilities currently in the database</p>
+			<table class="table table-striped table-hover ">
+			   <thead>	
+				<tr><th><b>FACILITY NAME</b></th><th><b>FACILITY CODE</b></th></tr>
+			   </thead>
+		   	   <tbody>	   
+				{% for facility in facilities %}
+					<tr>
+						<th> {{ facility[2] }} </th>
+						<th> {{ facility[1] }} </th>
+					</th>
+				{% endfor %}
+			   </tbody>
+			</table>
+	</fieldset>
+</form>
 
 
 {{error}}
