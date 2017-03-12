@@ -10,7 +10,8 @@ CREATE TABLE users (      /* table with username and password */
 	user_pk		serial primary key,
 	username        varchar(16),
 	password        varchar(16),  /* Plaintext password  */
-	role_fk		integer REFERENCES roles(role_pk) not null /* role foreign key */
+	role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+	active		BOOLEAN 	/* Check true to allow login  */
 );
 
 CREATE TABLE assets (				/*table with assets */
@@ -30,6 +31,7 @@ CREATE TABLE asset_at (
 	facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
 	arrive_dt       timestamp, -- when the asset arrived
 	depart_dt       timestamp, -- when the asset left
+	acquired_dt	timestamp, -- when the asset acquired
 	disposed_dt	timestamp -- when the asset disposed 
 );
 

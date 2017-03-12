@@ -7,7 +7,7 @@ fi
 
 #If the directory does exist, the contents should be removed prior to generating the export files
 if [ -d "$2" ]; then 
-	rm -r $2
+	rm -rf $2
 fi
 
 #Create the directory
