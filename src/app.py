@@ -169,7 +169,7 @@ def add_asset():
       return redirect(url_for('add_asset'))
     return render_template("add_asset.html")
 
-
+# Disposing asset screen 
 @app.route("/dispose_asset", methods=['GET', 'POST'])
 @logged_user
 def dispose_asset():
@@ -192,24 +192,22 @@ def dispose_asset():
         return render_template("dispose_asset.html")
     return redirect(url_for("not_logistic"))
 
-
+#Major report for the application 
 @app.route("/asset_report", methods=['GET', 'POST'])
 @logged_user
 def asset_report():
-    if request.method=='GET':
-        return render_template("asset_report.html")
-    cursor.execute("SELECT common_name FROM facilities")
-    facilities = cursor.fetchall()
+    cursor.execute("SELECT * FROM facilities ORDER BY common_name")
+    session['facilities'] = cursor.fetchall()
     if request.method=='POST':
         facility = request.form['facility']
         date=request.form['data']
         try:
             SQL="SELECT asset_tag, common_name, arrive_dt FROM assets a JOIN asset_at aa ON asset_pk=asset_fk INNER JOIN facilities ON facility_fk=facility_pk WHERE facilities.common_name LIKE '%"+facility+"%' AND '"+date+"' >= aa.arrive_dt AND '"+date+"' <= aa.depart_dt;"
             cursor.execut(SQL)
-            data=cursor.fetchall()
+            session['data']=cursor.fetchall()
         except Exception as e:
             flash('ENTER the date')
-    return render_template("asset_report.html", facilities=facilities, data=data)
+    return render_template("asset_report.html")
 
 #Access controlled, only Logistics Officers should be able to initiate transfers
 @app.route("/transfer_req", methods=['GET', 'POST'])
@@ -247,9 +245,7 @@ def transfer_req():
                 return redirect(url_for("dashboard"))
             flash( "##### WARNING ##### Asset Tag does NOT exist")
         return render_template("transfer_req.html",facilities=facilities, assets=assets)
-#    flash(" ** WARNING ** Only Logistics officers can request transfers")
-    #If the user is not a Logistics Officer
-    return redirect(url_for('not_logistic'))
+    return redirect(url_for('not_logistic'))      #If the user is not a Logistics Officer
 
 #Add transit requests, an interface is needed to approve/complete them
 @app.route("/approve_req", methods=['GET', 'POST'])
