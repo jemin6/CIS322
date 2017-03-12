@@ -27,7 +27,7 @@
 			<label for="facility" class="col-lg-2 control-label">FACILITY</label>
 			<div class="col-lg-2">
 				<select class="form-control" name="facility">
-					{% for facility in facilities %}
+					{% for facility in session.facilities %}
 						<option value="{{facility[0]}}">{{facility[0]}}</option>
 					{% endfor %}
 				</select>
@@ -56,7 +56,7 @@
 					<tr><th><b>ASSET TAG</b></th><th><b>ASSET DESCRIPTION</b></th></tr>
 				</thead>
 				<tbody>
-					{% for asset in assets %}
+					{% for asset in session.assets %}
 						<tr>
 							<th> {{asset[0]}} </th>
 							<th> {{asset[1]}} </th>

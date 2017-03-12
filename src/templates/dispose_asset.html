@@ -2,20 +2,13 @@
 
 {% block body %}
 
-{#
-<form class="form-horizontal">
-	<fieldset>
-		<legend>EXISTING DISPOSE ASSET</legend>
-		{% for asset in assets %}
-		<h3>{{asset}}</h3>
-		{% endfor %}
-	</fieldset>
-</form>
-#}
+{% if session.role == "Logistics Officer" %}
 
-<form action="" class="form-horizontal" method="POST">
+<form class="form-horizontal" method="POST">
 	<fieldset>
 		<legend>DISPOSE ASSET</legend>
+		<p>- Only Logistics Officer can be able to dispost asset</p>
+		<p>- Lookup information for user's role</p>	
 		<div class="form-group">
 			<label for="asset_tag" class="col-lg-2 control-label">ASSET TAG</label>
 			<div class="col-lg-2">
@@ -35,6 +28,15 @@
 		</div>
 	</fieldset>
 </form>
+
+{% endif %}
+
+
+
+
+
+
+
 
 {{error}}
 {% endblock %}
