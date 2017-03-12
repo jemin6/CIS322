@@ -196,25 +196,22 @@ def dispose_asset():
 @app.route("/asset_report", methods=['GET', 'POST'])
 @logged_user
 def asset_report():
+    data = ""
     cursor.execute("SELECT * FROM facilities ORDER BY common_name")
     session['facilities'] = cursor.fetchall()
     if request.method=='POST':
         facility = request.form['facility']
-        date=request.form['data']
-        try:
-            SQL="SELECT asset_tag, common_name, arrive_dt FROM assets a JOIN asset_at aa ON asset_pk=asset_fk INNER JOIN facilities ON facility_fk=facility_pk WHERE facilities.common_name LIKE '%"+facility+"%' AND '"+date+"' >= aa.arrive_dt AND '"+date+"' <= aa.depart_dt;"
-            cursor.execut(SQL)
-            session['data']=cursor.fetchall()
-        except Exception as e:
-            flash('ENTER the date')
+        date=request.form['date']
+        SQL="SELECT asset_tag, description, common_name, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<=%s) and (depart_dt is null or depart_dt>=%s)"
+        cursor.execute(SQL,(date,date))
+        cursor.execut(SQL)
+        session['data']=cursor.fetchall()
     return render_template("asset_report.html")
 
 #Access controlled, only Logistics Officers should be able to initiate transfers
 @app.route("/transfer_req", methods=['GET', 'POST'])
 @logged_user
 def transfer_req():
-#    if request.method=='GET':
-#        return render_template('transfer_req.html')
     cursor.execute("SELECT common_name FROM facilities;")
     facilities = cursor.fetchall()
     cursor.execute("SELECT asset_tag FROM assets;")

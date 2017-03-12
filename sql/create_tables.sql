@@ -3,6 +3,9 @@ CREATE TABLE roles (
 	rolename	varchar(32)		/* short textual name for the role*/
 );
 
+INSERT INTO roles (rolename) VALUES ('Logistics Officer');
+INSERT INTO roles (rolename) VALUES ('Facilities Officer');
+
 CREATE TABLE users (      /* table with username and password */
 	user_pk		serial primary key,
 	username        varchar(16),
@@ -26,7 +29,8 @@ CREATE TABLE asset_at (
 	asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
 	facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
 	arrive_dt       timestamp, -- when the asset arrived
-	depart_dt       timestamp -- when the asset left
+	depart_dt       timestamp, -- when the asset left
+	disposed_dt	timestamp -- when the asset disposed 
 );
 
 CREATE TABLE requests (
@@ -45,6 +49,3 @@ CREATE TABLE transit(	/* table track assets in transit */
 	load_time	timestamp,	/* time takse for load */
 	unload_time	timestamp	/* time takes for unload */
 );
-
-INSERT INTO roles (rolename) VALUES ('Logistics Officer');
-INSERT INTO roles (rolename) VALUES ('Facilities Officer');

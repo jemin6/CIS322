@@ -9,9 +9,9 @@
 			<li><a href="{{ url_for('add_facility') }}">FACILITY add</a></li>
 			<li><a href="{{ url_for('add_asset') }}">ASSET add</a></li>
 			<li><a href="{{ url_for('dispose_asset') }}">ASSET dispose</a></li>
-			<li><a href="{{ url_for('transfer_req') }}">Transfer REQUEST</a></li>
-			<li><a href="{{ url_for('approve_req') }}">Approve REQUEST</a></li>
-			<li><a href="{{ url_for('update_transit') }}">Transfer UPDATE</a></li>
+			<li><a href="{{ url_for('transfer_req') }}">TRANSFER request</a></li>
+			<li><a href="{{ url_for('approve_req') }}">APPROVE requesst</a></li>
+			<li><a href="{{ url_for('update_transit') }}">TRANSFER update</a></li>
 			<li><a href="{{ url_for('asset_report') }}">ASSET report</a></li>
 				<ul class="nav navbar-nav navbar-right">
 					<form action="{{url_for('logout')}}" method="GET"><button class="btn btn-danger navbar-btn" href="{{url_for('logout')}}">LOG OUT</button></form>
