@@ -11,7 +11,7 @@ CREATE TABLE users (      /* table with username and password */
 	username        varchar(16),
 	password        varchar(16),  /* Plaintext password  */
 	role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
-	active		BOOLEAN 	/* Check true to allow login  */
+	active		BOOLEAN	/* Check true to allow login  */
 );
 
 CREATE TABLE assets (				/*table with assets */
