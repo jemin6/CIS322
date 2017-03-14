@@ -138,7 +138,7 @@ def add_facility():
 def add_asset():
     cursor.execute("SELECT common_name FROM facilities")
     session['facilities'] = cursor.fetchall()
-    cursor.execute("SELECT asset_tag FROM assets")
+    cursor.execute("SELECT asset_tag, description FROM assets")
     session['assets'] = cursor.fetchall()
     if request.method == 'POST':
       if 'asset_tag' in request.form and 'description' in request.form and 'facility' in request.form and 'date' in request.form:
@@ -184,10 +184,16 @@ def dispose_asset():
                 flash("##### WARNING #####\n Asset does not exist")
             else:
                 asset_pk = result[0][0]
-                SQL="UPDATE asset_at SET depart_dt=%s WHERE asset_fk=%s"
-                cursor.execute(SQL,(date,asset_pk))
-                conn.commit()
-                flash("##### SUCCEED ##### Asset tag disposed")
+                SQL="SELECT disposed_dt FROM asset_at WHERE asset_fk=%s"
+                cursor.execute(SQL,(asset_pk,))
+                result = cursor.fetchall()
+                if result[0]:
+                    flash("##### WARNING #####\n Already been disposed")
+                else:
+                    SQL="UPDATE asset_at SET depart_dt=%s,disposed_dt=%s WHERE asset_fk=%s"
+                    cursor.execute(SQL,(date,date,asset_pk))
+                    conn.commit()
+                    flash("##### SUCCEED ##### Asset tag disposed")
                 return redirect(url_for("dispose_asset"))
         return render_template("dispose_asset.html")
     return redirect(url_for("not_logistic"))
@@ -196,7 +202,6 @@ def dispose_asset():
 @app.route("/asset_report", methods=['GET', 'POST'])
 @logged_user
 def asset_report():
-    data = ""
     cursor.execute("SELECT * FROM facilities ORDER BY common_name")
     session['facilities'] = cursor.fetchall()
     if request.method=='POST':
@@ -204,7 +209,6 @@ def asset_report():
         date=request.form['date']
         SQL="SELECT asset_tag, description, common_name, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<=%s) and (depart_dt is null or depart_dt>=%s)"
         cursor.execute(SQL,(date,date))
-        cursor.execut(SQL)
         session['data']=cursor.fetchall()
     return render_template("asset_report.html")
 
