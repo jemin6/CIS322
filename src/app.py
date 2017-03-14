@@ -187,7 +187,8 @@ def dispose_asset():
                 SQL="SELECT disposed_dt FROM asset_at WHERE asset_fk=%s"
                 cursor.execute(SQL,(asset_pk,))
                 result = cursor.fetchall()
-                if result[0]:
+                print(result)
+                if result[0][0]:
                     flash("##### WARNING #####\n Already been disposed")
                 else:
                     SQL="UPDATE asset_at SET depart_dt=%s,disposed_dt=%s WHERE asset_fk=%s"
