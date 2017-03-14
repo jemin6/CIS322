@@ -12,9 +12,9 @@
 		<div class="form-group">
 			<label for="facility" class="col-lg-2 control-label">FACILITY NAME</label>
 			<div class="col-lg-2">
-				<select class="form-control"  name="">
+				<select class="form-control"  name="facility">
 					{% for facility in session.facilities %}
-					<option value={{facility[2]}} name={{facility[2]}}>{{facility[2]}}</option>
+					<option value= "{{facility[2]}}" > {{facility[2]}} </option>
 					{% endfor %}
 				</select>
 			</div>
@@ -52,6 +52,7 @@
 					<td>{{ data[1] }}</td>
 					<td>{{ data[2] }}</td>
 					<td>{{ data[3] }}</td>
+					<td>{{ data[4] }}</td>
 				<tr>
 				{% endfor %}
 			</tbody>
