@@ -14224,3 +14224,227 @@ STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
 		load_time	timestamp,	/* time takse for load */
 		unload_time	timestamp	/* time takes for unload */
 	);
+ERROR:  relation "users" already exists
+STATEMENT:  create table users
+	(user_pk serial primary key,
+	username varchar(16),
+	password varchar(16),
+	role_fk integer,
+	active BOOLEAN,
+	logged_in BOOLEAN);
+ERROR:  relation "roles" already exists
+STATEMENT:  create table roles
+	(
+	role_pk serial primary key,
+	role_name varchar(255));
+ERROR:  relation "assets" already exists
+STATEMENT:  create table assets
+	(assets_pk serial primary key,
+	 asset_tag varchar(16),
+	 alt_description varchar(255),
+	 disposed_dt timestamp DEFAULT NULL);
+ERROR:  relation "facilities" already exists
+STATEMENT:  create table facilities
+	(facilities_pk serial primary key,
+	fcode varchar(6),
+	common_name varchar(32),
+	location varchar(255));
+ERROR:  relation "asset_at" already exists
+STATEMENT:  create table asset_at
+		(asset_fk INT,
+			facility_fk integer,
+			arrive_dt TIMESTAMP,
+			depart_dt timestamp DEFAULT NULL);
+ERROR:  relation "transit" already exists
+STATEMENT:  create table transit
+		(	asset_fk INT,
+			transfer_fk Int REFERENCES transfer (transfer_pk),
+			source_fk INT,
+			destination_fk INT,
+			load_dt timestamp DEFAULT NULL,
+			unload_dt timestamp DEFAULT NULL);
+ERROR:  column a.assets_pk does not exist at character 181
+HINT:  Perhaps you meant to reference the column "a.asset_pk".
+STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt,                 f.common_name, f.fcode FROM assets AS a INNER JOIN                 asset_at AS aa ON aa.asset_fk=a.assets_pk INNER JOIN facilities AS f                 ON f.facilities_pk=aa.facility_fk ORDER BY aa.arrive_dt ASC;
+ERROR:  column a.assets_pk does not exist at character 181
+HINT:  Perhaps you meant to reference the column "a.asset_pk".
+STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt,                 f.common_name, f.fcode FROM assets AS a INNER JOIN                 asset_at AS aa ON aa.asset_fk=a.assets_pk INNER JOIN facilities AS f                 ON f.facilities_pk=aa.facility_fk ORDER BY aa.arrive_dt ASC;
+ERROR:  column a.assets_pk does not exist at character 181
+HINT:  Perhaps you meant to reference the column "a.asset_pk".
+STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt,                 f.common_name, f.fcode FROM assets AS a INNER JOIN                 asset_at AS aa ON aa.asset_fk=a.assets_pk INNER JOIN facilities AS f                 ON f.facilities_pk=aa.facility_fk ORDER BY aa.arrive_dt ASC;
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='je'
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='je'
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='je'
+ERROR:  column a.assets_pk does not exist at character 181
+HINT:  Perhaps you meant to reference the column "a.asset_pk".
+STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt,                 f.common_name, f.fcode FROM assets AS a INNER JOIN                 asset_at AS aa ON aa.asset_fk=a.assets_pk INNER JOIN facilities AS f                 ON f.facilities_pk=aa.facility_fk ORDER BY aa.arrive_dt ASC;
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='jemin'
+ERROR:  column a.assets_pk does not exist at character 181
+HINT:  Perhaps you meant to reference the column "a.asset_pk".
+STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt,                 f.common_name, f.fcode FROM assets AS a INNER JOIN                 asset_at AS aa ON aa.asset_fk=a.assets_pk INNER JOIN facilities AS f                 ON f.facilities_pk=aa.facility_fk ORDER BY aa.arrive_dt ASC;
+ERROR:  relation "users" already exists
+STATEMENT:  create table users
+	(user_pk serial primary key,
+	username varchar(16),
+	password varchar(16),
+	role_fk integer,
+	active BOOLEAN,
+	logged_in BOOLEAN);
+ERROR:  relation "roles" already exists
+STATEMENT:  create table roles
+	(
+	role_pk serial primary key,
+	role_name varchar(255));
+ERROR:  relation "user_is" already exists
+STATEMENT:  create table user_is
+	(user_fk INT,
+	role_fk integer REFERENCES roles (role_pk),
+	role_name varchar(255));
+ERROR:  relation "assets" already exists
+STATEMENT:  create table assets
+	(assets_pk serial primary key,
+	 asset_tag varchar(16),
+	 alt_description varchar(255),
+	 disposed_dt timestamp DEFAULT NULL);
+ERROR:  relation "facilities" already exists
+STATEMENT:  create table facilities
+	(facilities_pk serial primary key,
+	fcode varchar(6),
+	common_name varchar(32),
+	location varchar(255));
+ERROR:  relation "asset_at" already exists
+STATEMENT:  create table asset_at
+		(asset_fk INT,
+			facility_fk integer,
+			arrive_dt TIMESTAMP,
+			depart_dt timestamp DEFAULT NULL);
+ERROR:  relation "transfer" already exists
+STATEMENT:  create table transfer
+		(	transfer_pk serial primary key,
+			asset_fk INT,
+			requestor_fk INT REFERENCES users (user_pk),
+			approver_fk INT REFERENCES users (user_pk) DEFAULT NULL,
+			request_dt timestamp DEFAULT NULL,
+			approve_dt timestamp DEFAULT NULL,
+			source_fk INT,
+			destination_fk INT);
+ERROR:  relation "transit" already exists
+STATEMENT:  create table transit
+		(	asset_fk INT,
+			transfer_fk Int REFERENCES transfer (transfer_pk),
+			source_fk INT,
+			destination_fk INT,
+			load_dt timestamp DEFAULT NULL,
+			unload_dt timestamp DEFAULT NULL);
+ERROR:  column a.assets_pk does not exist at character 181
+HINT:  Perhaps you meant to reference the column "a.asset_pk".
+STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt,                 f.common_name, f.fcode FROM assets AS a INNER JOIN                 asset_at AS aa ON aa.asset_fk=a.assets_pk INNER JOIN facilities AS f                 ON f.facilities_pk=aa.facility_fk ORDER BY aa.arrive_dt ASC;
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='jemin'
+ERROR:  column a.assets_pk does not exist at character 181
+HINT:  Perhaps you meant to reference the column "a.asset_pk".
+STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt,                 f.common_name, f.fcode FROM assets AS a INNER JOIN                 asset_at AS aa ON aa.asset_fk=a.assets_pk INNER JOIN facilities AS f                 ON f.facilities_pk=aa.facility_fk ORDER BY aa.arrive_dt ASC;
+ERROR:  relation "users" already exists
+STATEMENT:  create table users
+	(user_pk serial primary key,
+	username varchar(16),
+	password varchar(16),
+	role_fk integer,
+	active BOOLEAN,
+	logged_in BOOLEAN);
+ERROR:  relation "roles" already exists
+STATEMENT:  create table roles
+	(
+	role_pk serial primary key,
+	role_name varchar(255));
+ERROR:  relation "user_is" already exists
+STATEMENT:  create table user_is
+	(user_fk INT,
+	role_fk integer REFERENCES roles (role_pk),
+	role_name varchar(255));
+ERROR:  relation "assets" already exists
+STATEMENT:  create table assets
+	(assets_pk serial primary key,
+	 asset_tag varchar(16),
+	 alt_description varchar(255),
+	 disposed_dt timestamp DEFAULT NULL);
+ERROR:  relation "facilities" already exists
+STATEMENT:  create table facilities
+	(facilities_pk serial primary key,
+	fcode varchar(6),
+	common_name varchar(32),
+	location varchar(255));
+ERROR:  relation "asset_at" already exists
+STATEMENT:  create table asset_at
+		(asset_fk INT,
+			facility_fk integer,
+			arrive_dt TIMESTAMP,
+			depart_dt timestamp DEFAULT NULL);
+ERROR:  relation "transfer" already exists
+STATEMENT:  create table transfer
+		(	transfer_pk serial primary key,
+			asset_fk INT,
+			requestor_fk INT REFERENCES users (user_pk),
+			approver_fk INT REFERENCES users (user_pk) DEFAULT NULL,
+			request_dt timestamp DEFAULT NULL,
+			approve_dt timestamp DEFAULT NULL,
+			source_fk INT,
+			destination_fk INT);
+ERROR:  relation "transit" already exists
+STATEMENT:  create table transit
+		(	asset_fk INT,
+			transfer_fk Int REFERENCES transfer (transfer_pk),
+			source_fk INT,
+			destination_fk INT,
+			load_dt timestamp DEFAULT NULL,
+			unload_dt timestamp DEFAULT NULL);
+ERROR:  column a.assets_pk does not exist at character 181
+HINT:  Perhaps you meant to reference the column "a.asset_pk".
+STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt,                 f.common_name, f.fcode FROM assets AS a INNER JOIN                 asset_at AS aa ON aa.asset_fk=a.assets_pk INNER JOIN facilities AS f                 ON f.facilities_pk=aa.facility_fk ORDER BY aa.arrive_dt ASC;
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='jemin'
+ERROR:  column "location" of relation "facilities" does not exist at character 44
+STATEMENT:  INSERT INTO facilities(common_name, fcode, location) VALUES('RQ', '666', '')
+ERROR:  column "location" of relation "facilities" does not exist at character 44
+STATEMENT:  INSERT INTO facilities(common_name, fcode, location) VALUES('RQ', '666', 'Eugene')
+ERROR:  column "location" of relation "facilities" does not exist at character 44
+STATEMENT:  INSERT INTO facilities(common_name, fcode, location) VALUES('RQ', '666', '')
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='jemin'
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='jemin'
+ERROR:  column "role_name" does not exist at character 33
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_pk FROM roles WHERE role_name='Logistics Officer'
+ERROR:  column "role_name" does not exist at character 33
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_pk FROM roles WHERE role_name='Logistics Officer'
+ERROR:  column "role_name" does not exist at character 33
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_pk FROM roles WHERE role_name='Facilities Officer'
+ERROR:  column "location" of relation "facilities" does not exist at character 44
+STATEMENT:  INSERT INTO facilities(common_name, fcode, location) VALUES('', '', '')
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='je'
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='je'
+ERROR:  column "role_name" does not exist at character 8
+HINT:  Perhaps you meant to reference the column "roles.rolename".
+STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_pk WHERE username='je'
+ERROR:  column a.assets_pk does not exist at character 137
+HINT:  Perhaps you meant to reference the column "a.asset_pk".
+STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt, f.common_name, f.fcode FROM assets AS a INNER JOIN asset_at AS aa ON a.assets_pk=aa.asset_fk                         INNER JOIN facilities AS f ON f.facilities_pk=aa.facility_fk WHERE aa.arrive_dt<='1999-01-01' AND (aa.depart_dt>='1999-01-01' OR aa.depart_dt IS NULL) AND f.common_name='HQ';
