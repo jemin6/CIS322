@@ -14448,3 +14448,5 @@ STATEMENT:  SELECT role_name FROM users JOIN roles ON users.role_fk=roles.role_p
 ERROR:  column a.assets_pk does not exist at character 137
 HINT:  Perhaps you meant to reference the column "a.asset_pk".
 STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt, f.common_name, f.fcode FROM assets AS a INNER JOIN asset_at AS aa ON a.assets_pk=aa.asset_fk                         INNER JOIN facilities AS f ON f.facilities_pk=aa.facility_fk WHERE aa.arrive_dt<='1999-01-01' AND (aa.depart_dt>='1999-01-01' OR aa.depart_dt IS NULL) AND f.common_name='HQ';
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 239) running in data directory "/home/osnapdev/data/lost"?
