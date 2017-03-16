@@ -37,17 +37,18 @@ CREATE TABLE asset_at (
 
 CREATE TABLE requests (
 	request_pk 	serial primary key,     
-	requester_fk 	integer REFERENCES roles(role_pk) not null, /* logistics officer submitting the request  */
+	requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+	approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
 	request_dt 	timestamp,	/* request time */
-	approval_dt 	timestamp, 	/* approval time */
 	source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
 	destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+	approval_dt 	timestamp, 	/* approval time */
 	asset_fk 	integer REFERENCES assets(asset_pk) not null
 );
 
 CREATE TABLE transit(	/* table track assets in transit */
 	transit_pk 	serial primary key,
-	request_fk	integer REFERENCES requests(request_pk) not null, 
-	load_time	timestamp,	/* time takse for load */
-	unload_time	timestamp	/* time takes for unload */
+	request_fk	integer REFERENCES request(request_pk) not null, 
+	load_dt		timestamp DEFAULT null,	/* time takse for load */
+	unload_dt	timestamp DEFAULT null	/* time takes for unload */
 );

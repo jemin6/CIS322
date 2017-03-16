@@ -114,7 +114,7 @@ def create_user():
 @app.route("/add_facility", methods=['GET', 'POST'])
 @logged_user
 def add_facility():
-    cursor.execute("SELECT * FROM facilities ORDER BY common_name")
+    cursor.execute("SELECT * FROM facilities")
     session['facilities']=cursor.fetchall()
     if request.method=='POST':          # Insert new facility into the database
         if 'common_name' in request.form and 'fcode' in request.form:
@@ -136,7 +136,7 @@ def add_facility():
 #Add asset in to the datebase 
 @app.route("/add_asset", methods=['GET', 'POST'])
 def add_asset():
-    cursor.execute("SELECT common_name FROM facilities")
+    cursor.execute("SELECT fcode FROM facilities")
     session['facilities'] = cursor.fetchall()
     cursor.execute("SELECT asset_tag, description FROM assets")
     session['assets'] = cursor.fetchall()
@@ -155,10 +155,13 @@ def add_asset():
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
             cursor.execute(SQL,(asset_tag,))
             asset_pk = cursor.fetchall()
-            SQL="SELECT facility_pk FROM facilities WHERE common_name=%s"
+            SQL="SELECT facility_pk FROM facilities WHERE fcode=%s"
             cursor.execute(SQL,(facility,))
             facility_pk = cursor.fetchall()
             facility_pk = facility_pk[0][0]
+            print()
+            print("facility: {}".format(facility_pk))
+            print()
             asset_pk = asset_pk[0][0]
             SQL="INSERT INTO asset_at (asset_fk, facility_fk, arrive_dt) VALUES (%s,%s,%s)"
             cursor.execute(SQL,(asset_pk,facility_pk,date))
@@ -203,12 +206,12 @@ def dispose_asset():
 @app.route("/asset_report", methods=['GET', 'POST'])
 @logged_user
 def asset_report():
-    cursor.execute("SELECT * FROM facilities ORDER BY common_name")
+    cursor.execute("SELECT fcode FROM facilities")
     session['facilities'] = cursor.fetchall()
     if request.method=='POST':
         facility = request.form['facility']
         date=request.form['date']
-        SQL="SELECT asset_tag, description, common_name, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<=%s) and (depart_dt is null or depart_dt>=%s)"
+        SQL="SELECT asset_tag, description, fcode, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<=%s) and (depart_dt is null or depart_dt>=%s)"
         cursor.execute(SQL,(date,date))
         session['data']=cursor.fetchall()
     return render_template("asset_report.html")
@@ -217,9 +220,9 @@ def asset_report():
 @app.route("/transfer_req", methods=['GET', 'POST'])
 @logged_user
 def transfer_req():
-    cursor.execute("SELECT common_name FROM facilities;")
+    cursor.execute("SELECT fcode FROM facilities")
     facilities = cursor.fetchall()
-    cursor.execute("SELECT asset_tag FROM assets;")
+    cursor.execute("SELECT asset_tag FROM assets")
     assets = cursor.fetchall()
     if session['role'] == 'Logistics Officer':
         if request.method=='POST':
