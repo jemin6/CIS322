@@ -20,4 +20,6 @@ if [ "$#" -ne 2 ]; then
 	exit;
 fi
 
-python3 import_users.py $1 $2 
+python3 data.py $1 $2 
+
+
