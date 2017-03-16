@@ -14450,3 +14450,13 @@ HINT:  Perhaps you meant to reference the column "a.asset_pk".
 STATEMENT:  SELECT a.asset_tag, a.alt_description, aa.arrive_dt, aa.depart_dt, f.common_name, f.fcode FROM assets AS a INNER JOIN asset_at AS aa ON a.assets_pk=aa.asset_fk                         INNER JOIN facilities AS f ON f.facilities_pk=aa.facility_fk WHERE aa.arrive_dt<='1999-01-01' AND (aa.depart_dt>='1999-01-01' OR aa.depart_dt IS NULL) AND f.common_name='HQ';
 FATAL:  lock file "postmaster.pid" already exists
 HINT:  Is another postmaster (PID 239) running in data directory "/home/osnapdev/data/lost"?
+LOG:  database system was shut down at 2017-03-15 02:07:37 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  value too long for type character varying(6)
+STATEMENT:  INSERT INTO facilities (common_name, fcode) VALUES ('HQ','Headquarters')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities ORDER BY common_name
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities ORDER BY common_name
