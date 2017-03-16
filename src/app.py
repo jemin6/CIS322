@@ -233,17 +233,23 @@ def transfer_req():
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
             cursor.execute(SQL,(asset_tag,))
             asset_fk = cursor.fetchone()
+            print(asset_fk)
             if asset_fk != None:
                 SQL="SELECT user_pk from users WHERE username=%s"
-                cursor.execute(SQL,(session,))
+                cursor.execute(SQL,(session['username'],))
                 user_pk = cursor.fetchone()
-                SQL="SELECT facility_pk from facilities WHERE common_name=%s"
+                print(user_pk)
+                SQL="SELECT facility_pk from facilities WHERE fcode=%s"
                 cursor.execute(SQL,(source,))
                 source_fk = cursor.fetchone()
-                SQL="SELECT facility_pk from facilities WHERE common_name=%s"
+                print(source_fk)
+                print(source)
+                SQL="SELECT facility_pk from facilities WHERE fcode=%s"
                 cursor.execute(SQL,(destination,))
                 destination_fk = cursor.fetchone()
-                SQL="INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, assset_fk) VALUES (%s,%s,%s,%s,%s)"
+                print(destination_fk)
+                print(destination)
+                SQL="INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES (%s,%s,%s,%s,%s)"
                 cursor.execute(SQL,(str(user_pk[0]),date,str(source_fk[0]),str(destination_fk[0]),str(asset_fk[0])))
                 conn.commit()
                 flash("##### REQUEST ##### Asset transfer success!")
@@ -256,31 +262,27 @@ def transfer_req():
 @app.route("/approve_req", methods=['GET', 'POST'])
 @logged_user
 def approve_req():
-    if request.method=='GET':
-        return render_template('approve_req.html' )
     if session['role'] == 'Facilities Officer':
         if request.method == 'POST':
             approval = request.form.getlist("approval")
             deny = request.form.getlist("deny")
-            request_pk = request.form["request_pk"]
+            requests = request.form["request_pk"]
             if len(approval) != 0:
-                flash("@@@ APPROVED @@@") 
+                flash("##### APPROVED #####") 
                 SQL="INSERT INTO transit (request_fk) VALUES (%s)"
-                cursor.execute(SQL,(request_pk,))
+                cursor.execute(SQL,(requests,))
             else:
-                flash("Request has been removed")
+                flash("##### REMOVED #####")
                 SQL="DELETE FROM requests WHERE request_pk=%s"
-                cursor.execute(SQL,(request_pk,))
+                cursor.execute(SQL,(requests,))
             conn.commit()
             return redirect(url_for("dashboard"))
         return render_template("approve_req.html", requests=requests)
-    flash(" ** WARNING ** Only Facilities Officers can approve request")
-    return redirect(url_for("dashboard"))
+    return redirect(url_for("not_facility"))
 
+#Transit Tracking 
 @app.route("/update_transit", methods=['GET', 'POST'])
 def update_transit():
-    if request.method=='GET':
-        return render_template("update_transit.html")
     cursor.execute("SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null")
     transit = cursor.fetchall()
     if session['role'] == 'Logistics Officer':
@@ -294,13 +296,18 @@ def update_transit():
             flash("Updated load/unload times")
             return redirect(url_for('dashboard'))
         return render_template("update_transit.html", transit=transit)
-    flash(" ** WARNING ** Only Logistics Officer can update tracking information.")
-    return redirect(url_for("login"))
+    return redirect(url_for("not_logistic"))
 
 #When user is not Logistic Officer
 @app.route("/not_logistic")
 def not_logistic():
     return render_template("not_logistic.html")
+
+#When user is not Facility Officer
+@app.route("/not_facility")
+def not_facility():
+    return render_template("not_facility.html")
+
 
 @app.route("/logout")
 @logged_user
