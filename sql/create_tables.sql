@@ -48,7 +48,7 @@ CREATE TABLE requests (
 
 CREATE TABLE transit(	/* table track assets in transit */
 	transit_pk 	serial primary key,
-	request_fk	integer REFERENCES request(request_pk) not null, 
+	request_fk	integer REFERENCES requests(request_pk) not null, 
 	load_dt		timestamp DEFAULT null,	/* time takse for load */
 	unload_dt	timestamp DEFAULT null	/* time takes for unload */
 );

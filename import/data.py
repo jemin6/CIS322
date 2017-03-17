@@ -20,6 +20,7 @@ def process_file(fname):
             line = line.strip()
             print("%s,%s"%(m.group(1),line))
 
+#import users 
 def import_users():
     with open(sys.argv[2]+"/users.csv",'r') as csvfile:
         users = csv.DictReader(csvfile)
@@ -36,6 +37,20 @@ def import_users():
             conn.commit()
     return 
 
+#importing facilities
+def import_facilities():
+    with open(sys.argv[2]+"/facilities.csv",'r') as csvfile:
+        facilities = csv.DictReader(csvfile)
+        for row in facilities:
+            fcode = row['fcode']
+            common_name = row['common_name']
+            SQL = "INSERT INTO facilities (fcode,common_name) VALUES (%s,%s)"
+            cursor.execute(SQL,(fcode,common_name))
+            conn.commit()
+    return
+ 
+
+#importing assets
 def import_assets():
     with open(sys.argv[2]+"/assets.csv",'r') as csvfile:
         assets = csv.DictReader(csvfile)
@@ -61,20 +76,38 @@ def import_assets():
             SQL = "SELECT facility_pk FROM facilities WHERE fcode=%s"
             cursor.execute(SQL,(facility,))
             facility_fk = cursor.fetchall()
+            if len(facility_fk) == 0:
+                print("Try to import asset into facility that doesn't exist {}".format(facility))
+                continue
             SQL = "INSERT INTO asset_at (asset_fk, facility_fk, acquired_dt, disposed_dt) VALUES(%s,%s,%s,%s)"
             cursor.execute(SQL,(asset_fk[0][0],facility_fk[0][0],acquired, disposed))           
             conn.commit()
     return 
 
 
-
-
+#import transfer 
+def import_transfers():
+    with open(sys.argv[2]+"/transfers.csv",'r') as csvfile:
+        transfers = csv.DictReader(csvfile)
+        for row in transfers:
+            asset_tag = row['asset_tag']
+            request_by = row['request_by']
+            request_dt = row['request_dt']
+            approve_by = row['approve_by']
+            approve_dt = row['approve_dt']
+            source = row['source']
+            destination = row['destination']
+            load_dt = row['load_dt']
+            unload_dt = row['unload_dt']
+            
+    return 
 
 
 
 
 def main():
     import_users()
+    import_facilities()
     import_assets()
 
 for arg in sys.argv[1:]:
