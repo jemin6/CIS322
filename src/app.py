@@ -234,15 +234,24 @@ def transfer_req():
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
             cursor.execute(SQL,(asset_tag,))
             asset_fk = cursor.fetchone()
+            print("asset_fk")
             print(asset_fk)
             if asset_fk != None:
                 SQL="SELECT user_pk from users WHERE username=%s"
                 cursor.execute(SQL,(session['username'],))
                 user_pk = cursor.fetchone()
+                print("user_pk")
                 print(user_pk)
+                print(session['username'])
+                SQL="SELECT user_pk from users WHERE username=%s"
+                cursor.execute(SQL,(session['username'],))
+                approver_fk = cursor.fetchone()
+                print("approver_fk")
+                print(approver_fk)
                 SQL="SELECT facility_pk from facilities WHERE fcode=%s"
                 cursor.execute(SQL,(source,))
                 source_fk = cursor.fetchone()
+                print("sourc_fk and source")
                 print(source_fk)
                 print(source)
                 SQL="SELECT facility_pk from facilities WHERE fcode=%s"
@@ -250,8 +259,8 @@ def transfer_req():
                 destination_fk = cursor.fetchone()
                 print(destination_fk)
                 print(destination)
-                SQL="INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES (%s,%s,%s,%s,%s)"
-                cursor.execute(SQL,(str(user_pk[0]),date,str(source_fk[0]),str(destination_fk[0]),str(asset_fk[0])))
+                SQL="INSERT INTO requests (requester_fk,approver_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES (%s,$s,%s,%s,%s,%s)"
+                cursor.execute(SQL,(str(user_pk[0]),str(approver_fk[0]),date,str(source_fk[0]),str(destination_fk[0]),str(asset_fk[0])))
                 conn.commit()
                 flash("##### REQUEST ##### Asset transfer success!")
                 return redirect(url_for("dashboard"))

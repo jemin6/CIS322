@@ -38,7 +38,7 @@ CREATE TABLE asset_at (
 CREATE TABLE requests (
 	request_pk 	serial primary key,     
 	requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
-	approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+	approver_fk	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
 	request_dt 	timestamp,	/* request time */
 	source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
 	destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
