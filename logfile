@@ -14767,3 +14767,3101 @@ STATEMENT:  CREATE TABLE requests (
 ERROR:  database "lost" is being accessed by other users
 DETAIL:  There is 1 other session using the database.
 STATEMENT:  DROP DATABASE lost;
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk	serial primary key,
+		role_name varchar(32) 
+	);
+ERROR:  column "role_name" of relation "roles" does not exist at character 20
+STATEMENT:  INSERT INTO roles (role_name) VALUES ('Logistics Officer');
+ERROR:  column "role_name" of relation "roles" does not exist at character 20
+STATEMENT:  INSERT INTO roles (role_name) VALUES ('Facilities Officer');
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (
+		asset_pk serial primary key,
+		asset_tag varchar(16), 
+		description text,
+		disposed timestamp DEFAULT null
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk serial primary key,
+		fcode varchar(6),
+		common_name varchar(32)
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk integer REFERENCES assets(asset_pk),
+		facility_fk integer REFERENCES facilities(facility_pk),
+		arrive_dt timestamp,
+		dispose_dt timestamp DEFAULT NULL,
+		depart_dt timestamp DEFAULT NULL 
+	);
+ERROR:  relation "users" does not exist at character 15
+STATEMENT:  select * from users;
+ERROR:  relation "asset" does not exist at character 15
+STATEMENT:  select * from asset;
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles(
+		role_pk serial primary key,
+		role varchar(32) 
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets(
+		asset_pk serial primary key,
+		asset_tag varchar(16) UNIQUE, 
+		description text,
+		status integer 
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities(
+		facility_pk serial primary key,
+		f_code varchar(6) UNIQUE, 
+		common_name varchar(32) UNIQUE 
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at(
+		asset_fk integer REFERENCES assets (asset_pk),
+		facility_fk integer REFERENCES facilities (facility_pk),
+		intake_dt timestamp, 
+		expunge_dt timestamp 
+	);
+ERROR:  relation "transfer_requests" already exists
+STATEMENT:  CREATE TABLE transfer_requests(
+		request_id varchar(16) UNIQUE, 
+		requester varchar(16) references users(user_id), 
+		request_dt timestamp, 
+		src integer references facilities(facility_pk), 
+		dest integer references facilities(facility_pk), 
+		asset_fk integer references assets(asset_pk), 
+		approver varchar(16) references users(user_id), 
+		approve_dt timestamp, 
+		status integer 
+	);
+ERROR:  column "request_id" referenced in foreign key constraint does not exist
+STATEMENT:  CREATE TABLE asset_moving(
+		request_id varchar(16) references transfer_requests(request_id),
+		asset_fk integer references assets(asset_pk), 
+		src integer references facilities(facility_pk), 
+		dest integer references facilities(facility_pk), 
+		load_dt timestamp, 
+		unload_dt timestamp 
+	);
+ERROR:  column "role" of relation "roles" does not exist at character 20
+STATEMENT:  INSERT INTO roles (role) VALUES ('Facilities Officer');
+ERROR:  column "role" of relation "roles" does not exist at character 20
+STATEMENT:  INSERT INTO roles (role) VALUES ('Logistics Officer');
+ERROR:  column "role" does not exist at character 83
+STATEMENT:  INSERT INTO has (role_fk, capability_fk) VALUES ((SELECT role_pk FROM roles WHERE role='Facilities Officer'), (SELECT capability_pk FROM capabilities WHERE capability='Add Facility'));
+ERROR:  column "role" does not exist at character 83
+STATEMENT:  INSERT INTO has (role_fk, capability_fk) VALUES ((SELECT role_pk FROM roles WHERE role='Facilities Officer'), (SELECT capability_pk FROM capabilities WHERE capability='Add Asset'));
+ERROR:  column "role" does not exist at character 83
+STATEMENT:  INSERT INTO has (role_fk, capability_fk) VALUES ((SELECT role_pk FROM roles WHERE role='Facilities Officer'), (SELECT capability_pk FROM capabilities WHERE capability='Approve Transfer'));
+ERROR:  column "role" does not exist at character 83
+STATEMENT:  INSERT INTO has (role_fk, capability_fk) VALUES ((SELECT role_pk FROM roles WHERE role='Logistics Officer'), (SELECT capability_pk FROM capabilities WHERE capability='Add Facility'));
+ERROR:  column "role" does not exist at character 83
+STATEMENT:  INSERT INTO has (role_fk, capability_fk) VALUES ((SELECT role_pk FROM roles WHERE role='Logistics Officer'), (SELECT capability_pk FROM capabilities WHERE capability='Add Asset'));
+ERROR:  column "role" does not exist at character 83
+STATEMENT:  INSERT INTO has (role_fk, capability_fk) VALUES ((SELECT role_pk FROM roles WHERE role='Logistics Officer'), (SELECT capability_pk FROM capabilities WHERE capability='Dispose Asset'));
+ERROR:  column "role" does not exist at character 83
+STATEMENT:  INSERT INTO has (role_fk, capability_fk) VALUES ((SELECT role_pk FROM roles WHERE role='Logistics Officer'), (SELECT capability_pk FROM capabilities WHERE capability='Transfer Request'));
+ERROR:  column "role" does not exist at character 83
+STATEMENT:  INSERT INTO has (role_fk, capability_fk) VALUES ((SELECT role_pk FROM roles WHERE role='Logistics Officer'), (SELECT capability_pk FROM capabilities WHERE capability='Update Transit'));
+FATAL:  database "LOST" does not exist
+FATAL:  database "LOST" does not exist
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+STATEMENT:  DROP DATABASE lost;
+FATAL:  database "lost" does not exist
+FATAL:  database "lost" does not exist
+ERROR:  syntax error at or near "select" at character 34
+STATEMENT:  select * from transfer_requests 
+	select * from transfer_requests;
+ERROR:  syntax error at or near "select" at character 31
+STATEMENT:  select * from transfer.csv
+	ls
+	select * from transfer;
+ERROR:  relation "transfer" does not exist at character 15
+STATEMENT:  select * from transfer;
+ERROR:  relation "transfers" does not exist at character 15
+STATEMENT:  select * from transfers;
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  column "rolename" of relation "roles" does not exist at character 20
+STATEMENT:  INSERT INTO roles (rolename) VALUES ('Logistics Officer');
+ERROR:  column "rolename" of relation "roles" does not exist at character 20
+STATEMENT:  INSERT INTO roles (rolename) VALUES ('Facilities Officer');
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp, 
+		acquired_dt	timestamp, 
+		disposed_dt	timestamp 
+	);
+ERROR:  column "user_pk" referenced in foreign key constraint does not exist
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "requests" does not exist
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  invalid input syntax for type timestamp: "" at character 69
+STATEMENT:  INSERT INTO asset_at (asset_fk, facility_fk, arrive_dt) VALUES (2,1,'')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='TT'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag=''
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='HOME'
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt       timestamp, 
+		acquired_dt	timestamp, 
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+LOG:  received SIGHUP, reloading configuration files
+FATAL:  terminating connection due to administrator command
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2017-03-18 08:01:20 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  syntax error at or near "select" at character 16
+STATEMENT:  select * from 
+	select * from users;
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT username FROM users WHERE username='tt'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='tt'
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='HOME'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG001'
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  invalid input syntax for type timestamp: "" at character 33
+STATEMENT:  UPDATE asset_at SET disposed_dt='' WHERE asset_fk=2
+ERROR:  invalid input syntax for type timestamp: "" at character 33
+STATEMENT:  UPDATE asset_at SET disposed_dt='' WHERE asset_fk=2
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "asset" does not exist at character 15
+STATEMENT:  select * from asset;
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+FATAL:  terminating connection due to administrator command
+LOG:  received SIGHUP, reloading configuration files
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2017-03-19 11:31:05 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  relation "asset" does not exist at character 15
+STATEMENT:  select * from asset;
+ERROR:  invalid input syntax for type timestamp: "" at character 33
+STATEMENT:  UPDATE asset_at SET disposed_dt='' WHERE asset_fk=2
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  invalid input syntax for type timestamp: "" at character 33
+STATEMENT:  UPDATE asset_at SET disposed_dt='' WHERE asset_fk=2
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG001'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG001'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  invalid input syntax for type timestamp: "" at character 33
+STATEMENT:  UPDATE asset_at SET disposed_dt='' WHERE asset_fk=2
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='PJ001'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG002'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT asset_pk FROM assets WHERE asset_tag='SG001'
+ERROR:  column "depart_dt" does not exist at character 50
+STATEMENT:  SELECT asset_tag, description, fcode, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<='1928-06-06') and (depart_dt is null or depart_dt>='1928-06-06')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT username FROM users WHERE username='je'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  column "depart_dt" does not exist at character 50
+STATEMENT:  SELECT asset_tag, description, fcode, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<='1928-06-06') and (depart_dt is null or depart_dt>='1928-06-06')
+ERROR:  column "depart_dt" does not exist at character 50
+STATEMENT:  SELECT asset_tag, description, fcode, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<='1928-06-06') and (depart_dt is null or depart_dt>='1928-06-06')
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		depart_dt 	timestamp, 
+		arrive_dt       timestamp, 
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  column "depart_dt" does not exist at character 50
+STATEMENT:  SELECT asset_tag, description, fcode, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<='1928-06-06') and (depart_dt is null or depart_dt>='1928-06-06')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  column "depart_dt" does not exist at character 50
+STATEMENT:  SELECT asset_tag, description, fcode, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<='2017-03-01') and (depart_dt is null or depart_dt>='2017-03-01')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		depart_dt 	timestamp, 
+		arrive_dt       timestamp, 
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		
+		arrive_dt       timestamp, 
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  invalid input syntax for type timestamp: "" at character 208
+STATEMENT:  SELECT asset_tag, description, fcode, arrive_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<='') and (disposed_dt is null or disposed_dt>='')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		
+		arrive_dt       timestamp, 
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  invalid input syntax for type timestamp: "" at character 208
+STATEMENT:  SELECT asset_tag, description, fcode, arrive_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<='') and (disposed_dt is null or disposed_dt>='')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='je'
+ERROR:  invalid input syntax for type timestamp: "" at character 208
+STATEMENT:  SELECT asset_tag, description, fcode, arrive_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<='') and (disposed_dt is null or disposed_dt>='')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  invalid input syntax for type timestamp: "" at character 208
+STATEMENT:  SELECT asset_tag, description, fcode, arrive_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<='') and (disposed_dt is null or disposed_dt>='')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (1, 1, null, 2017-03-02 00:00:00, 1, 1, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-02','1','1','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+FATAL:  terminating connection due to administrator command
+LOG:  received SIGHUP, reloading configuration files
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2017-03-19 12:51:52 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  column "acquired_dt" of relation "asset_at" does not exist at character 46
+STATEMENT:  INSERT INTO asset_at (asset_fk, facility_fk, acquired_dt, disposed_dt) VALUES(1,1,'1928-06-06','2002-06-14')
+ERROR:  column "acquired_dt" of relation "asset_at" does not exist at character 46
+STATEMENT:  INSERT INTO asset_at (asset_fk, facility_fk, acquired_dt, disposed_dt) VALUES(1,1,'1928-06-06','2002-06-14')
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There are 2 other sessions using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There are 2 other sessions using the database.
+STATEMENT:  DROP DATABASE lost;
+LOG:  server process (PID 367) was terminated by signal 9: Killed
+LOG:  terminating any other active server processes
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+LOG:  all server processes terminated; reinitializing
+LOG:  database system was interrupted; last known up at 2017-03-19 13:04:54 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  redo starts at 0/5766A98
+LOG:  invalid record length at 0/5768308
+LOG:  redo done at 0/57682E0
+LOG:  last completed transaction was at log time 2017-03-19 13:05:14.499413+00
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  database system was interrupted; last known up at 2017-03-19 13:06:31 UTC
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/5768378
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT password FROM users WHERE username='malcom'
+ERROR:  relation "asset" does not exist at character 15
+STATEMENT:  select * from asset;
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (1, 1, null, 2017-03-01 00:00:00, 1, 2, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-01','1','2','1')
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (2, 1, null, 2017-03-01 00:00:00, 1, 1, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-01','1','1','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (3, 1, null, 2017-03-29 00:00:00, 1, 1, null, 7).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-29','1','1','7')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (1, 1, null, 2017-03-29 00:00:00, 1, 3, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-29','1','3','1')
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (2, 1, null, 2017-03-30 00:00:00, 1, 1, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-30','1','1','1')
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk),  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (3, 1, null, 2017-03-01 00:00:00, 1, 1, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-01','1','1','1')
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk),  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+LOG:  database system was shut down at 2017-03-19 14:33:46 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "asset" does not exist at character 15
+STATEMENT:  select * from asset;
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (1, 1, null, 2017-03-01 00:00:00, 2, 1, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-01','2','1','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (2, 1, null, 2017-03-31 00:00:00, 1, 1, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-31','1','1','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk),  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  invalid input syntax for type timestamp: "" at character 98
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','','1','1','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (3, 1, null, 2017-03-16 00:00:00, 1, 2, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-16','1','2','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (4, 1, null, 2017-03-01 00:00:00, 1, 1, null, 2).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-01','1','1','2')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
+ERROR:  invalid input syntax for type timestamp: "" at character 98
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','','1','1','1')
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (5, 1, null, 2017-03-03 00:00:00, 1, 1, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-03','1','1','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (6, 1, null, 2017-03-30 00:00:00, 1, 1, null, 3).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-30','1','1','3')
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (7, 1, null, 2017-03-30 00:00:00, 1, 1, null, 3).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-30','1','1','3')
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver_fk	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver_fk	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver_fk	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver_fk	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver_fk	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null

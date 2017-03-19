@@ -67,6 +67,7 @@ def dashboard():
     if session['role'] == 'Logistics Officer':
         SQL="SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)"
         cursor.execute(SQL)
+        cursor.execute("SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);")
         data = cursor.fetchall()
         header = "Request"
         rows = ["Requester", "Request Date", "Source", "Destination"]
@@ -80,7 +81,7 @@ def dashboard():
         url = "/update_transit"
         conn.commit()
     return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
-
+#    return render_template('dashboard.html')
 
 # Create user screen where users can create username, password and the role. 
 @app.route('/create_user',methods=['POST','GET'])
@@ -194,8 +195,8 @@ def dispose_asset():
                 if result[0][0]:
                     flash("##### WARNING #####\n Already been disposed")
                 else:
-                    SQL="UPDATE asset_at SET depart_dt=%s,disposed_dt=%s WHERE asset_fk=%s"
-                    cursor.execute(SQL,(date,date,asset_pk))
+                    SQL="UPDATE asset_at SET disposed_dt=%s WHERE asset_fk=%s"
+                    cursor.execute(SQL,(date,asset_pk))
                     conn.commit()
                     flash("##### SUCCEED ##### Asset tag disposed")
                 return redirect(url_for("dispose_asset"))
@@ -211,7 +212,7 @@ def asset_report():
     if request.method=='POST':
         facility = request.form['facility']
         date=request.form['date']
-        SQL="SELECT asset_tag, description, fcode, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<=%s) and (depart_dt is null or depart_dt>=%s)"
+        SQL="SELECT asset_tag, description, fcode, arrive_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<=%s) and (disposed_dt is null or disposed_dt>=%s)"
         cursor.execute(SQL,(date,date))
         session['data']=cursor.fetchall()
     return render_template("asset_report.html")
@@ -233,15 +234,24 @@ def transfer_req():
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
             cursor.execute(SQL,(asset_tag,))
             asset_fk = cursor.fetchone()
+            print("asset_fk")
             print(asset_fk)
             if asset_fk != None:
                 SQL="SELECT user_pk from users WHERE username=%s"
                 cursor.execute(SQL,(session['username'],))
                 user_pk = cursor.fetchone()
+                print("user_pk")
                 print(user_pk)
+                print(session['username'])
+                SQL="SELECT user_pk from users WHERE username=%s"
+                cursor.execute(SQL,(session['username'],))
+                approver_fk = cursor.fetchone()
+                print("approver_fk")
+                print(approver_fk)
                 SQL="SELECT facility_pk from facilities WHERE fcode=%s"
                 cursor.execute(SQL,(source,))
                 source_fk = cursor.fetchone()
+                print("sourc_fk and source")
                 print(source_fk)
                 print(source)
                 SQL="SELECT facility_pk from facilities WHERE fcode=%s"
@@ -249,8 +259,8 @@ def transfer_req():
                 destination_fk = cursor.fetchone()
                 print(destination_fk)
                 print(destination)
-                SQL="INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES (%s,%s,%s,%s,%s)"
-                cursor.execute(SQL,(str(user_pk[0]),date,str(source_fk[0]),str(destination_fk[0]),str(asset_fk[0])))
+                SQL="INSERT INTO requests (requester_fk,approver_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES (%s,$s,%s,%s,%s,%s)"
+                cursor.execute(SQL,(str(user_pk[0]),str(approver_fk[0]),date,str(source_fk[0]),str(destination_fk[0]),str(asset_fk[0])))
                 conn.commit()
                 flash("##### REQUEST ##### Asset transfer success!")
                 return redirect(url_for("dashboard"))
@@ -262,6 +272,9 @@ def transfer_req():
 @app.route("/approve_req", methods=['GET', 'POST'])
 @logged_user
 def approve_req():
+
+    cursor.execute("SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);")
+    requests = cursor.fetchall()
     if session['role'] == 'Facilities Officer':
         if request.method == 'POST':
             approval = request.form.getlist("approval")
@@ -272,7 +285,7 @@ def approve_req():
                 SQL="INSERT INTO transit (request_fk) VALUES (%s)"
                 cursor.execute(SQL,(requests,))
             else:
-                flash("##### REMOVED #####")
+                flash("##### DELETED #####")
                 SQL="DELETE FROM requests WHERE request_pk=%s"
                 cursor.execute(SQL,(requests,))
             conn.commit()
