@@ -29,15 +29,16 @@ CREATE TABLE facilities (
 CREATE TABLE asset_at (
 	asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
 	facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
-	-- depart_dt 	timestamp, -- when the asset depart
 	arrive_dt       timestamp, -- when the asset arrived
+	depart_dt 	timestamp,
+	acquired_dt	timestamp,
 	disposed_dt	timestamp -- when the asset disposed 
 );
 
 CREATE TABLE requests (
 	request_pk 	serial primary key,     
 	requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
-	approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+	approver	integer REFERENCES users (user_pk),  /* facilities officer approving the transfer request */
 	request_dt 	timestamp,	/* request time */
 	source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
 	destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */

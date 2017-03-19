@@ -65,8 +65,9 @@ def login():
 @logged_user
 def dashboard():
     if session['role'] == 'Logistics Officer':
-        SQL="SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)"
-        cursor.execute(SQL)
+        #SQL="SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)"
+        # cursor.execute(SQL)
+        cursor.execute("SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);")
         data = cursor.fetchall()
         header = "Request"
         rows = ["Requester", "Request Date", "Source", "Destination"]
