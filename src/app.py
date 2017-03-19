@@ -64,24 +64,24 @@ def login():
 @app.route("/dashboard",methods=('GET',))
 @logged_user
 def dashboard():
-    if session['role'] == 'Logistics Officer':
+#    if session['role'] == 'Logistics Officer':
         #SQL="SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)"
         # cursor.execute(SQL)
-        cursor.execute("SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);")
-        data = cursor.fetchall()
-        header = "Request"
-        rows = ["Requester", "Request Date", "Source", "Destination"]
-        url = "/approve_req"
+#        cursor.execute("SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);")
+#        data = cursor.fetchall()
+#        header = "Request"
+#        rows = ["Requester", "Request Date", "Source", "Destination"]
+#        url = "/approve_req"
 
-    else:
-        cursor.execute("SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null")
-        data = cursor.fetchall()
-        header = "Transit"
-        rows = ["Request ID", "Load Time", "Unload Time"]
-        url = "/update_transit"
-        conn.commit()
-    return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
-
+#    else:
+#        cursor.execute("SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null")
+#        data = cursor.fetchall()
+#        header = "Transit"
+#        rows = ["Request ID", "Load Time", "Unload Time"]
+#        url = "/update_transit"
+#        conn.commit()
+#    return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
+    return render_template('dashboard.html')
 
 # Create user screen where users can create username, password and the role. 
 @app.route('/create_user',methods=['POST','GET'])
@@ -263,6 +263,9 @@ def transfer_req():
 @app.route("/approve_req", methods=['GET', 'POST'])
 @logged_user
 def approve_req():
+
+    cursor.execute("SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);")
+    requests = cursor.fetchall()
     if session['role'] == 'Facilities Officer':
         if request.method == 'POST':
             approval = request.form.getlist("approval")
@@ -273,7 +276,7 @@ def approve_req():
                 SQL="INSERT INTO transit (request_fk) VALUES (%s)"
                 cursor.execute(SQL,(requests,))
             else:
-                flash("##### REMOVED #####")
+                flash("##### DELETED #####")
                 SQL="DELETE FROM requests WHERE request_pk=%s"
                 cursor.execute(SQL,(requests,))
             conn.commit()

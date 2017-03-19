@@ -16730,3 +16730,800 @@ ERROR:  current transaction is aborted, commands ignored until end of transactio
 STATEMENT:  SELECT fcode FROM facilities
 ERROR:  current transaction is aborted, commands ignored until end of transaction block
 STATEMENT:  SELECT fcode FROM facilities
+LOG:  database system was shut down at 2017-03-19 14:33:46 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  column "load_time" does not exist at character 29
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "asset" does not exist at character 15
+STATEMENT:  select * from asset;
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  database "lost" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+STATEMENT:  DROP DATABASE lost;
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (1, 1, null, 2017-03-01 00:00:00, 2, 1, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-01','2','1','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (2, 1, null, 2017-03-31 00:00:00, 1, 1, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-31','1','1','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk),  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  invalid input syntax for type timestamp: "" at character 98
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','','1','1','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (3, 1, null, 2017-03-16 00:00:00, 1, 2, null, 1).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-16','1','2','1')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
+ERROR:  relation "roles" already exists
+STATEMENT:  CREATE TABLE roles (
+		role_pk		serial primary key, 	/* primary key for a role instance*/
+		rolename	varchar(32)		/* short textual name for the role*/
+	);
+ERROR:  relation "users" already exists
+STATEMENT:  CREATE TABLE users (      /* table with username and password */
+		user_pk		serial primary key,
+		username        varchar(16),
+		password        varchar(16),  /* Plaintext password  */
+		role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
+		active		boolean DEFAULT true		/* Check true to allow login  */
+	);
+ERROR:  relation "assets" already exists
+STATEMENT:  CREATE TABLE assets (				/*table with assets */
+		asset_pk	serial primary key,	
+		asset_tag	varchar(16),		/* 16 characters in length */
+		description	text			/* arbitrary length */
+	);
+ERROR:  relation "facilities" already exists
+STATEMENT:  CREATE TABLE facilities (
+		facility_pk 	serial primary key,
+		fcode 		varchar(6),		/* facility code */
+		common_name	varchar(32)		/* 32 characters in length */
+	);
+ERROR:  relation "asset_at" already exists
+STATEMENT:  CREATE TABLE asset_at (
+		asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
+		facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+		arrive_dt       timestamp, 
+		depart_dt 	timestamp,
+		acquired_dt	timestamp,
+		disposed_dt	timestamp 
+	);
+ERROR:  relation "requests" already exists
+STATEMENT:  CREATE TABLE requests (
+		request_pk 	serial primary key,     
+		requester_fk 	integer REFERENCES users (user_pk) not null, /* logistics officer submitting the request  */
+		approver	integer REFERENCES users (user_pk) not null,  /* facilities officer approving the transfer request */
+		request_dt 	timestamp,	/* request time */
+		source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
+		destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
+		approval_dt 	timestamp, 	/* approval time */
+		asset_fk 	integer REFERENCES assets(asset_pk) not null
+	);
+ERROR:  relation "transit" already exists
+STATEMENT:  CREATE TABLE transit(	/* table track assets in transit */
+		transit_pk 	serial primary key,
+		request_fk	integer REFERENCES requests(request_pk) not null, 
+		load_dt		timestamp DEFAULT null,	/* time takse for load */
+		unload_dt	timestamp DEFAULT null	/* time takes for unload */
+	);
+ERROR:  null value in column "approver" violates not-null constraint
+DETAIL:  Failing row contains (4, 1, null, 2017-03-01 00:00:00, 1, 1, null, 2).
+STATEMENT:  INSERT INTO requests (requester_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES ('1','2017-03-01','1','1','2')
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT fcode FROM facilities
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
