@@ -194,8 +194,8 @@ def dispose_asset():
                 if result[0][0]:
                     flash("##### WARNING #####\n Already been disposed")
                 else:
-                    SQL="UPDATE asset_at SET depart_dt=%s,disposed_dt=%s WHERE asset_fk=%s"
-                    cursor.execute(SQL,(date,date,asset_pk))
+                    SQL="UPDATE asset_at SET disposed_dt=%s WHERE asset_fk=%s"
+                    cursor.execute(SQL,(date,asset_pk))
                     conn.commit()
                     flash("##### SUCCEED ##### Asset tag disposed")
                 return redirect(url_for("dispose_asset"))
@@ -211,7 +211,7 @@ def asset_report():
     if request.method=='POST':
         facility = request.form['facility']
         date=request.form['date']
-        SQL="SELECT asset_tag, description, fcode, arrive_dt, depart_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<=%s) and (depart_dt is null or depart_dt>=%s)"
+        SQL="SELECT asset_tag, description, fcode, arrive_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<=%s) and (disposed_dt is null or disposed_dt>=%s)"
         cursor.execute(SQL,(date,date))
         session['data']=cursor.fetchall()
     return render_template("asset_report.html")

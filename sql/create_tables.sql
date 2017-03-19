@@ -29,9 +29,8 @@ CREATE TABLE facilities (
 CREATE TABLE asset_at (
 	asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
 	facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
+	-- depart_dt 	timestamp, -- when the asset depart
 	arrive_dt       timestamp, -- when the asset arrived
-	depart_dt       timestamp, -- when the asset left
-	acquired_dt	timestamp, -- when the asset acquired
 	disposed_dt	timestamp -- when the asset disposed 
 );
 
