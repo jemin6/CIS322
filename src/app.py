@@ -83,6 +83,9 @@ def dashboard():
     return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
 #    return render_template('dashboard.html')
 
+#Assignment 10, step 6: Disable the user create screen 
+"""
+
 # Create user screen where users can create username, password and the role. 
 @app.route('/create_user',methods=['POST','GET'])
 def create_user():
@@ -110,6 +113,9 @@ def create_user():
                 # else, falses then pops up warning message
                 flash("##### WARNING #####\n  Already taken username ")
     return render_template("create_user.html")
+
+"""
+
 
 #Login required. Users adds facilities into the database
 @app.route("/add_facility", methods=['GET', 'POST'])
