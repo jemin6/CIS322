@@ -4,15 +4,11 @@ import json
 import psycopg2
 from functools import wraps
 import sys
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key ="sample_secret_key"
 
-# Connect to an existing database
-conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
-
-# Open a cursor to perform database operations
-cursor = conn.cursor()
 
 def logged_user(func):                 #access allowed when logged in. 
     @wraps(func)
@@ -23,6 +19,52 @@ def logged_user(func):                 #access allowed when logged in.
             flash("login required")
             return redirect(url_for('login_page'))
     return with_logging
+
+"""
+@app.route('activate_user',methods=['POST',])
+def activate_user():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
+    if request.method=='POST':
+      if 'arguments' in reqeust.form:
+        req = json.loads(request.form['arguments'])
+
+    dat = dict()
+    dat['timestamp'] = req['timestamp']
+    dat['result'] = 'OK'
+    dat['input'] = req
+
+    facofc = None
+    if req['role'] == 'facofc':
+        facofc = True
+    elif req['role'] == 'logofc':
+        facofc = False
+    else:
+        data['result'] = 'FAIL'
+
+    if facofc != None:
+        try: 
+            SQL = "SELECT * FROM users WHERE username=%s"
+            cursor.execute(SQL,(req['username'],)
+            response = cursor.fetchall()
+            if len(response) > 0:
+                SQL = "DELECT FROM users WHERE username=%s"
+                cursor.execute(SQL,(req['username'],)
+            if facofc:
+                SQL = "INSERT INTO users (username,password,role_fk) VALUES (%s,%s,%s)"
+                cursor.execute(SQL,(req['username'],req['password'],1))
+            else:
+                SQL = "INSERT INTO users (username,password,role_fk) VALUES (%s,%s,%s)"
+                cursor.execute(SQL,(req['username'],req['password'],2))
+                conn.commit()
+        except Exception as e:
+            dat['result'] = 'FAIL'
+
+    data = json.dumps(dat)
+    conn.close()
+    return data
+"""
+
 
 # main page which is the beginning page
 @app.route("/")

@@ -11,13 +11,14 @@ CREATE TABLE users (      /* table with username and password */
 	username        varchar(16),
 	password        varchar(16),  /* Plaintext password  */
 	role_fk		integer REFERENCES roles(role_pk) not null, /* role foreign key */
-	active		boolean DEFAULT true		/* Check true to allow login  */
+	active		boolean DEFAULT TRUE		/* Check true to allow login  */
 );
 
 CREATE TABLE assets (				/*table with assets */
 	asset_pk	serial primary key,	
 	asset_tag	varchar(16),		/* 16 characters in length */
-	description	text			/* arbitrary length */
+	description	text,			/* arbitrary length */
+	disposed 	boolean			
 );
 
 CREATE TABLE facilities (
@@ -29,9 +30,7 @@ CREATE TABLE facilities (
 CREATE TABLE asset_at (
 	asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
 	facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
-	arrive_dt       timestamp, -- when the asset arrived
-	depart_dt 	timestamp,
-	acquired_dt	timestamp,
+	acquired_dt	timestamp, -- when the asset acquired 
 	disposed_dt	timestamp -- when the asset disposed 
 );
 
@@ -43,7 +42,8 @@ CREATE TABLE requests (
 	source_fk 	integer REFERENCES facilities(facility_pk) not null, /* source facility */
 	destination_fk	integer REFERENCES facilities(facility_pk) not null, /* destination facility */
 	approval_dt 	timestamp, 	/* approval time */
-	asset_fk 	integer REFERENCES assets(asset_pk) not null
+	asset_fk 	integer REFERENCES assets(asset_pk) not null,
+	approved	boolean not null 
 );
 
 CREATE TABLE transit(	/* table track assets in transit */

@@ -27,7 +27,38 @@ def main():
         print("Role should be either facofc or logofc")
         return 
 
-    print("\n** SUCCESSFULLY ACTIVATED **\nUSERNAME: ",sys.argv[2], "\nROLE: ",sys.argv[4], "\n\n")
+
+    # Prep the arguments blob
+    args = dict()
+    args['timestamp'] = datetime.datetime.utcnow().isoformat()
+    args['username']  = sys.argv[2]
+    args['password']  = sys.argv[3]
+    args['role']  = sys.argv[4]
+
+    # Print a message to let the user know what is being tried
+    print("\nActivating user: %s\n"%args['username'])
+
+
+    # Setup the data to send
+    sargs = dict()
+    sargs['arguments']=json.dumps(args)
+    sargs['signature']=''
+    data = urlencode(sargs)
+
+    # Make the resquest
+    req = Request(sys.argv[1],data.encode('ascii'),method='POST')
+    res = urlopen(req)
+                
+    # Parse the response
+    resp = json.loads(res.read().decode('ascii'))
+                            
+    # Print the result code
+    print("Call to LOST returned: %s"%resp['result'])
+
+
+
+
+    #print("\n** SUCCESSFULLY ACTIVATED **\nUSERNAME: ",sys.argv[2], "\nROLE: ",sys.argv[4], "\n\n")
 
 if __name__=='__main__':
     main()
