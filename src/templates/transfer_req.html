@@ -12,8 +12,12 @@
 		<p>- Check source and destination facilities exists</p>
 		<div class="form-group">
 			<label for="asset_tag" class="col-lg-2 control-label">ASSET TAG</label>
-			<div class="col-lg-2">	
-				<input type="text" class="form-control" placeholder="REQUIRED" name="asset_tag">
+			<div class="col-lg-2">
+				<select class="form-control" name="asset tag">
+				{% for asset in session.assets %}
+					<option value={{asset[0]}}>{{asset[0]}}</option>
+				{% endfor %}
+				</select>	
 			</div>
 		</div>
 		<div class="form-group">
@@ -34,12 +38,6 @@
 					<option value={{facility[0]}}>{{facility[0]}}</option>
 				{% endfor %}
 				</select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="date" class="col-lg-2 control-label">DATE</label>
-			<div class="col-lg-2">
-				<input type="date" class="form-control" placeholder="date" name="date">
 			</div>
 		</div>
 		<div class="form-group">
@@ -64,6 +62,8 @@
 				{% for asset in assets %}
 				<tr>
 					<th> {{ asset[0] }} </th>
+					<th> {{ asset[1] }} </th>
+					<th> {{ asset[2] }} </th>
 				</tr>
 
 				{% endfor %}

@@ -8,11 +8,8 @@ import sys
 app = Flask(__name__)
 app.secret_key ="sample_secret_key"
 
-# Connect to an existing database
-conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
-
-# Open a cursor to perform database operations
-cursor = conn.cursor()
+#conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+#cursor = conn.cursor()
 
 def logged_user(func):                 #access allowed when logged in. 
     @wraps(func)
@@ -32,8 +29,11 @@ def main():
 # Login page for the users. Type vaild username and password to login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    if request.method=='GET':
-        return render_template('login.html')
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
+    error = ""
+#    if request.method=='GET':
+#        return render_template('login.html')
     if request.method=='POST':
         if 'username' in request.form and 'password' in request.form:
             user_name = request.form['username']
@@ -57,13 +57,17 @@ def login():
                     cursor.execute(SQL,(session['username'],))
                     role=cursor.fetchone()
                     session['role'] = role[0]
+                    conn.close()
                     return render_template('dashboard.html')
+    conn.close()
     return render_template('login.html', error=error)
 
 # Dashboad page, which shows when login is successfully done
 @app.route("/dashboard",methods=('GET',))
 @logged_user
 def dashboard():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
     if session['role'] == 'Logistics Officer':
         SQL="SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)"
         cursor.execute(SQL)
@@ -80,15 +84,17 @@ def dashboard():
         rows = ["Request ID", "Load Time", "Unload Time"]
         url = "/update_transit"
         conn.commit()
+    conn.close()
     return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
-#    return render_template('dashboard.html')
+
 
 #Assignment 10, step 6: Disable the user create screen 
-"""
 
 # Create user screen where users can create username, password and the role. 
 @app.route('/create_user',methods=['POST','GET'])
 def create_user():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
     if request.method=='GET':               # Load the create user page
         return render_template('create_user.html')
     if request.method=='POST':              # creates the user name & password 
@@ -112,15 +118,16 @@ def create_user():
             else:
                 # else, falses then pops up warning message
                 flash("##### WARNING #####\n  Already taken username ")
+    conn.close()
     return render_template("create_user.html")
-
-"""
 
 
 #Login required. Users adds facilities into the database
 @app.route("/add_facility", methods=['GET', 'POST'])
 @logged_user
 def add_facility():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM facilities")
     session['facilities']=cursor.fetchall()
     if request.method=='POST':          # Insert new facility into the database
@@ -138,11 +145,14 @@ def add_facility():
             else:
                 flash("##### ERROR ###### \nFacility already in database!")
         return redirect(url_for('add_facility'))
+    conn.close()
     return render_template("add_facility.html")
 
 #Add asset in to the datebase 
 @app.route("/add_asset", methods=['GET', 'POST'])
 def add_asset():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
     cursor.execute("SELECT fcode FROM facilities")
     session['facilities'] = cursor.fetchall()
     cursor.execute("SELECT asset_tag, description FROM assets")
@@ -170,19 +180,22 @@ def add_asset():
             print("facility: {}".format(facility_pk))
             print()
             asset_pk = asset_pk[0][0]
-            SQL="INSERT INTO asset_at (asset_fk, facility_fk, arrive_dt) VALUES (%s,%s,%s)"
+            SQL="INSERT INTO asset_at (asset_fk, facility_fk, acquired_dt) VALUES (%s,%s,%s)"
             cursor.execute(SQL,(asset_pk,facility_pk,date))
             conn.commit()
             flash("##### SUCCEED #####\n Asset successfully inserted")
         else:
             flash("##### WARNING #####\n Already existing data")
       return redirect(url_for('add_asset'))
+    conn.close()
     return render_template("add_asset.html")
 
 # Disposing asset screen 
 @app.route("/dispose_asset", methods=['GET', 'POST'])
 @logged_user
 def dispose_asset():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
     if session['role'] == 'Logistics Officer':
         if request.method == 'POST':
             asset_tag = request.form['asset_tag']
@@ -207,26 +220,32 @@ def dispose_asset():
                     flash("##### SUCCEED ##### Asset tag disposed")
                 return redirect(url_for("dispose_asset"))
         return render_template("dispose_asset.html")
+    conn.close()
     return redirect(url_for("not_logistic"))
 
 #Major report for the application 
 @app.route("/asset_report", methods=['GET', 'POST'])
 @logged_user
 def asset_report():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
     cursor.execute("SELECT fcode FROM facilities")
     session['facilities'] = cursor.fetchall()
     if request.method=='POST':
         facility = request.form['facility']
         date=request.form['date']
-        SQL="SELECT asset_tag, description, fcode, arrive_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (arrive_dt is null or arrive_dt<=%s) and (disposed_dt is null or disposed_dt>=%s)"
+        SQL="SELECT asset_tag, description, fcode, acquired_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (acquired_dt is null or acquired_dt<=%s) and (disposed_dt is null or disposed_dt>=%s)"
         cursor.execute(SQL,(date,date))
         session['data']=cursor.fetchall()
+    conn.close()
     return render_template("asset_report.html")
 
 #Access controlled, only Logistics Officers should be able to initiate transfers
 @app.route("/transfer_req", methods=['GET', 'POST'])
 @logged_user
 def transfer_req():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
     cursor.execute("SELECT fcode FROM facilities")
     facilities = cursor.fetchall()
     cursor.execute("SELECT asset_tag FROM assets")
@@ -272,12 +291,15 @@ def transfer_req():
                 return redirect(url_for("dashboard"))
             flash( "##### WARNING ##### Asset Tag does NOT exist")
         return render_template("transfer_req.html",facilities=facilities, assets=assets)
+    conn.close()
     return redirect(url_for('not_logistic'))      #If the user is not a Logistics Officer
 
 #Add transit requests, an interface is needed to approve/complete them
 @app.route("/approve_req", methods=['GET', 'POST'])
 @logged_user
 def approve_req():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);")
     requests = cursor.fetchall()
@@ -297,11 +319,14 @@ def approve_req():
             conn.commit()
             return redirect(url_for("dashboard"))
         return render_template("approve_req.html", requests=requests)
+    conn.close()
     return redirect(url_for("not_facility"))
 
 #Transit Tracking 
 @app.route("/update_transit", methods=['GET', 'POST'])
 def update_transit():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null")
     transit = cursor.fetchall()
     if session['role'] == 'Logistics Officer':
@@ -315,6 +340,7 @@ def update_transit():
             flash("Updated load/unload times")
             return redirect(url_for('dashboard'))
         return render_template("update_transit.html", transit=transit)
+    conn.close()
     return redirect(url_for("not_logistic"))
 
 #When user is not Logistic Officer

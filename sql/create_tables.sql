@@ -3,8 +3,8 @@ CREATE TABLE roles (
 	rolename	varchar(32)		/* short textual name for the role*/
 );
 
-INSERT INTO roles (role_pk, rolename) VALUES (1, 'Facilities Officer');
-INSERT INTO roles (role_pk, rolename) VALUES (2,'Logistics Officer');
+INSERT INTO roles (rolename) VALUES ('Facilities Officer');
+INSERT INTO roles (rolename) VALUES ('Logistics Officer');
 
 CREATE TABLE users (      /* table with username and password */
 	user_pk		serial primary key,
@@ -29,8 +29,6 @@ CREATE TABLE facilities (
 CREATE TABLE asset_at (
 	asset_fk        integer REFERENCES assets (asset_pk) not null, /* asset at a facility  */
 	facility_fk     integer REFERENCES facilities (facility_pk) not null, /* facility the asset is at*/
-	arrive_dt       timestamp, -- when the asset arrived
-	depart_dt 	timestamp,
 	acquired_dt	timestamp,
 	disposed_dt	timestamp -- when the asset disposed 
 );
