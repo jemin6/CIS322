@@ -27,7 +27,27 @@ def main():
         print("Role should be either facofc or logofc")
         return 
 
-    print("\n** SUCCESSFULLY ACTIVATED **\nUSERNAME: ",sys.argv[2], "\nROLE: ",sys.argv[4], "\n\n")
+
+    args = dict()
+    args['username'] = sys.argv[2]
+    args['password'] = sys.argv[3]
+    if sys.argv[4] == 'logofc':
+        args['role'] = 2
+    else: 
+        args['role'] = 1
+    data = urlencode(args)
+
+    # Make the request.
+    req = Request(sys.argv[1], data.encode('ascii'), method = 'POST')
+    res = urlopen(req)
+
+    # Parse the response
+    resp = json.loads(res.read().decode('ascii'))
+    
+    # Print the result code
+    print("Call to LOST returned: %s"%resp['result'])
+
+    #print("\n** SUCCESSFULLY ACTIVATED **\nUSERNAME: ",sys.argv[2], "\nROLE: ",sys.argv[4], "\n\n")
 
 if __name__=='__main__':
     main()

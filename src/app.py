@@ -21,6 +21,24 @@ def logged_user(func):                 #access allowed when logged in.
             return redirect(url_for('login_page'))
     return with_logging
 
+
+# activate user
+@app.route('/activate_user', methods=('POST',))
+def activate_user():   
+    if request.method=='POST' and 'arguments' in request.form:
+        req=json.loads(request.form['arguments'])
+    else:
+        return "Activation failed"
+
+# revoke user
+@app.route('/revoke_user',methods=('POST',))
+def revoke_user():
+    if request.method=='POST' and 'arguments' in request.form:
+        req=json.loads(request.form['argunments'])
+    else:
+        return "Revoking failed"
+
+
 # main page which is the beginning page
 @app.route("/")
 def main():
