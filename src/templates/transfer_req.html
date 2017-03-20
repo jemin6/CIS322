@@ -24,7 +24,7 @@
 			<label for="facility" class="col-lg-2 control-label">SOURCE</label>
 			<div class="col-lg-2">
 				<select class="form-control"  name="source">
-				{% for facility in facilities %}
+				{% for facility in session.facilities %}
 					<option value={{facility[0]}}>{{facility[0]}}</option>
 				{% endfor %}
 				</select>
@@ -34,7 +34,7 @@
 			<label for="facility" class="col-lg-2 control-label">DESTINATION</label>
 			<div class="col-lg-2">
 				<select class="form-control"  name="destination">
-				{% for facility in facilities %}
+				{% for facility in session.facilities %}
 					<option value={{facility[0]}}>{{facility[0]}}</option>
 				{% endfor %}
 				</select>

@@ -32,20 +32,17 @@ def main():
     args['username'] = sys.argv[2]
     args['password'] = sys.argv[3]
     if sys.argv[4] == 'logofc':
-        args['role'] = 2
+        args['rolename'] = 'Logistics Officer'
     else: 
-        args['role'] = 1
+        args['rolename'] = 'Facilities Officer'
     data = urlencode(args)
 
     # Make the request.
-    req = Request(sys.argv[1], data.encode('ascii'), method = 'POST')
+    req = Request(sys.argv[1]+"create_user", data.encode('ascii'), method = 'POST')
     res = urlopen(req)
 
-    # Parse the response
-    resp = json.loads(res.read().decode('ascii'))
-    
     # Print the result code
-    print("Call to LOST returned: %s"%resp['result'])
+    print("Call to returned: %s"%res.read())
 
     #print("\n** SUCCESSFULLY ACTIVATED **\nUSERNAME: ",sys.argv[2], "\nROLE: ",sys.argv[4], "\n\n")
 

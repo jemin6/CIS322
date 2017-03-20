@@ -23,13 +23,13 @@ def logged_user(func):                 #access allowed when logged in.
     return with_logging
 
 
-# activate user
-@app.route('/activate_user', methods=('POST',))
-def activate_user():   
+@app.route('/activate_user',methods=('POST',))
+def activate_user():
     if request.method=='POST' and 'arguments' in request.form:
         req=json.loads(request.form['arguments'])
     else:
-        return "Activation failed"
+        return "Failed"
+
 
 # revoke user
 @app.route('/revoke_user',methods=('POST',))
@@ -106,18 +106,15 @@ def dashboard():
         conn.commit()
     conn.close()
     return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
-#    return render_template("dashboard.html")
 
-#Assignment 10, step 6: Disable the user create screen 
-"""
 # Create user screen where users can create username, password and the role. 
 @app.route('/create_user',methods=['POST','GET'])
 def create_user():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
     if request.method=='GET':               # Load the create user page
-        return render_template('create_user.html')
-    if request.method=='POST':              # creates the user name & password 
+        return "##### GET REQEUST #####"
+    if request.method=='POST':
         if 'username' in request.form and 'password' in request.form:
             user_name = request.form['username']
             user_password = request.form['password']
@@ -136,11 +133,9 @@ def create_user():
                 # If username is created sucessfully, it pops up this message
                 flash("##### REQUEST SUCCEED ######\n Username created!")
             else:
-                # else, falses then pops up warning message
-                flash("##### WARNING #####\n  Already taken username ")
+                return "##### WARNING #####\nAlready exist"
     conn.close()
-    return render_template("create_user.html")
-"""
+    return "##### USER has been created #####"
 
 #Login required. Users adds facilities into the database
 @app.route("/add_facility", methods=['GET', 'POST'])
@@ -255,8 +250,8 @@ def asset_report():
     if request.method=='POST':
         facility = request.form['facility']
         date=request.form['date']
-        SQL="SELECT asset_tag, description, fcode, acquired_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (acquired_dt is null or acquired_dt<=%s) and (disposed_dt is null or disposed_dt>=%s)"
-        cursor.execute(SQL,(date,date))
+        SQL="SELECT asset_tag, description, fcode, acquired_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (fcode=%s) and (acquired_dt is null or acquired_dt<=%s) and (disposed_dt is null or disposed_dt>=%s)"
+        cursor.execute(SQL,(facility,date,date))
         session['data']=cursor.fetchall()
     conn.close()
     return render_template("asset_report.html")
@@ -267,10 +262,11 @@ def asset_report():
 def transfer_req():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
+    
     cursor.execute("SELECT fcode FROM facilities")
-    facilities = cursor.fetchall()
-    cursor.execute("SELECT asset_tag FROM assets")
-    assets = cursor.fetchall()
+    session['facilities'] = cursor.fetchall()
+    cursor.execute("SELECT asset_tag, description FROM assets")
+    session['assets'] = cursor.fetchall()
     
     if session['role'] == 'Logistics Officer':
         if request.method=='POST':
@@ -300,7 +296,7 @@ def transfer_req():
                 flash("##### REQUEST ##### Asset transfer success!")
                 return redirect(url_for("dashboard"))
             flash( "##### WARNING ##### Asset Tag does NOT exist")
-        return render_template("transfer_req.html",facilities=facilities, assets=assets)
+        return render_template("transfer_req.html")
     conn.close()
     return redirect(url_for('not_logistic'))      #If the user is not a Logistics Officer
 
@@ -341,11 +337,11 @@ def update_transit():
     transit = cursor.fetchall()
     if session['role'] == 'Logistics Officer':
         if request.method == 'POST':
-            load_time = request.form['load']
-            unload_time = request.form['unload']
+            load_dt = request.form['load']
+            unload_dt = request.form['unload']
             transit_pk = request.form["transit_pk"]
             SQL="UPDATE transit SET load_dt=%s, unload_dt=%s WHERE transit_pk=%s"
-            cursor.execute(SQL,(load_time,unload_time,transit_pk))
+            cursor.execute(SQL,(load_dt,unload_dt,transit_pk))
             conn.commit()
             flash("Updated load/unload times")
             return redirect(url_for('dashboard'))

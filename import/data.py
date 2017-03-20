@@ -88,14 +88,26 @@ def import_transfers():
         transfers = csv.DictReader(csvfile)
         for row in transfers:
             asset_tag = row['asset_tag']
+            SQL = "SELECT asset_pk FROM assets WHERE asset_tag=%s"
+            cursor.execute(SQL,(asset_tag,))
+            asset_fk = cursor.fetchall()
+            #SQL = "INSERT INTO assets (asset_tag) VALUES (%s)"
+            #cursor.execute(SQL,(asset_tag,))
+            #conn.commit()
             request_by = row['request_by']
-#            request_dt = row['request_dt']
-#            approve_dt = row['approval_dt']
-#            source = row['source']
-#            destination = row['destination']
+            #request_dt = row['request_dt']
+            SQL = "INSERT INTO requests (requester_fk) VALUES (%s)"
+            cursor.execute(SQL,(request_by,))
+            conn.commit()
+            #approve_by = row['approve_by']
+            #SQL="INSERT INTO requests (approver_fk) VALUES (%s)"
+            #cursor.execute(SQL,(approve_by,))
+            #conn.commit()
             load_dt = row['load_dt']
             unload_dt = row['unload_dt']
-            
+            SQL="INSERT INTO transit (load_dt, unload_dt) VALUES (%s,%s)"
+            cursor.execute(SQL,(load_dt,unload_dt))
+            conn.commit()
             
     return 
 

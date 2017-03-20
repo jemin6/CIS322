@@ -2,9 +2,6 @@
 
 {% block body %} 
 
-<h2>Approve Request</h2>
-
-
 <form class="form-horizontal">
 	<fieldset>
 		<legend>APPROVE/DELETE REQUEST</legend>
@@ -21,12 +18,12 @@
 					<th> {{ request[2] }} </th>
 					<th> {{ request[3] }} </th>
 					<th> {{ request[4] }} </th>
+					<th> <input class="btn btn-primary" type="submit" name="approval" value="APPROVE"> </th>
+					<th> <input class="btn btn-primary" type="submit" name="deny" value="DELETE"> </th>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
-		<input class="btn btn-primary" type="submit" value="APPROVE">
-		<input class="btn btn-primary" type="submit" value="DELETE">
 	</fieldset>
 </form>
 
