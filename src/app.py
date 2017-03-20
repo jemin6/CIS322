@@ -23,12 +23,12 @@ def logged_user(func):                 #access allowed when logged in.
     return with_logging
 
 
-@app.route('/activate_user',methods=('POST',))
-def activate_user():
-    if request.method=='POST' and 'arguments' in request.form:
-        req=json.loads(request.form['arguments'])
-    else:
-        return "Failed"
+#@app.route('/activate_user',methods=('POST',))
+#def activate_user():
+#    if request.method=='POST' and 'arguments' in request.form:
+#        req=json.loads(request.form['arguments'])
+#    else:
+#        return "Failed"
 
 
 # revoke user
@@ -107,6 +107,14 @@ def dashboard():
     conn.close()
     return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
 
+
+@app.route('/activate_user',methods=('POST',))
+def activate_user():
+    if request.method=='POST' and 'arguments' in request.form:
+        req=json.loads(request.form['arguments'])
+    else:
+        return "FFF"
+
 # Create user screen where users can create username, password and the role. 
 @app.route('/create_user',methods=['POST','GET'])
 def create_user():
@@ -114,6 +122,7 @@ def create_user():
     cursor = conn.cursor()
     if request.method=='GET':               # Load the create user page
         return "##### GET REQEUST #####"
+#    if request.method=='POST' and 'arguments' in request.form:
     if request.method=='POST':
         if 'username' in request.form and 'password' in request.form:
             user_name = request.form['username']
@@ -130,10 +139,9 @@ def create_user():
                 SQL= "INSERT INTO users (username,password,role_fk) VALUES (%s,%s,%s)"
                 cursor.execute(SQL,(user_name,user_password,role_pk))
                 conn.commit()
-                # If username is created sucessfully, it pops up this message
-                flash("##### REQUEST SUCCEED ######\n Username created!")
+                return "##### USERNAME CREATED ######"
             else:
-                return "##### WARNING #####\nAlready exist"
+                return "##### WARNING::AREADY EXIST #####"
     conn.close()
     return "##### USER has been created #####"
 

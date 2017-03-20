@@ -42,7 +42,7 @@ def main():
     res = urlopen(req)
 
     # Print the result code
-    print("Call to returned: %s"%res.read())
+    print("%s"%res.read())
 
     #print("\n** SUCCESSFULLY ACTIVATED **\nUSERNAME: ",sys.argv[2], "\nROLE: ",sys.argv[4], "\n\n")
 
