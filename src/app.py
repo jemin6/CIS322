@@ -86,6 +86,7 @@ def login():
 def dashboard():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
+
     if session['role'] == 'Logistics Officer':
         SQL="SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)"
         cursor.execute(SQL)
@@ -96,7 +97,7 @@ def dashboard():
         url = "/approve_req"
 
     else:
-        cursor.execute("SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null")
+        cursor.execute("SELECT * FROM transit WHERE load_dt IS Null AND unload_dt IS Null")
         data = cursor.fetchall()
         header = "Transit"
         rows = ["Request ID", "Load Time", "Unload Time"]
@@ -104,7 +105,7 @@ def dashboard():
         conn.commit()
     conn.close()
     return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
-
+#    return render_template("dashboard.html")
 
 #Assignment 10, step 6: Disable the user create screen 
 """
@@ -214,6 +215,7 @@ def add_asset():
 def dispose_asset():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
+    
     if session['role'] == 'Logistics Officer':
         if request.method == 'POST':
             asset_tag = request.form['asset_tag']
@@ -346,14 +348,14 @@ def approve_req():
 def update_transit():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null")
+    cursor.execute("SELECT * FROM transit WHERE load_dt IS Null AND unload_dt IS Null")
     transit = cursor.fetchall()
     if session['role'] == 'Logistics Officer':
         if request.method == 'POST':
             load_time = request.form['load']
             unload_time = request.form['unload']
             transit_pk = request.form["transit_pk"]
-            SQL="UPDATE transit SET load_time=%s, unload_time=%s WHERE transit_pk=%s"
+            SQL="UPDATE transit SET load_dt=%s, unload_dt=%s WHERE transit_pk=%s"
             cursor.execute(SQL,(load_time,unload_time,transit_pk))
             conn.commit()
             flash("Updated load/unload times")
