@@ -67,9 +67,6 @@ def import_assets():
             SQL = "INSERT INTO assets (asset_tag,description) VALUES (%s,%s)"
             cursor.execute(SQL,(asset_tag,description))
             conn.commit()
-            #SQL = "INSERT INTO facilities (fcode) VALUES (%s)"
-            #cursor.execute(SQL,(facility,))
-            #conn.commit()
             SQL = "SELECT asset_pk FROM assets WHERE asset_tag=%s"
             cursor.execute(SQL,(asset_tag,))
             asset_fk = cursor.fetchall()
@@ -84,21 +81,33 @@ def import_assets():
             conn.commit()
     return 
 
-
+#Still need to be fixed 
 #import transfer 
 def import_transfers():
     with open(sys.argv[2]+"/transfers.csv",'r') as csvfile:
         transfers = csv.DictReader(csvfile)
         for row in transfers:
             asset_tag = row['asset_tag']
+            SQL = "SELECT asset_pk FROM assets WHERE asset_tag=%s"
+            cursor.execute(SQL,(asset_tag,))
+            asset_fk = cursor.fetchall()
+            #SQL = "INSERT INTO assets (asset_tag) VALUES (%s)"
+            #cursor.execute(SQL,(asset_tag,))
+            #conn.commit()
             request_by = row['request_by']
-            request_dt = row['request_dt']
-            approve_by = row['approve_by']
-            approve_dt = row['approve_dt']
-            source = row['source']
-            destination = row['destination']
+            #request_dt = row['request_dt']
+            SQL = "INSERT INTO requests (requester_fk) VALUES (%s)"
+            cursor.execute(SQL,(request_by,))
+            conn.commit()
+            #approve_by = row['approve_by']
+            #SQL="INSERT INTO requests (approver_fk) VALUES (%s)"
+            #cursor.execute(SQL,(approve_by,))
+            #conn.commit()
             load_dt = row['load_dt']
             unload_dt = row['unload_dt']
+            SQL="INSERT INTO transit (load_dt, unload_dt) VALUES (%s,%s)"
+            cursor.execute(SQL,(load_dt,unload_dt))
+            conn.commit()
             
     return 
 
@@ -109,7 +118,9 @@ def main():
     import_users()
     import_facilities()
     import_assets()
+    import_transfers()
 
+    
 for arg in sys.argv[1:]:
     process_file(arg)
 

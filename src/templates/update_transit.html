@@ -4,16 +4,39 @@
 
 <h2>Update Transit:</h2>
 
-<form method="POST" class="form-inline">
-	<select name="transit_pk" value="{{request.form.transit_pk}}">
-		{% for item in transit %}
-		<option value={{item[0]}} name={{item[0]}}>{{item[0]}}</option>
-		{% endfor %}
-	</select>
-	<input type="date" class="form-control" placeholder="load" name="load">
-	<input type="date" class="form-control" placeholder="unload" name="unload">
-	<input class="btn btn-primary" type="submit" name="submit">
+{% if session.role == "Logistics Officer" %}
+
+<form class="form-horizontal" method="POST">
+	<fieldset>
+		<legend>UPDATE TRANSIT</legend>
+		<div class="form-group">
+			<label for="asset_tag" class="col-lg-2 control-label">TRANSIT</label>
+			<div class="col-lg-2">
+				<select name="transit_pk" value="{{request.form.transit_pk}}">
+				{% for item in session.transit %}
+					<option value={{item[0]}}>{{item[0]}}</option>
+				{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="asset_tag" class="col-lg-2 control-label">LOAD DATE</label>
+			<div class="col-lg-2">
+				<input type="date" class="form-control"  name="load_dt">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="asset_tag" class="col-lg-2 control-label">UNLOAD DATE</label>
+			<div class="col-lg-2">
+				<input type="date" class="form-control"  name="unload_dt">
+			</div>
+		</div>
+		<input class="btn btn-primary" type="submit" value="SUBMIT">
+	</fieldset>
 </form>
+
+{% endif %}
+
 
 {{error}}
 {% endblock %}

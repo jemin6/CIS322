@@ -4,6 +4,7 @@ import json
 import psycopg2
 from functools import wraps
 import sys
+import datetime 
 
 app = Flask(__name__)
 app.secret_key ="sample_secret_key"
@@ -22,13 +23,13 @@ def logged_user(func):                 #access allowed when logged in.
     return with_logging
 
 
-# activate user
-@app.route('/activate_user', methods=('POST',))
-def activate_user():   
-    if request.method=='POST' and 'arguments' in request.form:
-        req=json.loads(request.form['arguments'])
-    else:
-        return "Activation failed"
+#@app.route('/activate_user',methods=('POST',))
+#def activate_user():
+#    if request.method=='POST' and 'arguments' in request.form:
+#        req=json.loads(request.form['arguments'])
+#    else:
+#        return "Failed"
+
 
 # revoke user
 @app.route('/revoke_user',methods=('POST',))
@@ -86,6 +87,7 @@ def login():
 def dashboard():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
+
     if session['role'] == 'Logistics Officer':
         SQL="SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit)"
         cursor.execute(SQL)
@@ -96,7 +98,7 @@ def dashboard():
         url = "/approve_req"
 
     else:
-        cursor.execute("SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null")
+        cursor.execute("SELECT * FROM transit WHERE load_dt IS Null AND unload_dt IS Null")
         data = cursor.fetchall()
         header = "Transit"
         rows = ["Request ID", "Load Time", "Unload Time"]
@@ -106,16 +108,22 @@ def dashboard():
     return render_template("dashboard.html",data=data, header=header, rows=rows, url=url)
 
 
-#Assignment 10, step 6: Disable the user create screen 
-"""
+@app.route('/activate_user',methods=('POST',))
+def activate_user():
+    if request.method=='POST' and 'arguments' in request.form:
+        req=json.loads(request.form['arguments'])
+    else:
+        return "FFF"
+
 # Create user screen where users can create username, password and the role. 
 @app.route('/create_user',methods=['POST','GET'])
 def create_user():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
     if request.method=='GET':               # Load the create user page
-        return render_template('create_user.html')
-    if request.method=='POST':              # creates the user name & password 
+        return "##### GET REQEUST #####"
+#    if request.method=='POST' and 'arguments' in request.form:
+    if request.method=='POST':
         if 'username' in request.form and 'password' in request.form:
             user_name = request.form['username']
             user_password = request.form['password']
@@ -131,14 +139,11 @@ def create_user():
                 SQL= "INSERT INTO users (username,password,role_fk) VALUES (%s,%s,%s)"
                 cursor.execute(SQL,(user_name,user_password,role_pk))
                 conn.commit()
-                # If username is created sucessfully, it pops up this message
-                flash("##### REQUEST SUCCEED ######\n Username created!")
+                return "##### USERNAME CREATED ######"
             else:
-                # else, falses then pops up warning message
-                flash("##### WARNING #####\n  Already taken username ")
+                return "##### WARNING::AREADY EXIST #####"
     conn.close()
-    return render_template("create_user.html")
-"""
+    return "##### USER has been created #####"
 
 #Login required. Users adds facilities into the database
 @app.route("/add_facility", methods=['GET', 'POST'])
@@ -214,6 +219,7 @@ def add_asset():
 def dispose_asset():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
+    
     if session['role'] == 'Logistics Officer':
         if request.method == 'POST':
             asset_tag = request.form['asset_tag']
@@ -252,8 +258,8 @@ def asset_report():
     if request.method=='POST':
         facility = request.form['facility']
         date=request.form['date']
-        SQL="SELECT asset_tag, description, fcode, acquired_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (acquired_dt is null or acquired_dt<=%s) and (disposed_dt is null or disposed_dt>=%s)"
-        cursor.execute(SQL,(date,date))
+        SQL="SELECT asset_tag, description, fcode, acquired_dt, disposed_dt FROM asset_at aa JOIN facilities f ON aa.facility_fk=f.facility_pk JOIN assets a ON a.asset_pk=aa.asset_fk WHERE (fcode=%s) and (acquired_dt is null or acquired_dt<=%s) and (disposed_dt is null or disposed_dt>=%s)"
+        cursor.execute(SQL,(facility,date,date))
         session['data']=cursor.fetchall()
     conn.close()
     return render_template("asset_report.html")
@@ -264,52 +270,41 @@ def asset_report():
 def transfer_req():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
+    
     cursor.execute("SELECT fcode FROM facilities")
-    facilities = cursor.fetchall()
-    cursor.execute("SELECT asset_tag FROM assets")
-    assets = cursor.fetchall()
+    session['facilities'] = cursor.fetchall()
+    cursor.execute("SELECT asset_tag, description FROM assets")
+    session['assets'] = cursor.fetchall()
     
     if session['role'] == 'Logistics Officer':
         if request.method=='POST':
             asset_tag = request.form['asset_tag']
             source = request.form['source']
             destination = request.form['destination']
-            date = request.form['date'] 
+            date = datetime.datetime.now() 
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
             cursor.execute(SQL,(asset_tag,))
             asset_fk = cursor.fetchone()
-            print("asset_fk")
-            print(asset_fk)
             if asset_fk != None:
                 SQL="SELECT user_pk from users WHERE username=%s"
                 cursor.execute(SQL,(session['username'],))
                 user_pk = cursor.fetchone()
-                print("user_pk")
-                print(user_pk)
-                print(session['username'])
                 SQL="SELECT user_pk from users WHERE username=%s"
                 cursor.execute(SQL,(session['username'],))
                 approver_fk = cursor.fetchone()
-                print("approver_fk")
-                print(approver_fk)
                 SQL="SELECT facility_pk from facilities WHERE fcode=%s"
                 cursor.execute(SQL,(source,))
                 source_fk = cursor.fetchone()
-                print("sourc_fk and source")
-                print(source_fk)
-                print(source)
                 SQL="SELECT facility_pk from facilities WHERE fcode=%s"
                 cursor.execute(SQL,(destination,))
                 destination_fk = cursor.fetchone()
-                print(destination_fk)
-                print(destination)
-                SQL="INSERT INTO requests (requester_fk,approver_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES (%s,$s,%s,%s,%s,%s)"
-                cursor.execute(SQL,(str(user_pk[0]),str(approver_fk[0]),date,str(source_fk[0]),str(destination_fk[0]),str(asset_fk[0])))
+                SQL="INSERT INTO requests (requester_fk, approver_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES (%s,%s,%s,%s,%s,%s)"
+                cursor.execute( SQL, (user_pk[0], approver_fk[0], date, source_fk[0], destination_fk[0], asset_fk[0]) )
                 conn.commit()
                 flash("##### REQUEST ##### Asset transfer success!")
                 return redirect(url_for("dashboard"))
             flash( "##### WARNING ##### Asset Tag does NOT exist")
-        return render_template("transfer_req.html",facilities=facilities, assets=assets)
+        return render_template("transfer_req.html")
     conn.close()
     return redirect(url_for('not_logistic'))      #If the user is not a Logistics Officer
 
@@ -346,15 +341,15 @@ def approve_req():
 def update_transit():
     conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null")
+    cursor.execute("SELECT * FROM transit WHERE load_dt IS Null AND unload_dt IS Null")
     transit = cursor.fetchall()
     if session['role'] == 'Logistics Officer':
         if request.method == 'POST':
-            load_time = request.form['load']
-            unload_time = request.form['unload']
+            load_dt = request.form['load']
+            unload_dt = request.form['unload']
             transit_pk = request.form["transit_pk"]
-            SQL="UPDATE transit SET load_time=%s, unload_time=%s WHERE transit_pk=%s"
-            cursor.execute(SQL,(load_time,unload_time,transit_pk))
+            SQL="UPDATE transit SET load_dt=%s, unload_dt=%s WHERE transit_pk=%s"
+            cursor.execute(SQL,(load_dt,unload_dt,transit_pk))
             conn.commit()
             flash("Updated load/unload times")
             return redirect(url_for('dashboard'))
