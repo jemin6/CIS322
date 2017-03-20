@@ -3,8 +3,8 @@ CREATE TABLE roles (
 	rolename	varchar(32)		/* short textual name for the role*/
 );
 
-INSERT INTO roles (rolename) VALUES ('Logistics Officer');
-INSERT INTO roles (rolename) VALUES ('Facilities Officer');
+INSERT INTO roles (role_pk, rolename) VALUES (1, 'Facilities Officer');
+INSERT INTO roles (role_pk, rolename) VALUES (2,'Logistics Officer');
 
 CREATE TABLE users (      /* table with username and password */
 	user_pk		serial primary key,
