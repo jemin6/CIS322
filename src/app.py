@@ -89,7 +89,7 @@ def dashboard():
 
 
 #Assignment 10, step 6: Disable the user create screen 
-
+"""
 # Create user screen where users can create username, password and the role. 
 @app.route('/create_user',methods=['POST','GET'])
 def create_user():
@@ -120,7 +120,7 @@ def create_user():
                 flash("##### WARNING #####\n  Already taken username ")
     conn.close()
     return render_template("create_user.html")
-
+"""
 
 #Login required. Users adds facilities into the database
 @app.route("/add_facility", methods=['GET', 'POST'])
@@ -250,6 +250,7 @@ def transfer_req():
     facilities = cursor.fetchall()
     cursor.execute("SELECT asset_tag FROM assets")
     assets = cursor.fetchall()
+    
     if session['role'] == 'Logistics Officer':
         if request.method=='POST':
             asset_tag = request.form['asset_tag']
