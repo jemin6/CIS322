@@ -281,35 +281,19 @@ def transfer_req():
             SQL="SELECT asset_pk FROM assets WHERE asset_tag=%s"
             cursor.execute(SQL,(asset_tag,))
             asset_fk = cursor.fetchone()
-            print("asset_fk")
-            print(asset_fk[0])
             if asset_fk != None:
                 SQL="SELECT user_pk from users WHERE username=%s"
                 cursor.execute(SQL,(session['username'],))
                 user_pk = cursor.fetchone()
-                print("user_pk")
-                print(user_pk[0])
-                print(type(user_pk[0]))
-                print(session['username'])
                 SQL="SELECT user_pk from users WHERE username=%s"
                 cursor.execute(SQL,(session['username'],))
                 approver_fk = cursor.fetchone()
-                print("approver_fk")
-                print(approver_fk[0])
                 SQL="SELECT facility_pk from facilities WHERE fcode=%s"
                 cursor.execute(SQL,(source,))
                 source_fk = cursor.fetchone()
-                print("sourc_fk and source")
-                print(source_fk[0])
-                print(source)
                 SQL="SELECT facility_pk from facilities WHERE fcode=%s"
                 cursor.execute(SQL,(destination,))
-                print("destination_fk")
                 destination_fk = cursor.fetchone()
-                print(destination_fk[0])
-                print(destination)
-                print("date")
-                print(date)
                 SQL="INSERT INTO requests (requester_fk, approver_fk, request_dt, source_fk, destination_fk, asset_fk) VALUES (%s,%s,%s,%s,%s,%s)"
                 cursor.execute( SQL, (user_pk[0], approver_fk[0], date, source_fk[0], destination_fk[0], asset_fk[0]) )
                 conn.commit()
