@@ -9,8 +9,6 @@ import datetime
 app = Flask(__name__)
 app.secret_key ="sample_secret_key"
 
-#conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
-#cursor = conn.cursor()
 
 def logged_user(func):                 #access allowed when logged in. 
     @wraps(func)
@@ -23,21 +21,31 @@ def logged_user(func):                 #access allowed when logged in.
     return with_logging
 
 
-#@app.route('/activate_user',methods=('POST',))
-#def activate_user():
-#    if request.method=='POST' and 'arguments' in request.form:
-#        req=json.loads(request.form['arguments'])
-#    else:
-#        return "Failed"
+@app.route('/revoke',methods=['POST','GET'])
+def revoke():
+    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
+    cursor = conn.cursor()
 
-
-# revoke user
-@app.route('/revoke_user',methods=('POST',))
-def revoke_user():
     if request.method=='POST' and 'arguments' in request.form:
         req=json.loads(request.form['argunments'])
-    else:
-        return "Revoking failed"
+
+    try:
+        user_name = request.form['username']
+        SQL = "SELECT * FROM users WHERE username=%s"
+        cursor.execute(SQL,(user_name,))
+        result = cursor.fetchall()
+        if len(result) > 0:
+            SQL="UPDATE users SET active=TRUE WHERE username=%s"
+            cursor.execute(SQL,(user_name,))
+            conn.commit()
+            return " ##### REVOKE SUCCEED #####"
+        else:
+            return " ##### WARNING ##### USERNAME not exist"
+    except Exception as e:
+        return " ##### WARINING ##### "
+    conn.close()
+    return "##### REVOKE #####"
+
 
 
 # main page which is the beginning page
@@ -113,7 +121,7 @@ def activate_user():
     if request.method=='POST' and 'arguments' in request.form:
         req=json.loads(request.form['arguments'])
     else:
-        return "FFF"
+        return "Fail"
 
 # Create user screen where users can create username, password and the role. 
 @app.route('/create_user',methods=['POST','GET'])

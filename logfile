@@ -17865,3 +17865,14 @@ ERROR:  current transaction is aborted, commands ignored until end of transactio
 STATEMENT:  SELECT * FROM requests WHERE request_pk NOT IN(SELECT request_fk FROM transit);
 ERROR:  current transaction is aborted, commands ignored until end of transaction block
 STATEMENT:  SELECT * FROM transit WHERE load_time IS Null AND unload_time IS Null
+LOG:  database system was shut down at 2017-03-21 04:27:09 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  syntax error at or near "select" at character 21
+STATEMENT:  select * from users
+	select * from users;
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  update or delete on table "users" violates foreign key constraint "requests_requester_fk_fkey" on table "requests"
+DETAIL:  Key (user_pk)=(1) is still referenced from table "requests".
+STATEMENT:  DELETE FROM users WHERE username='malcom'

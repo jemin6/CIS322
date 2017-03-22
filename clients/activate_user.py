@@ -44,7 +44,5 @@ def main():
     # Print the result code
     print("%s"%res.read())
 
-    #print("\n** SUCCESSFULLY ACTIVATED **\nUSERNAME: ",sys.argv[2], "\nROLE: ",sys.argv[4], "\n\n")
-
 if __name__=='__main__':
     main()

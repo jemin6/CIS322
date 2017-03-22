@@ -17,12 +17,10 @@ def main():
     data = urlencode(args)
 
     # Make the request.
-    req = Request(sys.argv[1], data.encode('ascii'), method = 'POST')
+    req = Request(sys.argv[1]+"revoke", data.encode('ascii'), method = 'POST')
     res = urlopen(req)
-    
-    # Parse the response
-    resp = json.loads(res.read().decode('ascii'))
 
+    print("%s"%res.read())
 
 if __name__=='__main__':
     main()
