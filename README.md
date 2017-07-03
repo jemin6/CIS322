@@ -3,6 +3,7 @@
 ## CIS322 Introduction to Software Engineering
 
 > Instructor: Daniel Ellsworth
+
 > Course Website: https://classes.cs.uoregon.edu//17W/cis322/index.php
 
 ###  Overview 
